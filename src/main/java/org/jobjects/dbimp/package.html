@@ -1,0 +1,264 @@
+<body>
+<p>
+Si le paramètre verbose est activé, les message de log sont communités sur la console. 
+Les messages de log sont toujours écrit dans le fichier importation.log. Ce fichier se trouve dans le répertoire temporaire du system.
+Le niveau niveau de log est warning.
+</p>
+<p>
+  Le fichier de paramétrage contient toutes les informations pour l'importation. Le fichier est un fichier xml.<br>
+  La balise d'entré est <font color="#008080">&lt;document&gt;</font>. Elle contient un répétition de balise
+  <font color="#008080">&lt;line&gt;</font>. Ceux sont les balise <font color="#008080">&lt;line&gt;</font> qui permettent
+  de spécifié le nom de la table, les champs (leur taille, ...) et ainsi que la clef de déclenchement
+  <font color="#008080">&lt;key&gt;</font>.<br>
+  La balise <font color="#008080">&lt;key&gt;</font>&nbsp; identifie la valeur de déclenchement , sa position et sa longueur
+  dans le fichier. Il peut y avoir plusieurs balises <font color="#008080">&lt;key&gt;</font>.</br>
+  Les balises <font color="#008080">&lt;field&gt;</font> identifient les champs. Les champs peuvent prendre un de ces types:
+  <font color="#008080">string, integer, long, float, double, datetime</font> .</br>
+  La provenance du champs peut venir une des trois sources possibles : <font color="#008080">position, constante, query</font>.</br>
+  Si on fait le choix de <font color="#008080">position</font>  , la donnée viendra du fichier à la position
+  <font color="#008080">startposition</font> et de longueur <font color="#008080">size</font>.
+  <font color="#FF0000">Attention une chaîne de caractère commence à partir de 0.</font>
+  Un champs de type date peut prende la valeur constante  <font color="#008080">sysdate</font>, et le moteur d'importation se chargera 
+  de même l'heure et date de la machine.<br/>
+  &lt;field fieldname="D_APPLICATION">&lt;datetime dateformat="yyyyMMdd"/>&lt;constante value=<font color="#008080">"sysdate"</font>/>&lt;/field>
+<ul>
+  <li>
+    <font color="#008080">constante</font>, la donnée sera toujours la valeur spécifié dans <font color="#008080">value</font>.
+  </li>
+  <li>
+    <font color="#008080">&lt;query></font>, la donnée viendra de la base de donnée. Il faut spécifié la requête
+    <font color="#008080">&lt;sql></font> et les paramètres si ils existent.
+    <font color="#008080">&lt;query-param></font> indique la liste des paramètres de la requête.
+  </li>
+</ul>
+La structure du fichier xml est decrite par le <a href="../../../../../importation.dtd">dtd</a>.<br>
+Commentaire de quelques attributs : <br>
+<ul>
+  <li>
+    <font color="#008080">nullable</font> indique si la donnée peut être null ou non.
+  </li>
+  <li>
+    <font color="#008080">nullable_error</font> indique si la donnée qui pour valeur null renvoie une erreur dans le rapport ou non.
+  </li>
+  <li>
+    <font color="#008080">isuse</font> indique si la donnée doit être prise en compte dans les requêtes. Son utlisation se localise au Trigger. A pour valeur par defaut 'true'.
+  </li>
+  <li>
+    <font color="#008080">coefficient</font> est le facteur de la donnée. Utiliser pour le conversion de donnée.
+    Si la donnée vaut 2 et coefficient="5" alors il y a 10 dans la base.
+  </li>
+
+  <li>
+   <font color="#008080">dateformat</font> : Format des dates :<br>
+   <table border=0 cellspacing=3 cellpadding=0>
+       <tr bgcolor="#ccccff">
+           <th align=left>Letter
+           <th align=left>Date or Time Component
+           <th align=left>Presentation
+           <th align=left>Examples
+       <tr>
+           <td><code>G</code>
+           <td>Era designator
+           <td>Text
+           <td><code>AD</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>y</code>
+           <td>Year
+           <td>Year
+           <td><code>1996</code>; <code>96</code>
+       <tr>
+           <td><code>M</code>
+           <td>Month in year
+           <td>Month
+           <td><code>July</code>; <code>Jul</code>; <code>07</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>w</code>
+           <td>Week in year
+           <td>Number
+           <td><code>27</code>
+       <tr>
+           <td><code>W</code>
+           <td>Week in month
+           <td>Number
+           <td><code>2</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>D</code>
+           <td>Day in year
+           <td>Number
+           <td><code>189</code>
+       <tr>
+           <td><code>d</code>
+           <td>Day in month
+           <td>Number
+           <td><code>10</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>F</code>
+           <td>Day of week in month
+           <td>Number
+           <td><code>2</code>
+       <tr>
+           <td><code>E</code>
+           <td>Day in week
+           <td>Text
+           <td><code>Tuesday</code>; <code>Tue</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>a</code>
+           <td>Am/pm marker
+           <td>Text
+           <td><code>PM</code>
+       <tr>
+           <td><code>H</code>
+           <td>Hour in day (0-23)
+           <td>Number
+           <td><code>0</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>k</code>
+           <td>Hour in day (1-24)
+           <td>Number
+           <td><code>24</code>
+       <tr>
+           <td><code>K</code>
+           <td>Hour in am/pm (0-11)
+           <td>Number
+           <td><code>0</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>h</code>
+           <td>Hour in am/pm (1-12)
+           <td>Number
+           <td><code>12</code>
+       <tr>
+           <td><code>m</code>
+           <td>Minute in hour
+           <td>Number
+           <td><code>30</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>s</code>
+           <td>Second in minute
+           <td>Number
+           <td><code>55</code>
+       <tr>
+           <td><code>S</code>
+           <td>Millisecond
+           <td>Number
+           <td><code>978</code>
+       <tr bgcolor="#eeeeff">
+           <td><code>z</code>
+           <td>Time zone
+           <td>General time zone
+           <td><code>Pacific Standard Time</code>; <code>PST</code>; <code>GMT-08:00</code>
+       <tr>
+           <td><code>Z</code>
+           <td>Time zone
+           <td>RFC 822 time zone
+           <td><code>-0800</code>
+   </table>
+  </li>
+
+</ul>
+
+<HR>
+<p><u>Exemple de de paramétrage</u> :</p>
+
+
+<p>&lt;document description="NCDEPRD.PRD"></p>
+<blockquote>
+  <p>&lt;line name="PRODUCTS" tablename="PRODUCTS"></p>
+  <blockquote>
+    <p>&lt;key value="CU1" startposition="0" size="3"/><br>
+    <p>&lt;key isBlank="false" startposition="16" size="14"/><br>
+    &lt;field fieldname="LN">&lt;string/>&lt;position startposition="3" size="13"/>&lt;/field><br>
+    &lt;field fieldname="NC_LN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PN">&lt;string/>&lt;position startposition="16" size="14"/>&lt;/field><br>
+    &lt;field fieldname="NC_PN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PV">&lt;string/>&lt;position startposition="30" size="2"/>&lt;/field><br>
+    &lt;field fieldname="NC_NATURE">&lt;string/>&lt;position startposition="48" size="3"/>&lt;/field><br>
+    &lt;field fieldname="DESCRIPTION">&lt;string/>&lt;position startposition="71" size="35"/>&lt;/field></p>
+    &lt;field fieldname="MON_CHAMP_QUI_NE SERT_A_RIEN" inuse="false">&lt;string/>&lt;position startposition="71" size="35"/>&lt;/field></p>
+  </blockquote>
+  <p>&lt;/line></p>
+  <p>&lt;line name="PRODUCT_ATTRIBUTES.QT_BULU" tablename=&quot;PRODUCT_ATTRIBUTES&quot;&gt;</p>
+  <blockquote>
+    <p><br>
+    &lt;key value="CU1" startposition="0" size="3"/><br>
+    &lt;field fieldname="FIELD">&lt;string/>&lt;constante value="QT_BULU"/>&lt;/field><br>
+    &lt;field fieldname="LN">&lt;string/>&lt;position startposition="3" size="13"/>&lt;/field><br>
+    &lt;field fieldname="NC_LN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PN">&lt;string/>&lt;position startposition="16" size="14"/>&lt;/field><br>
+    &lt;field fieldname="NC_PN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PV">&lt;string/>&lt;position startposition="30" size="2"/>&lt;/field><br>
+    &lt;field fieldname="D_APPLICATION">&lt;datetime dateformat="yyyyMMdd"/>&lt;position startposition="32" size="8"/>&lt;/field><br>
+    &lt;field fieldname="VALUE_I" nullable="false" nullable_error="false">&lt;integer/>&lt;position startposition="338" size="2"/>&lt;/field&gt;</p>
+  </blockquote>
+  <p>&lt;/line><br>
+  <br>
+  </p>
+  <p>&lt;line name="CU2.PRODUCT_EXTENDED_DESCRIPTIONS" tablename="PRODUCT_EXTENDED_DESCRIPTIONS"><br>
+  </p>
+  <blockquote>
+    <p>&lt;key value="CU2" startposition="0" size="3"/><br>
+    &lt;field fieldname="LN">&lt;string/>&lt;position startposition="3" size="13"/>&lt;/field><br>
+    &lt;field fieldname="NC_LN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PN">&lt;string/>&lt;position startposition="16" size="14"/>&lt;/field><br>
+    &lt;field fieldname="NC_PN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PV">&lt;string/>&lt;position startposition="30" size="2"/>&lt;/field><br>
+    &lt;field fieldname="D_APPLICATION" nullable="false"></p>
+    <blockquote>
+      <p>&lt;datetime dateformat="yyyyMMdd"/><br>
+      </p>
+      <p>&lt;query sql="select to_char(max(d_application), 'yyyyMMdd') from product_dates where ln=? and nc_ln_cod_typ like 'GTIN' and pn=? and nc_pn_cod_typ like 'GTIN' and pv=?"></p>
+      <blockquote>
+        <p>&lt;query-param>&lt;string/>&lt;position startposition="3" size="13"/>&lt;/query-param><br>
+        &lt;query-param>&lt;string/>&lt;position startposition="16" size="14"/>&lt;/query-param><br>
+        &lt;query-param>&lt;string/>&lt;position startposition="30" size="2"/>&lt;/query-param></p>
+      </blockquote>
+      <p>&lt;/query></p>
+    </blockquote>
+    <p>&lt;/field><br>
+    &lt;field fieldname="NC_EXTENDED_DESCRIPTION_TYPE">&lt;string/>&lt;constante value="A"/>&lt;/field><br>
+    &lt;field fieldname="NC_LANGUAGE">&lt;string/>&lt;position startposition="32" size="2"/>&lt;/field><br>
+    &lt;field fieldname="DESCRIPTION">&lt;string/>&lt;position startposition="34" size="40"/>&lt;/field></p>
+  </blockquote>
+  <p>&lt;/line></p>
+</blockquote>
+<blockquote>
+  <p><br>
+  &lt;line name="DU1.PRODUCT_DATES" tablename="PRODUCT_DATES" trigger_class_name="org.jobjects.dbimp.trigger.PriorLevelTrigger"></p>
+  <blockquote>
+    <p>&lt;key value="DU1" startposition="0" size="3"/><br>
+    &lt;field fieldname="LN">&lt;string/>&lt;position startposition="3" size="13"/>&lt;/field><br>
+    &lt;field fieldname="NC_LN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PN">&lt;string/>&lt;position startposition="16" size="14"/>&lt;/field><br>
+    &lt;field fieldname="NC_PN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PV">&lt;string/>&lt;position startposition="30" size="2"/>&lt;/field><br>
+    &lt;field fieldname="D_APPLICATION">&lt;datetime dateformat="yyyyMMdd"/>&lt;position startposition="80" size="8"/>&lt;/field><br>
+    <br>
+    &lt;field fieldname="PN_PRIOR_LEVEL">&lt;string/>&lt;position startposition="32" size="14"/>&lt;/field><br>
+    &lt;field fieldname="NC_PN_PRIOR_LEVEL_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PV_PRIOR_LEVEL">&lt;string/>&lt;position startposition="46" size="2"/>&lt;/field><br>
+    &lt;field fieldname="D_APPLICATION_PRIOR_LEVEL">&lt;datetime dateformat="yyyyMMdd"/>&lt;position startposition="312" size="8"/>&lt;/field><br>
+    &lt;field fieldname="N_PRIOR_LEVEL">&lt;integer/>&lt;position startposition="48" size="14"/>&lt;/field><br>
+    &lt;field fieldname="D_END_APPLICATION">&lt;datetime dateformat="yyyyMMdd"/>&lt;position startposition="88" size="8"/>&lt;/field><br>
+    <br>
+    &lt;field fieldname="CD_INTERNAL">&lt;string/>&lt;position startposition="62" size="18"/>&lt;/field></p>
+  </blockquote>
+  <p>&lt;/line></p>
+  <p>&lt;line name="DU1.PRODUCT_ATTRIBUTES.NC_PACKAGES_IDENTIFICATION" tablename="PRODUCT_ATTRIBUTES"></p>
+  <blockquote>
+    <p>&lt;key value="DU1" startposition="0" size="3"/><br>
+    &lt;field fieldname="FIELD">&lt;string/>&lt;constante value="NC_PACKAGES_IDENTIFICATION"/>&lt;/field><br>
+    &lt;field fieldname="LN">&lt;string/>&lt;position startposition="3" size="13"/>&lt;/field><br>
+    &lt;field fieldname="NC_LN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PN">&lt;string/>&lt;position startposition="16" size="14"/>&lt;/field><br>
+    &lt;field fieldname="NC_PN_COD_TYP">&lt;string/>&lt;constante value="GTIN"/>&lt;/field><br>
+    &lt;field fieldname="PV">&lt;string/>&lt;position startposition="30" size="2"/>&lt;/field><br>
+    &lt;field fieldname="D_APPLICATION">&lt;datetime dateformat="yyyyMMdd"/>&lt;position startposition="80" size="8"/>&lt;/field><br>
+    &lt;field fieldname="VALUE_NC" nullable="false" nullable_error="false">&lt;string/>&lt;position startposition="276" size="3"/><br>
+    &lt;check_in sql="select cd_value from normalized_values where cd_table like '107065'"/><br>
+    &lt;/field></p>
+  </blockquote>
+  <p>&lt;/line></p>
+</blockquote>
+<p>&lt;/document></p><br>
+
+
+</body>

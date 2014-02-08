@@ -40,14 +40,14 @@ import org.jobjects.dbimp.xml.XmlQueryParam;
  * <li>[-U | --user] Login de l'utilisateur.</li>
  * <li>[-P | --password] Password de l'utlisateur.</li>
  * <li>[-f | --file] Nom du fichier source.</li>
- * <li>[-x | --xml] Nom du fichier de paramètrage.</li>
+ * <li>[-x | --xml] Nom du fichier de paramï¿½trage.</li>
  * <li>[-e | --encode] [ US-ASCII | ISO-8859-1 | UTF-8 | UTF-16 ] encodage du
  * fichier.</li>
  * <li>[-d | --driver] Driver JDBC. Par defaut : oracle.jdbc.driver.OracleDriver
  * </li>
- * <li>[-r | --report] Répertoire du rapport d'importation. Par defaut : $TEMP</li>
+ * <li>[-r | --report] Rï¿½pertoire du rapport d'importation. Par defaut : $TEMP</li>
  * <li>[-c | --cached] Cache les cursors, attention le nombre de curseur est
- * égal au nombre de type de ligne x3, diminu de façon importante le temps
+ * ï¿½gal au nombre de type de ligne x3, diminu de faï¿½on importante le temps
  * d'importation (>50% dans certain cas). Par defaut : false</li>
  * </ul>
  * 
@@ -68,9 +68,9 @@ public class Importation {
    * Fonction principale de lancement
    * 
    * @param args
-   *          Liste des arguments passées en paramètre.
+   *          Liste des arguments passï¿½es en paramï¿½tre.
    * @throws Exception
-   *           Exception générale.
+   *           Exception gï¿½nï¿½rale.
    */
   public static void main(String[] args) throws Exception {
     int returnValue = 0;
@@ -86,12 +86,12 @@ public class Importation {
     boolean verbose = false;
 
     /*
-     * Gestion des paramètres
+     * Gestion des paramï¿½tres
      */
     HelpFormatter formatter = new HelpFormatter();
     String cmdLineSyntax = "$JAVA_HOME/bin/java " + Importation.class.getName();
     String header = "Importation directe version 3.2";
-    String footer = "Copyright © 2006 JObjects Corp. All Rights Reserved";
+    String footer = "Copyright ï¿½ 2006 JObjects Corp. All Rights Reserved";
 
     Options options = new Options();
     Option option = new Option(
@@ -104,25 +104,25 @@ public class Importation {
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("U", "User", true, "Login de la base de donnée.");
+    option = new Option("U", "User", true, "Login de la base de donnï¿½e.");
     option.setArgName("username");
     option.setRequired(true);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("P", "Password", true, "Password de la base de donnée.");
+    option = new Option("P", "Password", true, "Password de la base de donnï¿½e.");
     option.setArgName("password");
     option.setRequired(true);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("f", "file", true, "Nom du fichier source.");
+    option = new Option("f", "fileTxt", true, "Nom du fichier source.");
     option.setArgName("fichier");
     option.setRequired(true);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("x", "file", true, "Nom du fchier de parametre.");
+    option = new Option("x", "fileXml", true, "Nom du fchier de parametre.");
     option.setArgName("xml");
     option.setRequired(true);
     option.setOptionalArg(false);
@@ -136,7 +136,7 @@ public class Importation {
     options.addOption(option);
 
     option = new Option("r", "report", true,
-        "Répertoire du rapport d'importation. Par defaut : " + dirnameReporte
+        "Rï¿½pertoire du rapport d'importation. Par defaut : " + dirnameReporte
             + ".");
     option.setArgName("report [" + dirnameReporte + "]");
     option.setRequired(false);
@@ -147,7 +147,7 @@ public class Importation {
         "c",
         "cached",
         false,
-        "Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
+        "Cache les cursors, attention le nombre de curseur est ï¿½gal au nombre de type de ligne x3, diminu de faï¿½on importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
@@ -156,17 +156,17 @@ public class Importation {
         "s",
         "schema",
         false,
-        "Nom du schema. Par défaut le nom de l’utilisateur pour oracle , le nom de la collection pour DB2AS400.");
+        "Nom du schema. Par dï¿½faut le nom de lï¿½utilisateur pour oracle , le nom de la collection pour DB2AS400.");
     option.setRequired(false);
     options.addOption(option);
 
     option = new Option("v", "verbose", false,
-        "Encheri le rapport des informations de mise à jour.");
+        "Encheri le rapport des informations de mise ï¿½ jour.");
     option.setRequired(false);
     options.addOption(option);
 
     option = new Option("v", "verbose", false,
-        "Encheri le rapport des informations de mise à jour.");
+        "Encheri le rapport des informations de mise ï¿½ jour.");
     option.setRequired(false);
     options.addOption(option);
 
@@ -261,18 +261,18 @@ public class Importation {
   // ---------------------------------------------------------------------------
 
   /**
-   * Fonnction d'importation. Cette fonction est le point d'entré pour les
+   * Fonnction d'importation. Cette fonction est le point d'entrï¿½ pour les
    * objects CORBA, SOAP,EJB.
    * 
    * @param fileSource
-   *          Fichier source à importer.
+   *          Fichier source ï¿½ importer.
    * @param fileSourceEncoding
    *          Endodage du fichier source.
    * @param fileNameParameter
-   *          Paramètre du fichier source.
+   *          Paramï¿½tre du fichier source.
    * @param conn
-   *          Instance de connection à la base.En effet afin de garantir les
-   *          traitements le pooler de connection n'est pas utilisé.
+   *          Instance de connection ï¿½ la base.En effet afin de garantir les
+   *          traitements le pooler de connection n'est pas utilisï¿½.
    * @param schemaName
    *          Nom du schema de la base de donnees.
    * @param cached
@@ -310,7 +310,7 @@ public class Importation {
         log.log(Level.SEVERE, "", ex);
       }
       /**
-       * Chargement du parametrage des lignes et des recordset associé.
+       * Chargement du parametrage des lignes et des recordset associï¿½.
        */
       LinkedList<LineAndRecordSet> LineAndRecordSets = new LinkedList<LineAndRecordSet>();
       XmlParams param = new XmlParams();

@@ -1,9 +1,3 @@
-/*
- * Created on 1 mai 2003
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
 package org.jobjects.dbimp.sql;
 
 import java.sql.Connection;
@@ -22,10 +16,13 @@ import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.xml.XmlField;
 
 /**
- * @author Mickaël
- * 
- *         To change the template for this generated type comment go to
- *         Window>Preferences>Java>Code Generation>Code and Comments
+ * <p>Title: IHM</p>
+ * <p>Description: Importation dbImp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
+ * <p>Date :  1 mai 2003</p>
+ * @author Mickael Patron
+ * @version 1.0
  */
 public class SqlUpdateBlob extends SqlStatement {
   private Log log = LogFactory.getLog(getClass());

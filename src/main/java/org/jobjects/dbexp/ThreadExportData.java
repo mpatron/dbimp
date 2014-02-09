@@ -1,9 +1,3 @@
-/*
- * Créé le 2 mars 04
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 package org.jobjects.dbexp;
 
 import java.io.InputStream;
@@ -19,19 +13,11 @@ import org.jobjects.dbimp.FileAsciiReader;
 import org.jobjects.dbimp.FileAsciiWriter;
 
 /**
- * <p>
- * Title: IHM
- * </p>
- * <p>
- * Description: Exportation
- * </p>
- * <p>
- * Copyright: Copyright (c) 2004
- * </p>
- * <p>
- * Company: JObjects
- * </p>
- * 
+ * <p>Title: IHM</p>
+ * <p>Description: Exportation</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
+ * <p>2 mars 04</p>
  * @author Mickael Patron
  * @version 1.0
  */

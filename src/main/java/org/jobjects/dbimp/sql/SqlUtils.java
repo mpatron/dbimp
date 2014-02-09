@@ -1,9 +1,3 @@
-/*
- * Créé le 24 févr. 04
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 package org.jobjects.dbimp.sql;
 
 import java.sql.SQLException;
@@ -18,9 +12,14 @@ import org.jobjects.dbimp.xml.XmlField;
 
 
 /**
- * @author MP
- *
+ * <p>Title: IHM</p>
+ * <p>Description: Importation dbImp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
+ * <p>Date :  24 fevr. 2004</p>
  * Utiliaire pour les fonctions Sql
+ * @author Mickael Patron
+ * @version 1.0
  */
 public class SqlUtils {
 
@@ -28,7 +27,7 @@ public class SqlUtils {
 
   public static void AfficheSQLException(Line xmlline, String message, SQLException ex, ReportLine reporting) {
     //ORA-02290: violation de contraintes
-    //ORA-00001: unicité
+    //ORA-00001: unicitÃ©
     //if(!ex.getMessage().startsWith("ORA-00001")) {
     String chaine= xmlline.getName() + " : " + "Ligne(" + reporting.getNumberLine() + ") : ";
     chaine += (ex.getMessage() + "." + System.getProperty("line.separator"));

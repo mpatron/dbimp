@@ -62,7 +62,7 @@ public class SqlPrimary {
       SQLDatatbaseType sqlDatatbaseType = SQLDatatbaseType.getType(metadata
           .getURL());
       /**
-       * Specificité Oracle : Il y a des schema et pas de catalog Specificité
+       * SpecificitÃ© Oracle : Il y a des schema et pas de catalog SpecificitÃ©
        * SQLServer : Il y a des catalogs et pas de schema
        */
       String catalog, schema, table;
@@ -85,7 +85,7 @@ public class SqlPrimary {
       case ORACLE:
         /*
          * ==Oracle== Il est important que l'importation se fasse avec le
-         * propriétaire du schema.
+         * propriÃ©taire du schema.
          */
         if (StringUtils.isEmpty(schemaName)) {
           catalog = null;
@@ -100,7 +100,7 @@ public class SqlPrimary {
       case DB2AS400:
         /*
          * ==DB2 AS400== Il est important que l'importation se fasse avec le
-         * propriétaire du schema.
+         * propriÃ©taire du schema.
          */
         if (StringUtils.isEmpty(schemaName)) {
           catalog = null;

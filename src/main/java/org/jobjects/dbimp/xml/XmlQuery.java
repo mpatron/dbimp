@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Tag query. Utilisé dans la lecture du fichier de paramètrage.
+ * Tag query. UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * 
  * @author Mickael Patron
  * @version 2.0

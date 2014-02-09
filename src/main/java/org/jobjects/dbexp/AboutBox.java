@@ -56,7 +56,7 @@ public class AboutBox extends JDialog implements ActionListener {
   String product = "Exportation dbExp";
   String version = "1.0";
   String copyright = "Copyright (c) 2004";
-  String comments = "Mickaël Patron";
+  String comments = "MickaÃ«l Patron";
 
   public AboutBox(Frame parent) {
     super(parent);

@@ -48,7 +48,7 @@ public enum SQLDatatbaseType {
       try {
         returnValue = SQLDatatbaseType.valueOf(name);
       } catch (IllegalArgumentException e) {
-        // Ne rien faire, la valeur par defaut est affecté.
+        // Ne rien faire, la valeur par defaut est affectÃ©.
       }
     }
     return returnValue;

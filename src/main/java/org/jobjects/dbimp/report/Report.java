@@ -1,9 +1,3 @@
-/*
- * Créé le 4 sept. 2003
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 package org.jobjects.dbimp.report;
 
 import java.io.BufferedReader;
@@ -22,13 +16,14 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jobjects.dbimp.FileAsciiWriter;
 import org.jobjects.dbimp.trigger.Line;
 
-
 /**
- * @author MP
- * 
- *         Pour changer le modèle de ce commentaire de type généré, allez à :
- *         Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et
- *         commentaires
+ * <p>Title: IHM</p>
+ * <p>Description: Importation dbImp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
+ * <p>Date :  4 sept. 2003</p>
+ * @author Mickael Patron
+ * @version 1.0
  */
 public class Report implements Reporting {
 	private String description = null;
@@ -49,8 +44,8 @@ public class Report implements Reporting {
 	private FileAsciiWriter bw = null;
 
 	/**
-	 * Création du rapport. Le flux est donnée ouvert à la classe. Il est donnée
-	 * à la classe appelante de gérér le fichier.
+	 * CrÃ©ation du rapport. Le flux est donnÃ©e ouvert Ã  la classe. Il est donnÃ©e
+	 * Ã  la classe appelante de gÃ©rer le fichier.
 	 * 
 	 * @param bw
 	 *            Flux ou fichier.
@@ -74,21 +69,21 @@ public class Report implements Reporting {
 	}
 
 	/**
-	 * @return La description contenu dans le fichier de paramètrage xml.
+	 * @return La description contenu dans le fichier de paramÃ¨trage xml.
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * @return Le nom du fichier d'entrée passé en paramètre
+	 * @return Le nom du fichier d'entrÃ©e passÃ© en paramÃ¨tre
 	 */
 	public String getInputFile() {
 		return inputFile;
 	}
 
 	/**
-	 * @return Le nom du fichier de paramètrage passé en paramètre
+	 * @return Le nom du fichier de paramÃ¨trage passÃ© en paramÃ¨tre
 	 */
 	public String getParamFile() {
 		return paramFile;
@@ -96,7 +91,7 @@ public class Report implements Reporting {
 
 	/**
 	 * @param string
-	 *            Spécifie la description
+	 *            SpÃ©cifie la description
 	 */
 	public void setDescription(String string) {
 		description = string;
@@ -104,7 +99,7 @@ public class Report implements Reporting {
 
 	/**
 	 * @param string
-	 *            Spécifie le nom du fichier d'entrée passé en paramètre
+	 *            SpÃ©cifie le nom du fichier d'entrÃ©e passÃ© en paramÃ¨tre
 	 */
 	public void setInputFile(String string) {
 		inputFile = string;
@@ -112,14 +107,14 @@ public class Report implements Reporting {
 
 	/**
 	 * @param string
-	 *            Spécifie le nom du fichier de paramètrage passé en paramètre
+	 *            SpÃ©cifie le nom du fichier de paramÃ¨trage passÃ© en paramÃ¨tre
 	 */
 	public void setParamFile(String string) {
 		paramFile = string;
 	}
 
 	/**
-	 * @return Retourne la durée du traitement.
+	 * @return Retourne la durÃ©e du traitement.
 	 */
 	public long getDuration() {
 		return duration;
@@ -127,7 +122,7 @@ public class Report implements Reporting {
 
 	/**
 	 * @param l
-	 *            Affecte la durée du traitement.
+	 *            Affecte la durÃ©e du traitement.
 	 */
 	public void setDuration(long l) {
 		duration = l;

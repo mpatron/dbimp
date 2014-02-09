@@ -18,7 +18,7 @@ import org.apache.commons.lang3.SystemUtils;
  * Fichier : org.jobjects.dbimp.FileAsciiWriter.java 
  * Creer le : 14 oct. 2004 16:22:07
  * 
- * @author Mickaël Patron
+ * @author MickaÃ«l Patron
  */
 public class FileAsciiWriter {
 

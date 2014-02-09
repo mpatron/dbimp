@@ -1,9 +1,9 @@
 package org.jobjects.dbimp.xml;
 /**
- * Utilisé dans la lecture du fichier de paramètrage. Le tag position permet
- * d'enregistrer l'index du caractère de début dans le 'startposition' et 'size' 
- * qui est la taille de la chaine à lire. La lecture se fait comme pour le C : 
- * le premier caractère a pour index 0.
+ * UtilisÃ© dans la lecture du fichier de paramÃ¨trage. Le tag position permet
+ * d'enregistrer l'index du caractÃ¨re de dÃ©but dans le 'startposition' et 'size' 
+ * qui est la taille de la chaine Ã  lire. La lecture se fait comme pour le C : 
+ * le premier caractÃ¨re a pour index 0.
  * @author Mickael Patron
  * @version 2.0
  */

@@ -9,7 +9,7 @@ package org.jobjects.dbimp.trigger;
 
 /**
  * Tag field.
- * Utilisé lors de la lecture du fichier par les trigger.
+ * UtilisÃ© lors de la lecture du fichier par les trigger.
  * @author Mickael Patron
  * @version 2.0
  */
@@ -43,8 +43,8 @@ public interface Field {
 	public String getBuffer();
   
   /**
-   * Spécifie le contenu du buffer. Attention c'est à partir du contenu du buffer que les modifications
-   * sont apportés à la base donnée.
+   * SpÃ©cifie le contenu du buffer. Attention c'est Ã  partir du contenu du buffer que les modifications
+   * sont apportÃ©s Ã  la base donnÃ©e.
 	 * @param buffer
 	 */
 	public void setBuffer(String buffer);
@@ -62,7 +62,7 @@ public interface Field {
 	public FieldTypeEnum getType();
   
   /**
-   * Indique si le champs peut être null.
+   * Indique si le champs peut Ãªtre null.
 	 * @return boolean
 	 */
 	public boolean isNullable();
@@ -175,13 +175,13 @@ public interface Field {
    */
 	public String getDateFormat();
   /**
-   * Coéficient de multiplication. Utilisé pour multiplié la valeur sielle est de type integer|long|float|double.
+   * CoÃ©ficient de multiplication. UtilisÃ© pour multipliÃ© la valeur sielle est de type integer|long|float|double.
 	 * @return float
 	 */
 	public double getCoefficient();
   
   /**
-   * Indique si le champ est utiliser pour faire les mise à jour dans la base.
+   * Indique si le champ est utiliser pour faire les mise Ã  jour dans la base.
 	 * @return boolean
 	 */
 	public boolean isUse();

@@ -20,10 +20,10 @@ import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.xml.XmlField;
 
 /**
- * Class permettant de vérifier si la donnée est présente dans la base. Créer le
+ * Class permettant de vÃ©rifier si la donnÃ©e est prÃ©sente dans la base. CrÃ©er le
  * 24 janv. 2003.
  * 
- * @author Mickaël Patron
+ * @author MickaÃ«l Patron
  */
 public class SqlSelect extends SqlStatement {
 

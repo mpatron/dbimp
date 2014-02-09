@@ -27,7 +27,7 @@ import org.jobjects.dbimp.xml.XmlField;
 import org.jobjects.dbimp.xml.XmlLine;
 
 /**
- * Il a possibilité de prévoir dans le future plusieur connecteur qui pourrait
+ * Il a possibilitÃ© de prÃ©voir dans le future plusieur connecteur qui pourrait
  * plusieur type de fichier : - fichier plat - fichier xml - fichier xls ...
  * 
  * @author Mickael Patron
@@ -124,9 +124,9 @@ public class LineAndRecordSet {
   // ---------------------------------------------------------------------------
   /**
    * Renvoie la variable xmlline qui contient les informations sur le format de
-   * ligne à lire.
+   * ligne Ã  lire.
    * 
-   * @return Renvoie l'instance du paramètre.
+   * @return Renvoie l'instance du paramÃªtre.
    */
   public Line getXmlLine() {
     return xmlline;
@@ -134,9 +134,9 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
   /**
-   * Retourne le nombre de ligne rejeté.
+   * Retourne le nombre de ligne rejetÃ©.
    * 
-   * @return L'entier retourné est supérieur ou égal à zéro.
+   * @return L'entier retournÃ© est supÃ©rieur ou Ã©gal Ã  zÃ©ro.
    */
   public int getCountRejected() {
     return this.countRejected;
@@ -144,7 +144,7 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
   /**
-   * Indique si la ligne lue répond au critère de lecture. C'est à dire s'il les
+   * Indique si la ligne lue rÃ©pond au critÃ¨re de lecture. C'est Ã  dire s'il les
    * tag <key value="CU1" startposition="0" size="3"/>
    * 
    * @param ligne
@@ -173,11 +173,11 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
   /**
-   * Execute l'ensemble des actions d'insertion, de mise à jour, de suppression,
-   * les actions du trigger en fonction des valeurs du fichier de paramètrage.
+   * Execute l'ensemble des actions d'insertion, de mise Ã  jour, de suppression,
+   * les actions du trigger en fonction des valeurs du fichier de paramÃ¨trage.
    * 
    * @param nbLigne
-   *          Numéro de la ligne lue
+   *          NumÃ©ro de la ligne lue
    * @param ligne
    *          Valeur de la ligne lue
    */
@@ -249,7 +249,7 @@ public class LineAndRecordSet {
    * Netoyage des connections ouvertes.
    * 
    * @throws SQLException
-   *           Exception possible de la base de donnée.
+   *           Exception possible de la base de donnÃ©e.
    */
   public void release() throws java.sql.SQLException {
     // if ((reportTypeLine != null) && (reportTypeLine.getLevel() >=
@@ -300,7 +300,7 @@ public class LineAndRecordSet {
    * Retourne le nombre de ligne lue dans la base. Il faut que ce nombre
    * corresponde avec le nombre de ligne du fichier.
    * 
-   * @return L'entier retourné est supérieur ou égal à zéro.
+   * @return L'entier retournÃ© est supÃ©rieur ou Ã©gal Ã  zÃ©ro.
    */
   public int getCountSelect() {
     if (sql_select != null)
@@ -311,9 +311,9 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
   /**
-   * Retourne le nombre de ligne inseré dans la base.
+   * Retourne le nombre de ligne inserÃ© dans la base.
    * 
-   * @return L'entier retourné est supérieur ou égal à zéro.
+   * @return L'entier retournÃ© est supÃ©rieur ou Ã©gal Ã  zÃ©ro.
    */
   public int getCountInsert() {
     if (sql_insert != null)
@@ -324,9 +324,9 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
   /**
-   * Retourne le nombre de ligne mise à jour dans la base.
+   * Retourne le nombre de ligne mise Ã  jour dans la base.
    * 
-   * @return L'entier retourné est supérieur ou égal à zéro.
+   * @return L'entier retournÃ© est supÃ©rieur ou Ã©gal Ã  zÃ©ro.
    */
   public int getCountUpdate() {
     if (sql_update != null)
@@ -337,9 +337,9 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
   /**
-   * Retourne le nombre de ligne supprimé dans la base.
+   * Retourne le nombre de ligne supprimÃ© dans la base.
    * 
-   * @return L'entier retourné est supérieur ou égal à zéro.
+   * @return L'entier retournÃ© est supÃ©rieur ou Ã©gal Ã  zÃ©ro.
    */
   public int getCountDelete() {
     if (sql_delete != null)

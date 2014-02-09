@@ -1,9 +1,3 @@
-/*
- * Créé le 4 sept. 2003
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 package org.jobjects.dbimp.report;
 
 import java.io.BufferedWriter;
@@ -13,12 +7,14 @@ import java.util.HashSet;
 import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.trigger.Field;
 
-
 /**
- * @author MP
- *
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
+ * <p>Title: IHM</p>
+ * <p>Description: Importation dbImp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
+ * <p>Date :  4 sept. 2003</p>
+ * @author Mickael Patron
+ * @version 1.0
  */
 public class ReportField implements Reporting {
   private BufferedWriter bw= null;
@@ -48,7 +44,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * @return Le propriètaire de l'instance
+   * @return Le propriÃ©taire de l'instance
    */
   public ReportLine getReportLine() {
     return reportLine;
@@ -76,7 +72,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * Method |        Le champ a pour valeur {0} ne correspond pas à son type {1}
+   * Method |        Le champ a pour valeur {0} ne correspond pas Ã  son type {1}
    */
   public void ERROR_FIELD_TYPE() {
     internalBuffer.append(SystemUtils.LINE_SEPARATOR);
@@ -88,7 +84,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * Method ERROR_FIELD_NUMERIC=|        Le champ a pour valeur {0} n'est pas un numérique du type {1}.
+   * Method ERROR_FIELD_NUMERIC=|        Le champ a pour valeur {0} n'est pas un numÃ©rique du type {1}.
    */
   public void ERROR_FIELD_NUMERIC() {
     internalBuffer.append(SystemUtils.LINE_SEPARATOR);
@@ -100,7 +96,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * Method ERROR_FIELD_VALUE_IN_LIST=|        Le champ a pour valeur {0} et elle n appartient pas à sa liste de valeur.
+   * Method ERROR_FIELD_VALUE_IN_LIST=|        Le champ a pour valeur {0} et elle n appartient pas Ã  sa liste de valeur.
    */
   public void ERROR_FIELD_VALUE_IN_LIST() {
     internalBuffer.append(SystemUtils.LINE_SEPARATOR);
@@ -109,7 +105,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * Method ERROR_FIELD_MANDATORY=|     !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne rejectée.
+   * Method ERROR_FIELD_MANDATORY=|     !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne rejectÃ©e.
    * @return String
    */
   public String ERROR_FIELD_MANDATORY() {
@@ -125,7 +121,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * Method ERROR_FIELD_MANDATORY=|     !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne rejectée.
+   * Method ERROR_FIELD_MANDATORY=|     !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne rejectÃ©e.
    * @return String
    */
   public String ERROR_FIELD_MANDATORY(String messageToAdd) {
@@ -143,7 +139,7 @@ public class ReportField implements Reporting {
   }
 
   /**
-   * Method ERROR_FIELD_NOT_IN_FILE=|        Le champ est inaxessible. La ligne à une longueur trop court. 
+   * Method ERROR_FIELD_NOT_IN_FILE=|        Le champ est inaxessible. La ligne Ã  une longueur trop court. 
    */
   public String ERROR_FIELD_NOT_IN_FILE() {
     String message= RessourceReporting.getString("ERROR_FIELD_NOT_IN_FILE", new Object[] {

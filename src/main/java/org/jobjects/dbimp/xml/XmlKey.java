@@ -5,7 +5,7 @@ import org.jobjects.dbimp.trigger.Key;
 
 /**
  * Tag key.
- * Utilisé dans la lecture du fichier de paramètrage.
+ * UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * @author Mickael Patron
  * @version 2.0
  */

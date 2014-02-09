@@ -12,18 +12,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * <p>
- * Title: IHM
- * </p>
- * <p>
- * Description: Exportation dbExp
- * </p>
- * <p>
- * Copyright: Copyright (c) 2004
- * </p>
- * <p>
- * Company: JObjects
- * </p>
+ * <p>Title: IHM</p>
+ * <p>Description: Exportation dbExp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
  * 
  * @author Mickael Patron
  * @version 1.0
@@ -399,7 +391,7 @@ public class SqlTypesEnum implements Serializable, Comparable<SqlTypesEnum> {
   // ----------------------------------------------------------------------------------------------------
 
   /**
-   * @return la chaine du type pour le paramètrage xml.
+   * @return la chaine du type pour le paramÃ¨trage xml.
    */
   public String getXmlType() {
     return xmlType;

@@ -23,7 +23,7 @@ import org.jobjects.dbimp.xml.XmlField;
 
 
 /**
- * Class d'utilitaire pour les class herités.
+ * Class d'utilitaire pour les class heritÃ©s.
  * 
  * @author Mickael Patron
  * 
@@ -58,7 +58,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
     sql = createSQL();
     log.debug("Bufferisation : " + sql);
     if (StringUtils.isEmpty(sql)) {
-      log.fatal("La requete, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR
+      log.fatal("La requÃªte, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR
           + xmlline.toString());
     }
     if (cached) {
@@ -67,7 +67,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
   }
 
   /**
-   * @return La chaine sql crée spécialisalement pour le traitement.
+   * @return La chaine sql crÃ©e spÃ©cialisalement pour le traitement.
    * @throws SQLException
    */
   public abstract String createSQL() throws SQLException;
@@ -221,7 +221,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
   }
 
   /**
-   * @return Es-ce les curseur sont cachés ? Demande un nombre important de
+   * @return Es-ce les curseur sont cachÃ©s ? Demande un nombre important de
    *         curseur.
    */
   public boolean isCached() {

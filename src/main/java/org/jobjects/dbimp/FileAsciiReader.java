@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
  * Fichier :
  * Creer le : 14 oct. 2004 15:59:49
  * 
- * @author Mickaël Patron
+ * @author MickaÃ«l Patron
  * 
  */
 public class FileAsciiReader {

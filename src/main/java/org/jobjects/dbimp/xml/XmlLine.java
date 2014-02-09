@@ -18,7 +18,7 @@ import org.jobjects.dbimp.trigger.Trigger;
 
 /**
  * Tag line.
- * Utilisé dans la lecture du fichier de paramètrage.
+ * UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * @author Mickael Patron
  * @version 2.0
  */
@@ -65,12 +65,12 @@ public class XmlLine implements Line {
   }
 
   /**
-   * Nom du type de ligne, il doit être unique.
+   * Nom du type de ligne, il doit Ãªtre unique.
    */
   private String name= null;
 
   /**
-   * Nom de la table de la base de donnée.
+   * Nom de la table de la base de donnÃ©e.
    */
   private String tableName= null;
 
@@ -80,12 +80,12 @@ public class XmlLine implements Line {
   private LineActionTypeEnum action= null;
 
   /**
-   * Instance du trigger affecté au type de ligne.
+   * Instance du trigger affectÃ© au type de ligne.
    */
   private Trigger trigger= null;
 
   /**
-   * Liste des  déclancheurs.
+   * Liste des  dÃ©clancheurs.
    */
   private Collection<Key> keys= new LinkedList<Key>();
 
@@ -104,11 +104,11 @@ public class XmlLine implements Line {
 
   /**
    * Method loadFields. Chargement de l'attribut buffer de tout les champs pour la ligne en cours.
-   * Si des erreurs sont reperés, elles seront enregistrés dans reporting.
+   * Si des erreurs sont reperÃ©s, elles seront enregistrÃ©s dans reporting.
    * @param connection
    * @param ligne Valeur de la ligne en cours de lecture.
    * @param reporting
-   * @return Retourne faux si une erreur a été trouvé. Les problèmes de format, de source de donnée, ... seront enregistrés dans
+   * @return Retourne faux si une erreur a Ã©tÃ© trouvÃ©. Les problÃ¨mes de format, de source de donnÃ©e, ... seront enregistrÃ©s dans
    * 'reporting'.
    * @see XmlField#loadBuffer(Connection , String , ReportField )
    */

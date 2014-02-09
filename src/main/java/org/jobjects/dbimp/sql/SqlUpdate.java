@@ -17,14 +17,14 @@ import org.jobjects.dbimp.xml.XmlField;
 
 
 /**
- * Class permettant de modifier une donnée qui est présente dans la base. 
- * Créer le 24 janv. 2003.
- * @author Mickaël Patron
+ * Class permettant de modifier une donnÃ©e qui est prÃ©sente dans la base. 
+ * CrÃ©er le 24 janv. 2003.
+ * @author MickaÃ«l Patron
  */
 public class SqlUpdate extends SqlStatement {
 
-  //mettre static car log doit être construit avant le constructeur pour qu'il soit non null pour createSQL();
-  //qui est appellé par le constructeur SqlStatement. 
+  //mettre static car log doit Ãªtre construit avant le constructeur pour qu'il soit non null pour createSQL();
+  //qui est appellÃ© par le constructeur SqlStatement. 
   private static Log log= LogFactory.getLog(SqlUpdate.class);
 
   private int countUpdate= 0;
@@ -32,7 +32,7 @@ public class SqlUpdate extends SqlStatement {
 
   /**
    * Method SqlUpdate.
-   * @param connection de la base de donnée.
+   * @param connection de la base de donnÃ©e.
    * @param xmlline contient le liste des champs.
    * @param reportTypeLine est pointeur sur le Rapport.
    * @throws SQLException
@@ -167,7 +167,7 @@ public class SqlUpdate extends SqlStatement {
         }
         if (flag) {
           returnValue= pstmt.executeUpdate();
-          log.debug("Mise à jour effectué : " + getSql());
+          log.debug("Mise Ã  jour effectuÃ© : " + getSql());
           if (getXmlline().getTrigger() != null) {
             getXmlline().getTrigger().afterUpdate(
               getConnection(),

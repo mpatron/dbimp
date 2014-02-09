@@ -14,9 +14,9 @@ import org.jobjects.dbimp.xml.XmlField;
 
 
 /**
- * Class permettant d'insérer une donnée dans la base. Créer le 24 janv. 2003.
+ * Class permettant d'insÃ©rer une donnÃ©e dans la base. CrÃ©er le 24 janv. 2003.
  * 
- * @author Mickaël Patron
+ * @author MickaÃ«l Patron
  */
 public class SqlInsert extends SqlStatement {
 

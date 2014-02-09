@@ -4,7 +4,7 @@ import org.jobjects.dbimp.trigger.FieldTypeEnum;
 
 
 /**
- * Tag query-param. Utilisé dans la lecture du fichier de paramètrage.
+ * Tag query-param. UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * 
  * @author Mickael Patron
  * @version 2.0

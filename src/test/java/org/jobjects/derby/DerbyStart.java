@@ -36,7 +36,7 @@ public class DerbyStart {
 
       conn.close();
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e);
+      LOGGER.log(Level.SEVERE, "Erreur non prÃ©vu : ", e);
     }
   }
 

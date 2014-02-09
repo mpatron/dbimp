@@ -14,10 +14,10 @@ import org.jobjects.dbimp.xml.XmlField;
 
 
 /**
- * Class permettant de supprimer une donnée dans la base. Créer le 24 janv.
+ * Class permettant de supprimer une donnÃ©e dans la base. CrÃ©er le 24 janv.
  * 2003.
  * 
- * @author Mickaël Patron
+ * @author MickaÃ«l Patron
  */
 public class SqlDelete extends SqlStatement {
 
@@ -119,7 +119,7 @@ public class SqlDelete extends SqlStatement {
 
 				if (flag) {
 					returnValue = pstmt.executeUpdate();
-					log.finest("Suppresion effectué : " + getSql());
+					log.finest("Suppresion effectuÃ© : " + getSql());
 					if (getXmlline().getTrigger() != null) {
 						getXmlline().getTrigger().afterDelete(getConnection(),
 								nbLigne,

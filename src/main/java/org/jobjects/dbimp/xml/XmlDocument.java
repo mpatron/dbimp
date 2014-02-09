@@ -7,7 +7,7 @@ import org.jobjects.dbimp.trigger.Line;
 
 /**
  * Tag document.
- * Utilisé dans la lecture du fichier de paramètrage.
+ * UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * @author Mickael Patron
  * @version 2.0
  */

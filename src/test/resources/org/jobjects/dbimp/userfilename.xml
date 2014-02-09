@@ -38,7 +38,7 @@
   value CDATA #REQUIRED
 >
 
-<!-- Requete -->
+<!-- requête -->
 <!ELEMENT query (query-param*)>
 <!ATTLIST query
   sql CDATA #REQUIRED
@@ -63,7 +63,7 @@
 <!ELEMENT datetime EMPTY>
 <!ATTLIST datetime dateformat CDATA #REQUIRED>
 
-<!-- Requete -->
+<!-- requête -->
 
 <!ELEMENT check_in EMPTY>
 <!ATTLIST check_in

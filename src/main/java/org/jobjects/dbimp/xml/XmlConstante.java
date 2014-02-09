@@ -2,12 +2,12 @@ package org.jobjects.dbimp.xml;
 
 /**
  * Tag constante.
- * Utilisé dans la lecture du fichier de paramètrage.
+ * UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * @author Mickael Patron
  * @version 2.0
  */
 public class XmlConstante {
-  /** Valeur de la constante du paramètrage
+  /** Valeur de la constante du paramÃ¨trage
    * @see XmlField
    */
   private String value = null;

@@ -68,7 +68,7 @@ public class CreateSchema {
 				tableNames.add(tables.getString("TABLE_NAME").toLowerCase());
 			}
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e.getMessage());
+			LOGGER.log(Level.SEVERE, "Erreur non prÃ©vu : ", e.getMessage());
 		}
 
 	}

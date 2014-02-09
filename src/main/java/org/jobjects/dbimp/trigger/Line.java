@@ -12,7 +12,7 @@ import org.jobjects.dbimp.tools.CollectionMap;
 
 /**
  * Tag line.
- * Utilisé dans la lecture du fichier de paramètrage.
+ * UtilisÃ© dans la lecture du fichier de paramÃ©trage.
  * @author Mickael Patron
  * @version 2.0
  */
@@ -24,7 +24,7 @@ public interface Line {
 	 */
 	public String getName();
   /**
-   * Retourne le nom de la table de la base de donnée.
+   * Retourne le nom de la table de la base de donnÃ©e.
 	 * @return String
 	 */
 	public String getTableName();

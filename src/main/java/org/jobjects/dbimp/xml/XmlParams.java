@@ -19,7 +19,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
- * Utilisé dans la lecture du fichier de paramètrage.
+ * UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * 
  * @author Mickael Patron
  * @version 2.0
@@ -635,13 +635,12 @@ public class XmlParams extends DefaultHandler {
           message += SystemUtils.LINE_SEPARATOR + "    attr=(" + attrs.getQName(i) + ", " + attrs.getValue(i) + ")";
         }
         if(attrs.getLength()==0) {
-          message += " aucun élément.";
+          message += " aucun Ã©lÃ©ment.";
         }
       } else {
         message += " null";
       }
       log.log(Level.SEVERE,message, t);
-      log.log(Level.SEVERE,"Sortie de programme provoqué dû à l'erreur précedante.");
     }
     level++;
   }

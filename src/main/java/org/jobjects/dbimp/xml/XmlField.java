@@ -22,7 +22,7 @@ import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
 
 /**
- * Tag field. Utilisé dans la lecture du fichier de paramètrage.
+ * Tag field. UtilisÃ© dans la lecture du fichier de paramÃ¨trage.
  * 
  * @author Mickael Patron
  * @version 2.0
@@ -49,13 +49,13 @@ public class XmlField implements Field, Comparable<XmlField> {
   private String name = null;
 
   /**
-   * Une erreur doit être signalé si la valeur est null. Impose que
+   * Une erreur doit Ãªtre signalÃ© si la valeur est null. Impose que
    * nullable="false"
    */
   private boolean nullableError = true;
 
   /**
-   * Type de la donnée.
+   * Type de la donnÃ©e.
    * 
    * @see FieldTypeEnum#toInt(java.lang.String)
    * @see FieldTypeEnum#toString(int)
@@ -65,18 +65,18 @@ public class XmlField implements Field, Comparable<XmlField> {
   private String dateFormat = null;
 
   /**
-   * Coéficient de multiplication. Utilisé pour multiplié la valeur sielle est
+   * CoÃ©ficient de multiplication. UtilisÃ© pour multipliÃ© la valeur sielle est
    * de type integer|long|float|double.
    */
   private double coefficient = 1;
 
   /**
-   * Si la valeur ne peut être null alors nullable est false.
+   * Si la valeur ne peut Ãªtre null alors nullable est false.
    */
   private boolean nullable = true;
 
   /**
-   * Valeur brut du text qui provient de la source de donnée
+   * Valeur brut du text qui provient de la source de donnÃ©e
    * (position|constante|query)
    */
   private String buffer = null;
@@ -87,14 +87,14 @@ public class XmlField implements Field, Comparable<XmlField> {
   private Collection<String> checkIn = null;
 
   /**
-   * Requête permettant de recupérer la liste de valeur possible.
+   * requÃªte permettant de recupÃ©rer la liste de valeur possible.
    */
   private String checkInSql = null;
 
   /**
-   * Determine si le champ est utilisé dans le requete. Valeur par default est
+   * Determine si le champ est UtilisÃ© dans le requÃªte. Valeur par default est
    * true. Cet indicateur permet d'utiliser des champs dans les triggers qui
-   * n'appartiennent à la table.
+   * n'appartiennent Ã  la table.
    */
   private boolean isUse = true;
 
@@ -109,7 +109,7 @@ public class XmlField implements Field, Comparable<XmlField> {
   private Logger log = Logger.getLogger(getClass().getName());
 
   /**
-   * Method getDiscriminator. Distingue le type de la source de donnée.
+   * Method getDiscriminator. Distingue le type de la source de donnÃ©e.
    * 
    * @return int = [ POSITION | CONSTANTE | QUERY ]
    */
@@ -176,7 +176,7 @@ public class XmlField implements Field, Comparable<XmlField> {
   // ---------------------------------------------------------------------------
 
   /**
-   * Method getQuery. Retourne la requête source de donnée du champ.
+   * Method getQuery. Retourne la requÃªte source de donnÃ©e du champ.
    * 
    * @return XmlQuery
    * @throws Exception
@@ -191,7 +191,7 @@ public class XmlField implements Field, Comparable<XmlField> {
   // ---------------------------------------------------------------------------
 
   /**
-   * Method setQuery. Affecte une requête source de donnée au champ.
+   * Method setQuery. Affecte une requÃªte source de donnÃ©e au champ.
    * 
    * @param query
    */
@@ -262,15 +262,15 @@ public class XmlField implements Field, Comparable<XmlField> {
   // ---------------------------------------------------------------------------
 
   /**
-   * Method loadBuffer. Charge l'attribut 'buffer' à partir du contenu du
-   * fichier. Les erreurs seront envoyé sur 'reporting'.
+   * Method loadBuffer. Charge l'attribut 'buffer' Ã  partir du contenu du
+   * fichier. Les erreurs seront envoyÃ© sur 'reporting'.
    * 
    * @param connection
    * @param ligne
    *          Valeur de la ligne en cours de lecture.
    * @param reportField
-   * @return Retourne faux si une erreur a été trouvé. Les problèmes de format,
-   *         de source de donnée, ... seront enregistrés dans 'reporting'.
+   * @return Retourne faux si une erreur a Ã©tÃ© trouvÃ©. Les problÃ¨mes de format,
+   *         de source de donnÃ©e, ... seront enregistrÃ©s dans 'reporting'.
    */
   public boolean loadBuffer(Connection connection, String ligne, ReportField reportField) {
     boolean returnValue = true;
@@ -290,7 +290,7 @@ public class XmlField implements Field, Comparable<XmlField> {
           log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
           log.log(Level.SEVERE, reportField.ERROR_FIELD_NOT_IN_FILE());
           /*
-           * Si on veut arrêter l'importation de la ligne si les champs est
+           * Si on veut arrÃªter l'importation de la ligne si les champs est
            * inaxcessible alors il faut decommenter : 'returnValue= false;'
            */
           // returnValue= false;
@@ -320,11 +320,11 @@ public class XmlField implements Field, Comparable<XmlField> {
   // ---------------------------------------------------------------------------
 
   /**
-   * Method isBufferValid. Validation de l'intégrité de la valeur.
+   * Method isBufferValid. Validation de l'intÃ©gritÃ© de la valeur.
    * 
    * @param reportField
-   * @return boolean Retourne faux si une erreur a été trouvé. Les problèmes de
-   *         format, de source de donnée, ... seront enregistrés dans
+   * @return boolean Retourne faux si une erreur a Ã©tÃ© trouvÃ©. Les problÃ¨mes de
+   *         format, de source de donnÃ©e, ... seront enregistrÃ©s dans
    *         'reporting'.
    */
   public boolean isBufferValid(ReportField reportField) {
@@ -641,7 +641,7 @@ public class XmlField implements Field, Comparable<XmlField> {
             switch (queryparam.discriminator()) {
             case XmlField.CONSTANTE:
               s_value = queryparam.getConstante().getValue();
-              message_params.append("|        " + i + ") Paramètre Constante Valeur=" + s_value);
+              message_params.append("|        " + i + ") ParamÃªtre Constante Valeur=" + s_value);
               break;
 
             case XmlField.POSITION:

@@ -3,17 +3,18 @@ package org.jobjects.dbimp.sql;
 import java.sql.SQLException;
 
 /**
- * @author user
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
+ * <p>Title: IHM</p>
+ * <p>Description: Importation dbImp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
+ * <p>Date :  5 sept. 2003</p>
+ * @author Mickael Patron
+ * @version 1.0
  */
 public interface SqlAction {
 
-  /** Execute l'action Selection, insertion, destruction, mise à jour..
-   * @param nbLigne Numéro de ligne
+  /** Execute l'action Selection, insertion, destruction, mise Ã  jour..
+   * @param nbLigne NumÃ©ro de ligne
    */
   public int execute(int nbLigne);
 
@@ -21,8 +22,8 @@ public interface SqlAction {
    */
   public void close() throws SQLException;
 
-  /** Retourne le nombre de ligne selectionné,inseré,updaté,deleté dans la base.
-   * @return L'entier retourné est supérieur ou égal à zéro.
+  /** Retourne le nombre de ligne selectionnÃ©,inserÃ©,updatÃ©,deletÃ© dans la base.
+   * @return L'entier retournÃ© est supÃ©rieur ou Ã©gal Ã  zÃ©ro.
    */
   public int getCount();
 }

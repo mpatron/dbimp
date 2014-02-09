@@ -17,18 +17,10 @@ import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.FileAsciiWriter;
 
 /**
- * <p>
- * Title: IHM
- * </p>
- * <p>
- * Description: Exportation dbExp
- * </p>
- * <p>
- * Copyright: Copyright (c) 2004
- * </p>
- * <p>
- * Company: JObjects
- * </p>
+ * <p>Title: IHM</p>
+ * <p>Description: Exportation dbExp</p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: JObjects</p>
  * 
  * @author Mickael Patron
  * @version 1.0
@@ -149,7 +141,7 @@ public class ExpTable {
   }
 
   /**
-   * Renvoie l'entier passée en paramètre (sous forme de chaine) avec les
+   * Renvoie l'entier passÃ©e en paramÃ¨tre (sous forme de chaine) avec les
    * espaces manquants pour atteindre la longueur <i>length</i>.<br>
    */
   public String formatWithLength(Object buff, int length) {
@@ -189,7 +181,7 @@ public class ExpTable {
   // -------------------------------------------------------------------------
 
   /**
-   * Renvoie la date passée en paramètre (sous forme de chaine formatée selon le
+   * Renvoie la date passÃ©e en paramÃ¨tre (sous forme de chaine formatÃ©e selon le
    * format <i>format</i><br>
    * avec les espaces manquants pour atteindre la longueur <i>length</i>.<br>
    */

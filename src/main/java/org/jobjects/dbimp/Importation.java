@@ -73,6 +73,10 @@ public class Importation {
    *           Exception générale.
    */
   public static void main(String[] args) throws Exception {
+    System.exit(run(args));
+  }
+  
+  public static int run(String[] args) throws Exception {
     int returnValue = 0;
     long t_start = System.currentTimeMillis();
     String url = null;
@@ -187,7 +191,7 @@ public class Importation {
             .getOptionValue("e")))) {
           System.err.println("Error : encode=" + line.getOptionValue("e"));
           formatter.printHelp(cmdLineSyntax, header, options, footer);
-          System.exit(1);
+          return 1;
         } else {
           ascfile_encode = line.getOptionValue("e");
         }
@@ -203,7 +207,7 @@ public class Importation {
       if (!(line.hasOption("f") && line.hasOption("x") && line.hasOption("u")
           && line.hasOption("U") && line.hasOption("P"))) {
         formatter.printHelp(cmdLineSyntax, header, options, footer);
-        System.exit(1);
+        return 1;
       }
 
       if (!StringUtils.isEmpty(line.getOptionValue("s"))) {
@@ -220,7 +224,7 @@ public class Importation {
           || (pe instanceof MissingArgumentException)) {
         System.err.println("Parametres manquant : " + pe.getMessage());
       }
-      System.exit(1);
+      return 1;
     }
 
     /*
@@ -255,7 +259,7 @@ public class Importation {
     System.out.println("Duration : "
         + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS")
         + ".");
-    System.exit(returnValue);
+    return returnValue;
   }
 
   // ---------------------------------------------------------------------------

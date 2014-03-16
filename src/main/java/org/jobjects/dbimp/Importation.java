@@ -149,30 +149,17 @@ public class Importation {
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option(
-        "c",
-        "cached",
-        false,
-        "Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
+    option = new Option("c","cached",false,"Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option(
-        "s",
-        "schema",
-        false,
-        "Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
+    option = new Option("s","schema",true,"Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
     option.setRequired(false);
+    option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("v", "verbose", false,
-        "Encheri le rapport des informations de mise à jour.");
-    option.setRequired(false);
-    options.addOption(option);
-
-    option = new Option("v", "verbose", false,
-        "Encheri le rapport des informations de mise à jour.");
+    option = new Option("v", "verbose", false,"Encheri le rapport des informations de mise à jour.");
     option.setRequired(false);
     options.addOption(option);
 

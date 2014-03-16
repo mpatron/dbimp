@@ -11,7 +11,8 @@ public enum SQLDatatbaseType {
   UNKNOW_DATABASE("sun.jdbc.odbc.JdbcOdbcDriver"),
   ORACLE("oracle.jdbc.OracleDriver"),
   SQLSERVER("com.microsoft.jdbc.sqlserver.SQLServerDriver"),
-  DB2AS400("com.ibm.as400.access.AS400JDBCDriver");
+  DB2AS400("com.ibm.as400.access.AS400JDBCDriver"),
+  DERBY("org.apache.derby.jdbc.EmbeddedDriver");
 
   private static final long serialVersionUID = 1L;
 
@@ -39,6 +40,11 @@ public enum SQLDatatbaseType {
       // jdbc:as400://<server>/<base>
       returnValue = DB2AS400;
     }
+    if (urlName.startsWith(StringUtils.lowerCase("jdbc:derby"), 0)) {
+      // jdbc:derby:memory:<base>
+      returnValue = DERBY;
+    }
+    
     return returnValue;
   }
 

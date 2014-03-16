@@ -252,6 +252,9 @@ public class Importation {
       message += SystemUtils.LINE_SEPARATOR + "  - url=" + url;
       message += SystemUtils.LINE_SEPARATOR + "  - user=" + user;
       message += SystemUtils.LINE_SEPARATOR + "  - password=" + password;
+      message += SystemUtils.LINE_SEPARATOR + "  - filenameReporte="+ filenameReporte;
+      message += SystemUtils.LINE_SEPARATOR + "  - extnameReporte="+ extnameReporte;
+      message += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte="+ dirnameReporte;
       log.log(Level.SEVERE, message, e);
       returnValue = 1;
     }

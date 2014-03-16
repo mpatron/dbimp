@@ -6,9 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
@@ -25,7 +24,7 @@ import org.jobjects.dbimp.xml.XmlField;
  * @version 1.0
  */
 public class SqlUpdateBlob extends SqlStatement {
-  private Log log = LogFactory.getLog(getClass());
+  private static Logger log = Logger.getLogger(SqlUpdateBlob.class.getName());
 
   private int count = 0;
 
@@ -73,7 +72,7 @@ public class SqlUpdateBlob extends SqlStatement {
     }
     returnValue += (" from " + getSQLSchemaName() + getXmlline().getTableName());
     if (first) {
-      log.error("Error no field with type BLOB.");
+      log.severe("Error no field with type BLOB.");
       return null;
     }
     first = true;
@@ -103,7 +102,7 @@ public class SqlUpdateBlob extends SqlStatement {
    */
   public int execute(int nbLigne) {
     HashMap<String, String> returnValue = null;
-    log.debug(getSql());
+    log.fine(getSql());
     try {
       boolean autoCommit = getConnection().getAutoCommit();
       getConnection().setAutoCommit(false);

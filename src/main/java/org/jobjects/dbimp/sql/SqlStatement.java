@@ -10,12 +10,11 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Line;
@@ -30,7 +29,7 @@ import org.jobjects.dbimp.xml.XmlField;
  */
 public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
-  private Log               log            = LogFactory.getLog(getClass());
+  private static Logger log = Logger.getLogger(SqlStatement.class.getName());
 
   private Line           xmlline        = null;
 
@@ -56,9 +55,9 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
     primaries = getPrimaryColumns(xmlline.getTableName());
     sql = createSQL();
-    log.debug("Bufferisation : " + sql);
+    log.fine("Bufferisation : " + sql);
     if (StringUtils.isEmpty(sql)) {
-      log.fatal("La requête, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR
+      log.severe("La requête, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR
           + xmlline.toString());
     }
     if (cached) {
@@ -96,7 +95,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
           }
           String message = "Line (" + reporting.getNumberLine() + ") " + xmlfield.getName() + " has a bad value. ";
           message += SqlUtils.showLine(reporting.getNumberLine(), xmlline);
-          log.error(message);
+          log.severe(message);
 
           returnValue = false;
         }
@@ -205,7 +204,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
         throw new SQLException(field.getName() + " = " + field.getBuffer() + " type de champ du parametrage inconnu.");
       }
     } catch (Exception pe) {
-      log.fatal(ExceptionUtils.getStackTrace(pe));
+      log.severe(ExceptionUtils.getStackTrace(pe));
       // new SQLException("String message", pe);
       throw new SQLException(field.getName() + " = '" + field.getBuffer() + "' " + pe.getMessage());
     }

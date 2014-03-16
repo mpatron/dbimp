@@ -10,9 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jobjects.dbimp.MathUtils;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
@@ -27,7 +27,7 @@ import org.jobjects.dbimp.xml.XmlField;
  */
 public class SqlSelect extends SqlStatement {
 
-  private Log log = LogFactory.getLog(getClass());
+  private static Logger log = Logger.getLogger(SqlSelect.class.getName());
 
   private int countSelect = 0;
 
@@ -44,6 +44,7 @@ public class SqlSelect extends SqlStatement {
   public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
       throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
+    log.info("schemaName="+schemaName);
   }
 
   // ---------------------------------------------------------------------------
@@ -74,7 +75,7 @@ public class SqlSelect extends SqlStatement {
     returnValue += (" from " + getSQLSchemaName() + getXmlline().getTableName());
 
     if (first) {
-      log.error("Error no field");
+      log.severe("Error no field");
 
       return null;
     }
@@ -110,7 +111,7 @@ public class SqlSelect extends SqlStatement {
    */
   public int execute(int nbLigne) {
     Map<String, Object> returnValue = null;
-    log.debug(getSql());
+    log.fine(getSql());
 
     PreparedStatement pstmt = null;
     try {
@@ -327,17 +328,17 @@ public class SqlSelect extends SqlStatement {
           }
         }
       } catch (NumberFormatException nfe) {
-        log.error("Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
+        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
             + field.getType().getTypeString(), nfe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       } catch (ParseException pe) {
-        log.error("Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
+        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
             + field.getType().getTypeString(), pe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       }
 
       if ((returnValue != 0) && flag) {
-        log.debug("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer()
+        log.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer()
             + " in database=" + value);
         if (value == null) {
           value = "";

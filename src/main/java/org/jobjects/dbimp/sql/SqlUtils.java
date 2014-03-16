@@ -2,9 +2,9 @@ package org.jobjects.dbimp.sql;
 
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
@@ -23,7 +23,7 @@ import org.jobjects.dbimp.xml.XmlField;
  */
 public class SqlUtils {
 
-  private static Log log= LogFactory.getLog(SqlUtils.class);
+  private static Logger log = Logger.getLogger(SqlUtils.class.getName());
 
   public static void AfficheSQLException(Line xmlline, String message, SQLException ex, ReportLine reporting) {
     //ORA-02290: violation de contraintes
@@ -32,7 +32,7 @@ public class SqlUtils {
     String chaine= xmlline.getName() + " : " + "Ligne(" + reporting.getNumberLine() + ") : ";
     chaine += (ex.getMessage() + "." + System.getProperty("line.separator"));
     chaine += showLine(reporting.getNumberLine(), xmlline);
-    log.error(message + System.getProperty("line.separator") + chaine, ex);
+    log.log(Level.SEVERE, message + System.getProperty("line.separator") + chaine, ex);
 
     reporting.ERROR_MESSAGE(xmlline.getName(), ex.getMessage());
     reporting.showLine();

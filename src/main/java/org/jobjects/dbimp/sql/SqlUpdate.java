@@ -4,10 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.report.RessourceReporting;
 import org.jobjects.dbimp.trigger.Field;
@@ -25,7 +24,7 @@ public class SqlUpdate extends SqlStatement {
 
   //mettre static car log doit être construit avant le constructeur pour qu'il soit non null pour createSQL();
   //qui est appellé par le constructeur SqlStatement. 
-  private static Log log= LogFactory.getLog(SqlUpdate.class);
+  private static Logger log = Logger.getLogger(SqlUpdate.class.getName());
 
   private int countUpdate= 0;
   //---------------------------------------------------------------------------
@@ -71,7 +70,7 @@ public class SqlUpdate extends SqlStatement {
 
     if (first) {
       String message= RessourceReporting.getString("ERROR_PARAMETRAGE", new Object[] { getXmlline().getName(), getXmlline().getTableName() });
-      log.error(message);
+      log.severe(message);
       return null;
     }
 
@@ -167,7 +166,7 @@ public class SqlUpdate extends SqlStatement {
         }
         if (flag) {
           returnValue= pstmt.executeUpdate();
-          log.debug("Mise à jour effectué : " + getSql());
+          log.fine("Mise à jour effectué : " + getSql());
           if (getXmlline().getTrigger() != null) {
             getXmlline().getTrigger().afterUpdate(
               getConnection(),

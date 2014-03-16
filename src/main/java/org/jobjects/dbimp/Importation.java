@@ -21,6 +21,8 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jobjects.dbimp.report.Report;
 import org.jobjects.dbimp.sql.SQLDatatbaseType;
@@ -246,16 +248,16 @@ public class Importation {
       connection.close();
       DriverManager.deregisterDriver(driver);
     } catch (Exception e) {
-      String message = new String();
-      message += SystemUtils.LINE_SEPARATOR + "  - driverClassName="
+      String messageErr = new String();
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - driverClassName="
           + driverClassName;
-      message += SystemUtils.LINE_SEPARATOR + "  - url=" + url;
-      message += SystemUtils.LINE_SEPARATOR + "  - user=" + user;
-      message += SystemUtils.LINE_SEPARATOR + "  - password=" + password;
-      message += SystemUtils.LINE_SEPARATOR + "  - filenameReporte="+ filenameReporte;
-      message += SystemUtils.LINE_SEPARATOR + "  - extnameReporte="+ extnameReporte;
-      message += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte="+ dirnameReporte;
-      log.log(Level.SEVERE, message, e);
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - url=" + url;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - user=" + user;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - password=" + password;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - filenameReporte="+ filenameReporte;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - extnameReporte="+ extnameReporte;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte="+ dirnameReporte;
+      log.log(Level.SEVERE, messageErr, e);
       returnValue = 1;
     }
     long t_end = System.currentTimeMillis();
@@ -295,6 +297,18 @@ public class Importation {
   public static void importFile(String fileSource, String fileSourceEncoding,
       String fileNameParameter, Connection conn, String schemaName,
       boolean cached, boolean verbose, String fileNameReport) {
+
+    String message="DBImp starting... "+SystemUtils.LINE_SEPARATOR;
+    message+="  - fileSource="+fileSource+SystemUtils.LINE_SEPARATOR;
+    message+="  - fileSourceEncoding="+fileSourceEncoding+SystemUtils.LINE_SEPARATOR;
+    message+="  - fileNameReport="+fileNameReport+SystemUtils.LINE_SEPARATOR;
+    message+="  - schemaName="+schemaName+SystemUtils.LINE_SEPARATOR;
+    message+="  - cached="+cached+SystemUtils.LINE_SEPARATOR;
+    message+="  - verbose="+verbose+SystemUtils.LINE_SEPARATOR;    
+    log.config(message);
+
+
+    
     FileAsciiWriter faw = null;
     long l_start = System.currentTimeMillis();
     long l_end = 0;

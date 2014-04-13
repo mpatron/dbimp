@@ -1,51 +1,51 @@
 <body>
 <p>
-Si le paramètre verbose est activé, les message de log sont communités sur la console. 
-Les messages de log sont toujours écrit dans le fichier importation.log. Ce fichier se trouve dans le répertoire temporaire du system.
+Si le paramÃ©tre verbose est activÃ©, les message de log sont communitÃ©s sur la console. 
+Les messages de log sont toujours Ã©crit dans le fichier importation.log. Ce fichier se trouve dans le rÃ©pertoire temporaire du system.
 Le niveau niveau de log est warning.
 </p>
 <p>
-  Le fichier de paramétrage contient toutes les informations pour l'importation. Le fichier est un fichier xml.<br>
-  La balise d'entré est <font color="#008080">&lt;document&gt;</font>. Elle contient un répétition de balise
+  Le fichier de paramÃ©trage contient toutes les informations pour l'importation. Le fichier est un fichier xml.<br>
+  La balise d'entrÃ© est <font color="#008080">&lt;document&gt;</font>. Elle contient un rÃ©pÃ©tition de balise
   <font color="#008080">&lt;line&gt;</font>. Ceux sont les balise <font color="#008080">&lt;line&gt;</font> qui permettent
-  de spécifié le nom de la table, les champs (leur taille, ...) et ainsi que la clef de déclenchement
+  de spÃ©cifiÃ© le nom de la table, les champs (leur taille, ...) et ainsi que la clef de dÃ©clenchement
   <font color="#008080">&lt;key&gt;</font>.<br>
-  La balise <font color="#008080">&lt;key&gt;</font>&nbsp; identifie la valeur de déclenchement , sa position et sa longueur
+  La balise <font color="#008080">&lt;key&gt;</font>&nbsp; identifie la valeur de dÃ©clenchement , sa position et sa longueur
   dans le fichier. Il peut y avoir plusieurs balises <font color="#008080">&lt;key&gt;</font>.</br>
   Les balises <font color="#008080">&lt;field&gt;</font> identifient les champs. Les champs peuvent prendre un de ces types:
   <font color="#008080">string, integer, long, float, double, datetime</font> .</br>
   La provenance du champs peut venir une des trois sources possibles : <font color="#008080">position, constante, query</font>.</br>
-  Si on fait le choix de <font color="#008080">position</font>  , la donnée viendra du fichier à la position
+  Si on fait le choix de <font color="#008080">position</font>  , la donnÃ©e viendra du fichier Ã© la position
   <font color="#008080">startposition</font> et de longueur <font color="#008080">size</font>.
-  <font color="#FF0000">Attention une chaîne de caractère commence à partir de 0.</font>
+  <font color="#FF0000">Attention une chaÃ©ne de caractÃ©re commence Ã© partir de 0.</font>
   Un champs de type date peut prende la valeur constante  <font color="#008080">sysdate</font>, et le moteur d'importation se chargera 
-  de même l'heure et date de la machine.<br/>
+  de mÃ©me l'heure et date de la machine.<br/>
   &lt;field fieldname="D_APPLICATION">&lt;datetime dateformat="yyyyMMdd"/>&lt;constante value=<font color="#008080">"sysdate"</font>/>&lt;/field>
 <ul>
   <li>
-    <font color="#008080">constante</font>, la donnée sera toujours la valeur spécifié dans <font color="#008080">value</font>.
+    <font color="#008080">constante</font>, la donnÃ©e sera toujours la valeur spÃ©cifiÃ© dans <font color="#008080">value</font>.
   </li>
   <li>
-    <font color="#008080">&lt;query></font>, la donnée viendra de la base de donnée. Il faut spécifié la requête
-    <font color="#008080">&lt;sql></font> et les paramètres si ils existent.
-    <font color="#008080">&lt;query-param></font> indique la liste des paramètres de la requête.
+    <font color="#008080">&lt;query></font>, la donnÃ©e viendra de la base de donnÃ©e. Il faut spÃ©cifiÃ© la requÃ©te
+    <font color="#008080">&lt;sql></font> et les paramÃ©tres si ils existent.
+    <font color="#008080">&lt;query-param></font> indique la liste des paramÃ©tres de la requÃ©te.
   </li>
 </ul>
 La structure du fichier xml est decrite par le <a href="../../../../../importation.dtd">dtd</a>.<br>
 Commentaire de quelques attributs : <br>
 <ul>
   <li>
-    <font color="#008080">nullable</font> indique si la donnée peut être null ou non.
+    <font color="#008080">nullable</font> indique si la donnÃ©e peut Ã©tre null ou non.
   </li>
   <li>
-    <font color="#008080">nullable_error</font> indique si la donnée qui pour valeur null renvoie une erreur dans le rapport ou non.
+    <font color="#008080">nullable_error</font> indique si la donnÃ©e qui pour valeur null renvoie une erreur dans le rapport ou non.
   </li>
   <li>
-    <font color="#008080">isuse</font> indique si la donnée doit être prise en compte dans les requêtes. Son utlisation se localise au Trigger. A pour valeur par defaut 'true'.
+    <font color="#008080">isuse</font> indique si la donnÃ©e doit Ã©tre prise en compte dans les requÃ©tes. Son utlisation se localise au Trigger. A pour valeur par defaut 'true'.
   </li>
   <li>
-    <font color="#008080">coefficient</font> est le facteur de la donnée. Utiliser pour le conversion de donnée.
-    Si la donnée vaut 2 et coefficient="5" alors il y a 10 dans la base.
+    <font color="#008080">coefficient</font> est le facteur de la donnÃ©e. Utiliser pour le conversion de donnÃ©e.
+    Si la donnÃ©e vaut 2 et coefficient="5" alors il y a 10 dans la base.
   </li>
 
   <li>
@@ -157,7 +157,7 @@ Commentaire de quelques attributs : <br>
 </ul>
 
 <HR>
-<p><u>Exemple de de paramétrage</u> :</p>
+<p><u>Exemple de de paramÃ©trage</u> :</p>
 
 
 <p>&lt;document description="NCDEPRD.PRD"></p>

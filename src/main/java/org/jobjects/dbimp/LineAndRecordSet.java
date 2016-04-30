@@ -64,6 +64,7 @@ public class LineAndRecordSet {
       this.InsertAndUpdate = xmlline.getAction();
     }
     this.reportTypeLine = reportTypeLine;
+    //for(Field field : xmlline.getFields()) {
     for (Iterator<Field> it = xmlline.getFields().iterator(); it.hasNext();) {
       XmlField field = (XmlField) it.next();
       if (!field.isUse())
@@ -153,8 +154,7 @@ public class LineAndRecordSet {
    */
   public boolean isActive(String ligne) {
     boolean returnValue = true;
-    for (Iterator<Key> it = xmlline.getKeys().iterator(); it.hasNext();) {
-      Key key = (Key) it.next();
+    for (Key key : xmlline.getKeys()) {
       if (key.getIsBlank() == null) {
         if ((key.getStartposition() > ligne.length()) || ((key.getStartposition() + key.getSize()) > ligne.length())) {
           returnValue &= false;

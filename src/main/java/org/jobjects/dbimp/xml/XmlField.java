@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -630,12 +629,9 @@ public class XmlField implements Field, Comparable<XmlField> {
 
         try {
           int i = 1;
-          Iterator<XmlQueryParam> e_query_params = this.getQuery().getQueryParams().iterator();
           StringBuffer message_params = new StringBuffer();
 
-          while (e_query_params.hasNext()) {
-            XmlQueryParam queryparam = (XmlQueryParam) e_query_params.next();
-
+          for (XmlQueryParam queryparam : this.getQuery().getQueryParams()) {
             String s_value = null;
 
             switch (queryparam.getDiscriminator()) {
@@ -657,6 +653,10 @@ public class XmlField implements Field, Comparable<XmlField> {
               message_params.append("|        " + i + ") Position=" + queryparam.getPosition().getStartposition() + " Size="
                   + queryparam.getPosition().getSize() + " Valeur=" + s_value);
               break;
+            case QUERY:
+              throw new IllegalArgumentException("Pas de type QUERY en sous requête.");
+            default:
+              throw new IllegalArgumentException("Seul les types CONSTANTE et POSITION en sous requête.");
             }
 
             boolean isNull = s_value == null ? true : s_value.trim().equals("");

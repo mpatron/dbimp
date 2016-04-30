@@ -17,6 +17,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.report.ReportTypeLine;
+import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.xml.XmlField;
 
@@ -85,7 +86,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
   // ---------------------------------------------------------------------------
 
-  protected boolean checkIn(Line xmlline, XmlField xmlfield, ReportLine reporting) {
+  protected boolean checkIn(Line xmlline, Field xmlfield, ReportLine reporting) {
     boolean returnValue = true;
     if (!(xmlfield.isNullable() && xmlfield.isEmptyOrNullBuffer())) {
       if (xmlfield.getCheckIn() != null) {
@@ -106,7 +107,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
   // ---------------------------------------------------------------------------
 
-  protected void setNull(PreparedStatement pstmt, int i, XmlField field) throws SQLException {
+  protected void setNull(PreparedStatement pstmt, int i, Field field) throws SQLException {
     switch (field.getType()) {
     case STRING:
       pstmt.setNull(i, java.sql.Types.VARCHAR);
@@ -145,7 +146,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
   // ---------------------------------------------------------------------------
 
-  protected void setAll(PreparedStatement pstmt, int i, XmlField field) throws SQLException {
+  protected void setAll(PreparedStatement pstmt, int i, Field field) throws SQLException {
     double d;
 
     try {

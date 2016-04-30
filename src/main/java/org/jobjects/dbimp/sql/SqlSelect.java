@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +16,6 @@ import org.jobjects.dbimp.MathUtils;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
-import org.jobjects.dbimp.xml.XmlField;
 
 /**
  * Class permettant de vérifier si la donnée est présente dans la base. Créer le
@@ -41,10 +39,9 @@ public class SqlSelect extends SqlStatement {
    * @param reportTypeLine
    * @throws SQLException
    */
-  public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
-      throws SQLException {
+  public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
-    log.info("schemaName="+schemaName);
+    log.info("schemaName=" + schemaName);
   }
 
   // ---------------------------------------------------------------------------
@@ -59,8 +56,7 @@ public class SqlSelect extends SqlStatement {
 
     boolean first = true;
 
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
 
@@ -82,8 +78,7 @@ public class SqlSelect extends SqlStatement {
 
     first = true;
 
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
 
@@ -124,8 +119,7 @@ public class SqlSelect extends SqlStatement {
       try {
         int i = 1;
 
-        for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-          XmlField field = (XmlField) it.next();
+        for (Field field : getXmlline().getFields()) {
           if (!field.isUse())
             continue;
 
@@ -145,10 +139,7 @@ public class SqlSelect extends SqlStatement {
           if (rs.next()) {
             returnValue = new HashMap<String, Object>();
 
-            Iterator<Field> enu = getXmlline().getFields().iterator();
-
-            while (enu.hasNext()) {
-              XmlField field = (XmlField) enu.next();
+            for (Field field : getXmlline().getFields()) {
               if (!field.isUse())
                 continue;
 
@@ -246,8 +237,7 @@ public class SqlSelect extends SqlStatement {
     int returnValue = 0;
     boolean flag = true;
 
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
 
@@ -328,18 +318,15 @@ public class SqlSelect extends SqlStatement {
           }
         }
       } catch (NumberFormatException nfe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
-            + field.getType().getTypeString(), nfe);
+        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getType().getTypeString(), nfe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       } catch (ParseException pe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
-            + field.getType().getTypeString(), pe);
+        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getType().getTypeString(), pe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       }
 
       if ((returnValue != 0) && flag) {
-        log.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer()
-            + " in database=" + value);
+        log.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer() + " in database=" + value);
         if (value == null) {
           value = "";
         }
@@ -348,8 +335,7 @@ public class SqlSelect extends SqlStatement {
         // * dans le fichier de rapport, il ne faut pas executer cette commande.
         // */
         if (getReportTypeLine().getReporting().isVerbose()) {
-          getReportTypeLine().getReportLine().getReportField(field)
-              .INFO_FIELD_UPDATED_IN_DB(field.getBuffer(), value.toString());
+          getReportTypeLine().getReportLine().getReportField(field).INFO_FIELD_UPDATED_IN_DB(field.getBuffer(), value.toString());
         }
 
         flag = false;

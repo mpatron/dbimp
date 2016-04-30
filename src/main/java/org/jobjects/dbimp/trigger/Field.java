@@ -6,6 +6,11 @@
  */
 package org.jobjects.dbimp.trigger;
 
+import java.util.Collection;
+
+import org.jobjects.dbimp.xml.XmlConstante;
+import org.jobjects.dbimp.xml.XmlPosition;
+import org.jobjects.dbimp.xml.XmlQuery;
 
 /**
  * Tag field.
@@ -14,21 +19,6 @@ package org.jobjects.dbimp.trigger;
  * @version 2.0
  */
 public interface Field {
-
-  /**
-   * Constante : Champ de type position.
-   */
-  public final static int POSITION= 0;
-  
-  /**
-   * Constante : Champ de type constante.
-   */
-  public final static int CONSTANTE= 1;
-  
-  /**
-   * Constante : Champ de type query.
-   */
-  public final static int QUERY= 3;
 
   /**
    * Retourne le nom du champs.
@@ -59,7 +49,7 @@ public interface Field {
    * Retourne le type du champs. Valeur posible : POSITION, CONSTANTE, QUERY.
 	 * @return int
 	 */
-	public FieldTypeEnum getType();
+	public FieldFormatEnum getType();
   
   /**
    * Indique si le champs peut être null.
@@ -185,4 +175,45 @@ public interface Field {
 	 * @return boolean
 	 */
 	public boolean isUse();
+	
+  /**
+   * Method getDiscriminator. Distingue le type de la source de donnée.
+   * 
+   * @return int = [ POSITION | CONSTANTE | QUERY ]
+   */
+  public FieldTypeEnum getDiscriminator();
+	
+  /**
+   * Method getConstante. Retourne la constante du champ.
+   * 
+   * @return XmlConstante
+   * @throws Exception
+   */
+  public XmlConstante getConstante() throws Exception;
+  
+  /**
+   * Method getPosition. Retourne la position du champ dans le fichier.
+   * 
+   * @return XmlPosition
+   * @throws Exception
+   */
+  public XmlPosition getPosition() throws Exception;
+  
+  /**
+   * Method getQuery. Retourne la requête source de donnée du champ.
+   * 
+   * @return XmlQuery
+   * @throws Exception
+   */
+  public XmlQuery getQuery() throws Exception;
+  
+  /**
+   * @return Returns the checkIn.
+   */
+  public Collection<String> getCheckIn();
+  
+  /**
+   * @return boolean
+   */
+  public boolean isNullableError();
 }

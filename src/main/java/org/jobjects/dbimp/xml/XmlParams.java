@@ -9,7 +9,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
 import org.jobjects.dbimp.trigger.Trigger;
 import org.xml.sax.Attributes;
@@ -196,7 +196,7 @@ public class XmlParams extends DefaultHandler {
         if (attrs != null) {
           int len = attrs.getLength();
           String name = null;
-          FieldTypeEnum type = FieldTypeEnum.STRING;
+          FieldFormatEnum type = FieldFormatEnum.STRING;
           boolean nullable = false;
           boolean nullableError = true;
           boolean isUse = true;
@@ -207,7 +207,7 @@ public class XmlParams extends DefaultHandler {
               }
 
               if ("type".equals(attrs.getQName(i))) {
-                type = FieldTypeEnum.valueOfByType(attrs.getValue(i));
+                type = FieldFormatEnum.valueOfByType(attrs.getValue(i));
               }
 
               if ("nullable".equals(attrs.getQName(i))) {
@@ -237,13 +237,13 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.string".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.STRING);
+        field.setType(FieldFormatEnum.STRING);
       }
 
       if ("document.line.field.integer".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.INTEGER);
+        field.setType(FieldFormatEnum.INTEGER);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -264,7 +264,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.long".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.LONG);
+        field.setType(FieldFormatEnum.LONG);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -285,7 +285,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.float".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.FLOAT);
+        field.setType(FieldFormatEnum.FLOAT);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -306,7 +306,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.double".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.DOUBLE);
+        field.setType(FieldFormatEnum.DOUBLE);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -327,7 +327,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.datetime".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.DATETIME);
+        field.setType(FieldFormatEnum.DATETIME);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -348,7 +348,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.file".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.BLOB);
+        field.setType(FieldFormatEnum.BLOB);
       }
 
       if ("document.line.field.position".equals(Path)) {
@@ -444,7 +444,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.STRING);
+          query_param.setType(FieldFormatEnum.STRING);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -458,7 +458,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.INTEGER);
+          query_param.setType(FieldFormatEnum.INTEGER);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -472,7 +472,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.LONG);
+          query_param.setType(FieldFormatEnum.LONG);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -486,7 +486,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.FLOAT);
+          query_param.setType(FieldFormatEnum.FLOAT);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -500,7 +500,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.DOUBLE);
+          query_param.setType(FieldFormatEnum.DOUBLE);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -514,7 +514,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.DATETIME);
+          query_param.setType(FieldFormatEnum.DATETIME);
 
           if (attrs != null) {
             int len = attrs.getLength();

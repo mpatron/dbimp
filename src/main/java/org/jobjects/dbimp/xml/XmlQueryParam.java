@@ -1,5 +1,6 @@
 package org.jobjects.dbimp.xml;
 
+import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
 
 
@@ -14,14 +15,14 @@ public class XmlQueryParam {
   public final static int POSITION = 0;
   public final static int CONSTANTE = 1;
 
-  private FieldTypeEnum type = FieldTypeEnum.STRING;
+  private FieldFormatEnum type = FieldFormatEnum.STRING;
   private String dateformat = null;
 
   private XmlPosition position = null;
   private XmlConstante constante = null;
-  private int discriminator = POSITION;
+  private FieldTypeEnum discriminator = FieldTypeEnum.POSITION;
 
-  public int discriminator() {
+  public FieldTypeEnum getDiscriminator() {
     return discriminator;
   }
 
@@ -45,7 +46,7 @@ public class XmlQueryParam {
   /**
    * @return Returns the type.
    */
-  public FieldTypeEnum getType() {
+  public FieldFormatEnum getType() {
     return type;
   }
 
@@ -53,12 +54,12 @@ public class XmlQueryParam {
    * @param type
    *          The type to set.
    */
-  public void setType(FieldTypeEnum type) {
+  public void setType(FieldFormatEnum type) {
     this.type = type;
   }
 
   public XmlPosition getPosition() throws Exception {
-    if (discriminator != POSITION) {
+    if (!FieldTypeEnum.POSITION.equals(discriminator)) {
       throw new Exception();
     }
     return position;
@@ -67,14 +68,14 @@ public class XmlQueryParam {
   // ---------------------------------------------------------------------------
 
   public void setPosition(XmlPosition position) {
-    discriminator = POSITION;
+    discriminator = FieldTypeEnum.POSITION;
     this.position = position;
   }
 
   // ---------------------------------------------------------------------------
 
   public XmlConstante getConstante() throws Exception {
-    if (discriminator != CONSTANTE) {
+    if (!FieldTypeEnum.CONSTANTE.equals(discriminator)) {
       throw new Exception();
     }
     return constante;
@@ -83,7 +84,7 @@ public class XmlQueryParam {
   // ---------------------------------------------------------------------------
 
   public void setConstante(XmlConstante constante) {
-    discriminator = CONSTANTE;
+    discriminator = FieldTypeEnum.CONSTANTE;
     this.constante = constante;
   }
 
@@ -106,7 +107,7 @@ public class XmlQueryParam {
       break;
     }
 
-    switch (discriminator()) {
+    switch (getDiscriminator()) {
     case POSITION:
       returnValue += position.toString();
       break;

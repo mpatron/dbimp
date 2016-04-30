@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +20,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jobjects.dbimp.report.Report;
 import org.jobjects.dbimp.sql.SQLDatatbaseType;
@@ -30,7 +27,6 @@ import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Key;
 import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.xml.XmlDocument;
-import org.jobjects.dbimp.xml.XmlField;
 import org.jobjects.dbimp.xml.XmlParams;
 import org.jobjects.dbimp.xml.XmlQueryParam;
 
@@ -47,7 +43,8 @@ import org.jobjects.dbimp.xml.XmlQueryParam;
  * fichier.</li>
  * <li>[-d | --driver] Driver JDBC. Par defaut : oracle.jdbc.driver.OracleDriver
  * </li>
- * <li>[-r | --report] Répertoire du rapport d'importation. Par defaut : $TEMP</li>
+ * <li>[-r | --report] Répertoire du rapport d'importation. Par defaut : $TEMP
+ * </li>
  * <li>[-c | --cached] Cache les cursors, attention le nombre de curseur est
  * égal au nombre de type de ligne x3, diminu de faéon importante le temps
  * d'importation (>50% dans certain cas). Par defaut : false</li>
@@ -77,7 +74,7 @@ public class Importation {
   public static void main(String[] args) throws Exception {
     System.exit(run(args));
   }
-  
+
   public static int run(String[] args) throws Exception {
     int returnValue = 0;
     long t_start = System.currentTimeMillis();
@@ -100,10 +97,7 @@ public class Importation {
     String footer = "Copyright © 2006 JObjects Corp. All Rights Reserved";
 
     Options options = new Options();
-    Option option = new Option(
-        "u",
-        "url",
-        true,
+    Option option = new Option("u", "url", true,
         "Url jdbc by exemple jdbc:oracle:thin:@<server>:1521:<instance> ou jdbc:microsoft:sqlserver://<server>:1433;DatabaseName=<base> ou jdbc:as400://<server>/<collection>.");
     option.setArgName("jdbc:url");
     option.setRequired(true);
@@ -134,32 +128,30 @@ public class Importation {
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("e", "encode", true,
-        "[ US-ASCII | ISO-8859-1 | UTF-8 | UTF-16 ] encodage par defaut ISO-8859-1.");
+    option = new Option("e", "encode", true, "[ US-ASCII | ISO-8859-1 | UTF-8 | UTF-16 ] encodage par defaut ISO-8859-1.");
     option.setArgName("encodage [ISO-8859-1]");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("r", "report", true,
-        "Répertoire du rapport d'importation. Par defaut : " + dirnameReporte
-            + ".");
+    option = new Option("r", "report", true, "Répertoire du rapport d'importation. Par defaut : " + dirnameReporte + ".");
     option.setArgName("report [" + dirnameReporte + "]");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("c","cached",false,"Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
+    option = new Option("c", "cached", false,
+        "Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("s","schema",true,"Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
+    option = new Option("s", "schema", true, "Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("v", "verbose", false,"Encheri le rapport des informations de mise à jour.");
+    option = new Option("v", "verbose", false, "Encheri le rapport des informations de mise à jour.");
     option.setRequired(false);
     options.addOption(option);
 
@@ -174,10 +166,8 @@ public class Importation {
       if (StringUtils.isEmpty(line.getOptionValue("e"))) {
         ascfile_encode = "ISO-8859-1";
       } else {
-        if (!("US-ASCII".equals(line.getOptionValue("e"))
-            || "ISO-8859-1".equals(line.getOptionValue("e"))
-            || "UTF-8".equals(line.getOptionValue("e")) || "UTF-16".equals(line
-            .getOptionValue("e")))) {
+        if (!("US-ASCII".equals(line.getOptionValue("e")) || "ISO-8859-1".equals(line.getOptionValue("e")) || "UTF-8".equals(line.getOptionValue("e"))
+            || "UTF-16".equals(line.getOptionValue("e")))) {
           System.err.println("Error : encode=" + line.getOptionValue("e"));
           formatter.printHelp(cmdLineSyntax, header, options, footer);
           return 1;
@@ -193,8 +183,7 @@ public class Importation {
       if (line.hasOption("c")) {
         cached = true;
       }
-      if (!(line.hasOption("f") && line.hasOption("x") && line.hasOption("u")
-          && line.hasOption("U") && line.hasOption("P"))) {
+      if (!(line.hasOption("f") && line.hasOption("x") && line.hasOption("u") && line.hasOption("U") && line.hasOption("P"))) {
         formatter.printHelp(cmdLineSyntax, header, options, footer);
         return 1;
       }
@@ -209,8 +198,7 @@ public class Importation {
 
     } catch (ParseException pe) {
       formatter.printHelp(cmdLineSyntax, header, options, footer);
-      if ((pe instanceof MissingOptionException)
-          || (pe instanceof MissingArgumentException)) {
+      if ((pe instanceof MissingOptionException) || (pe instanceof MissingArgumentException)) {
         System.err.println("Parametres manquant : " + pe.getMessage());
       }
       return 1;
@@ -222,35 +210,28 @@ public class Importation {
     String driverClassName = SQLDatatbaseType.getType(url).getDriver();
     try {
       Driver driver = (Driver) Class.forName(driverClassName).newInstance();
-      System.out.println("JDBC driver version : " + driver.getMajorVersion()
-          + "." + driver.getMinorVersion());
+      System.out.println("JDBC driver version : " + driver.getMajorVersion() + "." + driver.getMinorVersion());
       DriverManager.registerDriver(driver);
       Connection connection = DriverManager.getConnection(url, user, password);
 
-      String fileNameReport = File.createTempFile(
-          filenameReporte + "-" + getNextNumber() + "-", extnameReporte,
-          new File(dirnameReporte)).getAbsolutePath();
-      importFile(ascfile, ascfile_encode, xmlfile, connection, schemaName,
-          cached, verbose, fileNameReport);
+      String fileNameReport = File.createTempFile(filenameReporte + "-" + getNextNumber() + "-", extnameReporte, new File(dirnameReporte)).getAbsolutePath();
+      importFile(ascfile, ascfile_encode, xmlfile, connection, schemaName, cached, verbose, fileNameReport);
       connection.close();
       DriverManager.deregisterDriver(driver);
     } catch (Exception e) {
       String messageErr = new String();
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - driverClassName="
-          + driverClassName;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - driverClassName=" + driverClassName;
       messageErr += SystemUtils.LINE_SEPARATOR + "  - url=" + url;
       messageErr += SystemUtils.LINE_SEPARATOR + "  - user=" + user;
       messageErr += SystemUtils.LINE_SEPARATOR + "  - password=" + password;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - filenameReporte="+ filenameReporte;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - extnameReporte="+ extnameReporte;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte="+ dirnameReporte;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - filenameReporte=" + filenameReporte;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - extnameReporte=" + extnameReporte;
+      messageErr += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte=" + dirnameReporte;
       log.log(Level.SEVERE, messageErr, e);
       returnValue = 1;
     }
     long t_end = System.currentTimeMillis();
-    System.out.println("Duration : "
-        + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS")
-        + ".");
+    System.out.println("Duration : " + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS") + ".");
     return returnValue;
   }
 
@@ -281,21 +262,18 @@ public class Importation {
    * @param fileNameReport
    *          Nom du fichier contenant le rapport.
    */
-  public static void importFile(String fileSource, String fileSourceEncoding,
-      String fileNameParameter, Connection conn, String schemaName,
-      boolean cached, boolean verbose, String fileNameReport) {
+  public static void importFile(String fileSource, String fileSourceEncoding, String fileNameParameter, Connection conn, String schemaName, boolean cached,
+      boolean verbose, String fileNameReport) {
 
-    String message="DBImp starting... "+SystemUtils.LINE_SEPARATOR;
-    message+="  - fileSource="+fileSource+SystemUtils.LINE_SEPARATOR;
-    message+="  - fileSourceEncoding="+fileSourceEncoding+SystemUtils.LINE_SEPARATOR;
-    message+="  - fileNameReport="+fileNameReport+SystemUtils.LINE_SEPARATOR;
-    message+="  - schemaName="+schemaName+SystemUtils.LINE_SEPARATOR;
-    message+="  - cached="+cached+SystemUtils.LINE_SEPARATOR;
-    message+="  - verbose="+verbose+SystemUtils.LINE_SEPARATOR;    
+    String message = "DBImp starting... " + SystemUtils.LINE_SEPARATOR;
+    message += "  - fileSource=" + fileSource + SystemUtils.LINE_SEPARATOR;
+    message += "  - fileSourceEncoding=" + fileSourceEncoding + SystemUtils.LINE_SEPARATOR;
+    message += "  - fileNameReport=" + fileNameReport + SystemUtils.LINE_SEPARATOR;
+    message += "  - schemaName=" + schemaName + SystemUtils.LINE_SEPARATOR;
+    message += "  - cached=" + cached + SystemUtils.LINE_SEPARATOR;
+    message += "  - verbose=" + verbose + SystemUtils.LINE_SEPARATOR;
     log.config(message);
 
-
-    
     FileAsciiWriter faw = null;
     long l_start = System.currentTimeMillis();
     long l_end = 0;
@@ -320,7 +298,7 @@ public class Importation {
       /**
        * Chargement du parametrage des lignes et des recordset associé.
        */
-      LinkedList<LineAndRecordSet> LineAndRecordSets = new LinkedList<LineAndRecordSet>();
+      LinkedList<LineAndRecordSet> lineAndRecordSets = new LinkedList<LineAndRecordSet>();
       XmlParams param = new XmlParams();
       XmlDocument document = param.parseFile(new File(fileNameParameter));
 
@@ -330,12 +308,11 @@ public class Importation {
 
       description = document.getDescription();
       reporting.setDescription(description);
-      for (Iterator<Line> it = document.getLines().iterator(); it.hasNext();) {
-        Line xmlline = (Line) it.next();
-        LineAndRecordSet lrs = new LineAndRecordSet(conn, schemaName, cached,
-            xmlline, reporting.getTypeLine(xmlline));
-        LineAndRecordSets.add(lrs);
+      for (Line line : document.getLines()) {
+        LineAndRecordSet lrs = new LineAndRecordSet(conn, schemaName, cached, line, reporting.getTypeLine(line));
+        lineAndRecordSets.add(lrs);
       }
+
       /**
        * Chargement du fichier dans la base
        */
@@ -345,9 +322,7 @@ public class Importation {
       int numberLine = 1;
       while ((ligne = flux.readLine()) != null) {
         log.info("lecture de la ligne = " + numberLine);
-        for (Iterator<LineAndRecordSet> it = LineAndRecordSets.iterator(); it
-            .hasNext();) {
-          LineAndRecordSet lrs = (LineAndRecordSet) it.next();
+        for (LineAndRecordSet lrs : lineAndRecordSets) {
           if (lrs.isActive(ligne)) {
             lrs.execute(numberLine, ligne);
             reporting.nextLine(numberLine);
@@ -360,9 +335,7 @@ public class Importation {
       /**
        * Netoyage des connextions
        */
-      for (Iterator<LineAndRecordSet> it = LineAndRecordSets.iterator(); it
-          .hasNext();) {
-        LineAndRecordSet lrs = (LineAndRecordSet) it.next();
+      for (LineAndRecordSet lrs : lineAndRecordSets) {
         lrs.doAfterAction();
         rejected += lrs.getCountRejected();
         selected += lrs.getCountSelect();
@@ -371,8 +344,8 @@ public class Importation {
         deleted += lrs.getCountDelete();
         lrs.release();
       }
-      log.finest(reporting.INFO_STATUS("total", selected, inserted, updated,
-          deleted, rejected));
+
+      log.finest(reporting.INFO_STATUS("total", selected, inserted, updated, deleted, rejected));
       reporting.setDuration(System.currentTimeMillis() - l_start);
       reporting.write();
       faw.flush();
@@ -382,52 +355,32 @@ public class Importation {
       log.log(Level.SEVERE, "", t);
     }
     l_end = System.currentTimeMillis();
-    log.info("Duration : "
-        + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS")
-        + ".");
+    log.info("Duration : " + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS") + ".");
   }
 
   // ---------------------------------------------------------------------------
   private static void afficheDocument(XmlDocument document) {
     try {
-      Iterator<Line> e = document.getLines().iterator();
-      while (e.hasNext()) {
-        Line xmlline = (Line) e.next();
-        System.out.println("<line name='" + xmlline.getName() + "' tablename='"
-            + xmlline.getTableName() + "'>");
-        Iterator<Key> i_keys = xmlline.getKeys().iterator();
-        while (i_keys.hasNext()) {
-          Key key = (Key) i_keys.next();
-          System.out.println("  " + "<key value='" + key.getValue()
-              + "' startposition='" + key.getStartposition() + "' size='"
-              + key.getSize() + "'>");
+      for (Line line : document.getLines()) {
+        System.out.println("<line name='" + line.getName() + "' tablename='" + line.getTableName() + "'>");
+        for (Key key : line.getKeys()) {
+          System.out.println("  " + "<key value='" + key.getValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
         }
-        Iterator<Field> i_fields = xmlline.getFields().iterator();
-        while (i_fields.hasNext()) {
-          XmlField field = (XmlField) i_fields.next();
-          System.out.println("  " + "<field fieldname='" + field.getName()
-              + "' type='" + field.getType().getTypeString() + "' dateformat='"
-              + field.getDateFormat() + "'>");
+        for (Field field : line.getFields()) {
+          System.out.println(
+              "  " + "<field fieldname='" + field.getName() + "' type='" + field.getType().getTypeString() + "' dateformat='" + field.getDateFormat() + "'>");
           switch (field.getDiscriminator()) {
-          case XmlField.CONSTANTE:
-            System.out.println("  " + "  " + "<constante value='"
-                + field.getConstante().getValue() + "'/>");
+          case CONSTANTE:
+            System.out.println("  " + "  " + "<constante value='" + field.getConstante().getValue() + "'/>");
             break;
-          case XmlField.POSITION:
-            System.out.println("  " + "  " + "<position startposition='"
-                + field.getPosition().getStartposition() + "' size='"
-                + field.getPosition().getSize() + "'/>");
+          case POSITION:
+            System.out.println(
+                "  " + "  " + "<position startposition='" + field.getPosition().getStartposition() + "' size='" + field.getPosition().getSize() + "'/>");
             break;
-          case XmlField.QUERY:
-            System.out.println("  " + "  " + "<query sql='"
-                + field.getQuery().getSql() + "'/>");
-            Iterator<XmlQueryParam> e_query_params = field.getQuery()
-                .getQueryParams().iterator();
-            while (e_query_params.hasNext()) {
-              XmlQueryParam queryparam = (XmlQueryParam) e_query_params.next();
-              System.out.println("  " + "  " + "  " + "<query-param><"
-                  + queryparam.getType().getTypeString() + "/>"
-                  + "</query-param>");
+          case QUERY:
+            System.out.println("  " + "  " + "<query sql='" + field.getQuery().getSql() + "'/>");
+            for (XmlQueryParam queryparam : field.getQuery().getQueryParams()) {
+              System.out.println("  " + "  " + "  " + "<query-param><" + queryparam.getType().getTypeString() + "/>" + "</query-param>");
             }
             break;
           default:
@@ -445,8 +398,7 @@ public class Importation {
 
   private static int getNextNumber() {
     int returnValue = 0;
-    String filePath = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR
-        + ".reportnumber.asc";
+    String filePath = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + ".reportnumber.asc";
     File file = new File(filePath);
     if (file.exists()) {
       try {

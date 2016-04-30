@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
-import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.xml.XmlField;
 
@@ -56,11 +56,10 @@ public class SqlUpdateBlob extends SqlStatement {
     String returnValue = "select ";
     String where = "";
     boolean first = true;
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
-      if (field.getType() != FieldTypeEnum.BLOB) {
+      if (field.getType() != FieldFormatEnum.BLOB) {
         continue;
       }
       if (first) {
@@ -76,8 +75,7 @@ public class SqlUpdateBlob extends SqlStatement {
       return null;
     }
     first = true;
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
       if (getPrimaries().contains(field.getName())) {
@@ -116,9 +114,7 @@ public class SqlUpdateBlob extends SqlStatement {
         }
 
         int i = 1;
-        for (Iterator<Field> it = getXmlline().getFields().iterator(); it
-            .hasNext();) {
-          XmlField field = (XmlField) it.next();
+        for (Field field : getXmlline().getFields()) {
           if (!field.isUse())
             continue;
           if (getPrimaries().contains(field.getName().toUpperCase())) {
@@ -134,12 +130,10 @@ public class SqlUpdateBlob extends SqlStatement {
         try {
           if (rs.next()) {
             i = 1;
-            for (Iterator<Field> it = getXmlline().getFields().iterator(); it
-                .hasNext();) {
-              XmlField field = (XmlField) it.next();
+            for (Field field : getXmlline().getFields()) {
               if (!field.isUse())
                 continue;
-              if (field.getType() != FieldTypeEnum.BLOB)
+              if (field.getType() != FieldFormatEnum.BLOB)
                 continue;
               /* ============= Code BLOB pour Oracle =========================== */
               // BLOB blob= ((OracleResultSet) rs).getBLOB(field.getName());
@@ -200,11 +194,12 @@ public class SqlUpdateBlob extends SqlStatement {
 
   public static boolean hasBlob(Line line) {
     boolean returnValue = false;
+    //for(Field field : line.getFields())
     for (Iterator<Field> it = line.getFields().iterator(); it.hasNext();) {
       XmlField field = (XmlField) it.next();
       if (!field.isUse())
         continue;
-      if (field.getType() == FieldTypeEnum.BLOB) {
+      if (field.getType() == FieldFormatEnum.BLOB) {
         returnValue = true;
       }
     }

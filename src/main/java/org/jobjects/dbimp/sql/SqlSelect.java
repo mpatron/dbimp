@@ -143,7 +143,7 @@ public class SqlSelect extends SqlStatement {
               if (!field.isUse())
                 continue;
 
-              switch (field.getType()) {
+              switch (field.getTypeFormat()) {
               case INTEGER:
                 int i_value = rs.getInt(field.getName());
                 if (rs.wasNull()) {
@@ -255,7 +255,7 @@ public class SqlSelect extends SqlStatement {
             /**
              * buffer et value ne sont pas nulls.
              */
-            switch (field.getType()) {
+            switch (field.getTypeFormat()) {
             case INTEGER:
               double i_value = Double.parseDouble(field.getBuffer()) * field.getCoefficient();
               if (MathUtils.isInteger(i_value)) {
@@ -318,10 +318,10 @@ public class SqlSelect extends SqlStatement {
           }
         }
       } catch (NumberFormatException nfe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getType().getTypeString(), nfe);
+        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(), nfe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       } catch (ParseException pe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getType().getTypeString(), pe);
+        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(), pe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       }
 

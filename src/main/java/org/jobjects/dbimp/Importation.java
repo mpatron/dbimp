@@ -368,7 +368,7 @@ public class Importation {
         }
         for (Field field : line.getFields()) {
           System.out.println(
-              "  " + "<field fieldname='" + field.getName() + "' type='" + field.getType().getTypeString() + "' dateformat='" + field.getDateFormat() + "'>");
+              "  " + "<field fieldname='" + field.getName() + "' type='" + field.getTypeFormat().getTypeString() + "' dateformat='" + field.getDateFormat() + "'>");
           switch (field.getDiscriminator()) {
           case CONSTANTE:
             System.out.println("  " + "  " + "<constante value='" + field.getConstante().getValue() + "'/>");

@@ -108,7 +108,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
   // ---------------------------------------------------------------------------
 
   protected void setNull(PreparedStatement pstmt, int i, Field field) throws SQLException {
-    switch (field.getType()) {
+    switch (field.getTypeFormat()) {
     case STRING:
       pstmt.setNull(i, java.sql.Types.VARCHAR);
       break;
@@ -150,7 +150,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
     double d;
 
     try {
-      switch (field.getType()) {
+      switch (field.getTypeFormat()) {
       case STRING:
         pstmt.setString(i, field.getBuffer());
         break;

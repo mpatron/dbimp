@@ -49,7 +49,7 @@ public interface Field {
    * Retourne le type du champs. Valeur posible : POSITION, CONSTANTE, QUERY.
 	 * @return int
 	 */
-	public FieldFormatEnum getType();
+	public FieldFormatEnum getTypeFormat();
   
   /**
    * Indique si le champs peut être null.

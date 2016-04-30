@@ -5,21 +5,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.Line;
-import org.jobjects.dbimp.xml.XmlField;
 
 /**
- * <p>Title: IHM</p>
- * <p>Description: Importation dbImp</p>
- * <p>Copyright: Copyright (c) 2004</p>
- * <p>Company: JObjects</p>
- * <p>Date :  1 mai 2003</p>
+ * <p>
+ * Title: IHM
+ * </p>
+ * <p>
+ * Description: Importation dbImp
+ * </p>
+ * <p>
+ * Copyright: Copyright (c) 2004
+ * </p>
+ * <p>
+ * Company: JObjects
+ * </p>
+ * <p>
+ * Date : 1 mai 2003
+ * </p>
+ * 
  * @author Mickael Patron
  * @version 1.0
  */
@@ -38,9 +47,7 @@ public class SqlUpdateBlob extends SqlStatement {
    * @param reportTypeLine
    * @throws SQLException
    */
-  public SqlUpdateBlob(Connection connection, String schemaName,
-      boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
-      throws SQLException {
+  public SqlUpdateBlob(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
   }
 
@@ -59,7 +66,7 @@ public class SqlUpdateBlob extends SqlStatement {
     for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
-      if (field.getType() != FieldFormatEnum.BLOB) {
+      if (field.getTypeFormat() != FieldFormatEnum.BLOB) {
         continue;
       }
       if (first) {
@@ -133,9 +140,11 @@ public class SqlUpdateBlob extends SqlStatement {
             for (Field field : getXmlline().getFields()) {
               if (!field.isUse())
                 continue;
-              if (field.getType() != FieldFormatEnum.BLOB)
+              if (field.getTypeFormat() != FieldFormatEnum.BLOB)
                 continue;
-              /* ============= Code BLOB pour Oracle =========================== */
+              /*
+               * ============= Code BLOB pour Oracle ===========================
+               */
               // BLOB blob= ((OracleResultSet) rs).getBLOB(field.getName());
               // String filename= field.getBuffer();
               // File binaryFile= new File(filename);
@@ -158,7 +167,9 @@ public class SqlUpdateBlob extends SqlStatement {
               // } catch (IOException ioe) {
               // log.error("" + field.getBuffer(), ioe);
               // }
-              /* =============================================================== */
+              /*
+               * ===============================================================
+               */
               i++;
             }
           }
@@ -174,8 +185,7 @@ public class SqlUpdateBlob extends SqlStatement {
       }
       getConnection().setAutoCommit(autoCommit);
     } catch (SQLException ex) {
-      SqlUtils.AfficheSQLException(getXmlline(), getSql(), ex,
-          getReportTypeLine().getReportLine());
+      SqlUtils.AfficheSQLException(getXmlline(), getSql(), ex, getReportTypeLine().getReportLine());
     }
     count++;
     return (returnValue == null) ? -1 : 0;
@@ -194,12 +204,10 @@ public class SqlUpdateBlob extends SqlStatement {
 
   public static boolean hasBlob(Line line) {
     boolean returnValue = false;
-    //for(Field field : line.getFields())
-    for (Iterator<Field> it = line.getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : line.getFields()) {
       if (!field.isUse())
         continue;
-      if (FieldFormatEnum.BLOB.equals(field.getType())) {
+      if (FieldFormatEnum.BLOB.equals(field.getTypeFormat())) {
         returnValue = true;
       }
     }

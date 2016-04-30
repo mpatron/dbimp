@@ -79,7 +79,7 @@ public class ReportField implements Reporting {
     internalBuffer.append(
       RessourceReporting.getString(
         "ERROR_FIELD_NUMERIC",
-        new Object[] { field.getBuffer(), field.getType().getTypeString() }  ));
+        new Object[] { field.getBuffer(), field.getTypeFormat().getTypeString() }  ));
     used= true;
   }
 
@@ -91,7 +91,7 @@ public class ReportField implements Reporting {
     internalBuffer.append(
       RessourceReporting.getString(
         "ERROR_FIELD_NUMERIC",
-        new Object[] { field.getBuffer(), field.getType().getTypeString() } ));
+        new Object[] { field.getBuffer(), field.getTypeFormat().getTypeString() } ));
     used= true;
   }
 

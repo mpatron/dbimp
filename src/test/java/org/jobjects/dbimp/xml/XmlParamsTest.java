@@ -23,7 +23,7 @@ public class XmlParamsTest {
         sb.append(xmlLine.getName() + SystemUtils.LINE_SEPARATOR);
         for (Field field : xmlLine.getFields()) {
           XmlField xmlField = (XmlField) field;
-          sb.append("-" + xmlField.getName() + "-" + xmlField.getType() + SystemUtils.LINE_SEPARATOR);
+          sb.append("-" + xmlField.getName() + "-" + xmlField.getTypeFormat() + SystemUtils.LINE_SEPARATOR);
         }
       }
       System.out.println(sb.toString());

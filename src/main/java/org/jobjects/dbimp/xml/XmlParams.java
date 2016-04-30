@@ -237,13 +237,13 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.string".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.STRING);
+        field.setTypeFormat(FieldFormatEnum.STRING);
       }
 
       if ("document.line.field.integer".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.INTEGER);
+        field.setTypeFormat(FieldFormatEnum.INTEGER);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -264,7 +264,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.long".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.LONG);
+        field.setTypeFormat(FieldFormatEnum.LONG);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -285,7 +285,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.float".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.FLOAT);
+        field.setTypeFormat(FieldFormatEnum.FLOAT);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -306,7 +306,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.double".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.DOUBLE);
+        field.setTypeFormat(FieldFormatEnum.DOUBLE);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -327,7 +327,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.datetime".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.DATETIME);
+        field.setTypeFormat(FieldFormatEnum.DATETIME);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -348,7 +348,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.file".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldFormatEnum.BLOB);
+        field.setTypeFormat(FieldFormatEnum.BLOB);
       }
 
       if ("document.line.field.position".equals(Path)) {

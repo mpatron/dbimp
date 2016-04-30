@@ -57,7 +57,7 @@ public class SqlUpdate extends SqlStatement {
     for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
-      if (field.getType() == FieldFormatEnum.BLOB)
+      if (field.getTypeFormat() == FieldFormatEnum.BLOB)
         continue;
       if (!getPrimaries().contains(field.getName().toUpperCase())) {
         if (first) {
@@ -80,7 +80,7 @@ public class SqlUpdate extends SqlStatement {
     for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
-      if (field.getType() == FieldFormatEnum.BLOB)
+      if (field.getTypeFormat() == FieldFormatEnum.BLOB)
         continue;
       if (getPrimaries().contains(field.getName())) {
         if (first) {
@@ -125,7 +125,7 @@ public class SqlUpdate extends SqlStatement {
           for (Field field : getXmlline().getFields()) {
             if (!field.isUse())
               continue;
-            if (field.getType() == FieldFormatEnum.BLOB)
+            if (field.getTypeFormat() == FieldFormatEnum.BLOB)
               continue;
             flag &= checkIn(getXmlline(), field, getReportTypeLine().getReportLine());
             if (!getPrimaries().contains(field.getName().toUpperCase())) {
@@ -143,7 +143,7 @@ public class SqlUpdate extends SqlStatement {
           for (Field field : getXmlline().getFields()) {
             if (!field.isUse())
               continue;
-            if (field.getType() == FieldFormatEnum.BLOB)
+            if (field.getTypeFormat() == FieldFormatEnum.BLOB)
               continue;
             if (getPrimaries().contains(field.getName().toUpperCase())) {
               flag &= checkIn(getXmlline(), field, getReportTypeLine().getReportLine());

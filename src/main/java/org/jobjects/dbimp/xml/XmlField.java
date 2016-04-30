@@ -31,12 +31,12 @@ public class XmlField implements Field, Comparable<XmlField> {
 
   public XmlField(String name, FieldFormatEnum type) {
     this.name = name;
-    this.type = type;
+    this.typeFormat = type;
   }
 
   public XmlField(String name, FieldFormatEnum type, boolean nullable, boolean nullableError, boolean isUse) {
     this.name = name;
-    this.type = type;
+    this.typeFormat = type;
     this.nullable = nullable;
     this.nullableError = nullableError;
     this.isUse = isUse;
@@ -60,13 +60,13 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @see FieldFormatEnum#toInt(java.lang.String)
    * @see FieldFormatEnum#toString(int)
    */
-  private FieldFormatEnum type = FieldFormatEnum.STRING;
+  private FieldFormatEnum typeFormat = FieldFormatEnum.STRING;
 
   private String dateFormat = null;
 
   /**
    * Coéficient de multiplication. Utilisé pour multiplié la valeur sielle est
-   * de type integer|long|float|double.
+   * de typeFormat integer|long|float|double.
    */
   private double coefficient = 1;
 
@@ -109,7 +109,7 @@ public class XmlField implements Field, Comparable<XmlField> {
   private Logger log = Logger.getLogger(getClass().getName());
 
   /**
-   * Method getDiscriminator. Distingue le type de la source de donnée.
+   * Method getDiscriminator. Distingue le typeFormat de la source de donnée.
    * 
    * @return int = [ POSITION | CONSTANTE | QUERY ]
    */
@@ -208,22 +208,22 @@ public class XmlField implements Field, Comparable<XmlField> {
   public String toString() {
     String returnValue = "    <field fieldname=\"" + name + "\">";
 
-    switch (type) {
+    switch (typeFormat) {
     case DATETIME:
-      returnValue += "<" + type.getTypeString() + " dateformat=\"" + getDateFormat() + "\"/>";
+      returnValue += "<" + typeFormat.getTypeString() + " dateformat=\"" + getDateFormat() + "\"/>";
       break;
     case DOUBLE:
     case FLOAT:
     case INTEGER:
     case LONG:
       if (coefficient != 1) {
-        returnValue += "<" + type.getTypeString() + " coefficient=\"" + coefficient + "\"/>";
+        returnValue += "<" + typeFormat.getTypeString() + " coefficient=\"" + coefficient + "\"/>";
       } else {
-        returnValue += "<" + type.getTypeString() + "/>";
+        returnValue += "<" + typeFormat.getTypeString() + "/>";
       }
       break;
     default: // XmlFieldTypes._STRING
-      returnValue += "<" + type.getTypeString() + "/>";
+      returnValue += "<" + typeFormat.getTypeString() + "/>";
       break;
     }
 
@@ -246,7 +246,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       }
       break;
     default:
-      returnValue += "<!-- Erreur de type -->";
+      returnValue += "<!-- Erreur de typeFormat -->";
       break;
     }
 
@@ -278,7 +278,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       }
     }
 
-    switch (type) {
+    switch (typeFormat) {
     case INTEGER:
       try {
         double d = Double.parseDouble(buffer) * coefficient;
@@ -421,8 +421,8 @@ public class XmlField implements Field, Comparable<XmlField> {
   /**
    * @see org.jobjects.dbimp.trigger.Field#getType()
    */
-  public FieldFormatEnum getType() {
-    return type;
+  public FieldFormatEnum getTypeFormat() {
+    return typeFormat;
   }
 
   /**
@@ -497,13 +497,13 @@ public class XmlField implements Field, Comparable<XmlField> {
   }
 
   /**
-   * Sets the type.
+   * Sets the typeFormat.
    * 
-   * @param type
-   *          The type to set
+   * @param typeFormat
+   *          The typeFormat to set
    */
-  public void setType(FieldFormatEnum type) {
-    this.type = type;
+  public void setTypeFormat(FieldFormatEnum type) {
+    this.typeFormat = type;
   }
 
   /**
@@ -654,7 +654,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   + queryparam.getPosition().getSize() + " Valeur=" + s_value);
               break;
             case QUERY:
-              throw new IllegalArgumentException("Pas de type QUERY en sous requête.");
+              throw new IllegalArgumentException("Pas de typeFormat QUERY en sous requête.");
             default:
               throw new IllegalArgumentException("Seul les types CONSTANTE et POSITION en sous requête.");
             }

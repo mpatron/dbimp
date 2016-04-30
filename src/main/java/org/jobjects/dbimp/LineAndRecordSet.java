@@ -52,8 +52,7 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
 
-  public LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline,
-      ReportTypeLine reportTypeLine) throws SQLException {
+  public LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
 
     this.connection = connection;
     this.xmlline = xmlline;
@@ -64,12 +63,12 @@ public class LineAndRecordSet {
       this.InsertAndUpdate = xmlline.getAction();
     }
     this.reportTypeLine = reportTypeLine;
-    //for(Field field : xmlline.getFields()) {
+    // for(Field field : xmlline.getFields()) {
     for (Iterator<Field> it = xmlline.getFields().iterator(); it.hasNext();) {
       XmlField field = (XmlField) it.next();
       if (!field.isUse())
         continue;
-      if (field.getCheckInSql() != null) {
+      if (StringUtils.isNotEmpty(field.getCheckInSql())) {
         try {
           Statement stmt = connection.createStatement();
           try {
@@ -96,8 +95,7 @@ public class LineAndRecordSet {
     }
     sql_select = new SqlSelect(connection, schemaName, cached, xmlline, reportTypeLine);
     log.finest("Load SqlSelect.");
-    if ((LineActionTypeEnum.INSERT.equals(InsertAndUpdate))
-        || (LineActionTypeEnum.INSERT_UPDATE.equals(InsertAndUpdate))) {
+    if ((LineActionTypeEnum.INSERT.equals(InsertAndUpdate)) || (LineActionTypeEnum.INSERT_UPDATE.equals(InsertAndUpdate))) {
       sql_insert = new SqlInsert(connection, schemaName, cached, xmlline, reportTypeLine);
       log.finest("Load SqlInsert.");
       if (SqlUpdateBlob.hasBlob(xmlline)) {
@@ -105,8 +103,7 @@ public class LineAndRecordSet {
         log.finest("Load SqlUpdateBlob.");
       }
     }
-    if ((LineActionTypeEnum.UPDATE.equals(InsertAndUpdate))
-        || (LineActionTypeEnum.INSERT_UPDATE.equals(InsertAndUpdate))) {
+    if ((LineActionTypeEnum.UPDATE.equals(InsertAndUpdate)) || (LineActionTypeEnum.INSERT_UPDATE.equals(InsertAndUpdate))) {
       sql_update = new SqlUpdate(connection, schemaName, cached, xmlline, reportTypeLine);
       log.finest("Load SqlUpdate.");
       if (SqlUpdateBlob.hasBlob(xmlline)) {

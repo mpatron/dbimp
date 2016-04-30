@@ -84,7 +84,7 @@ public class SqlInsert extends SqlStatement {
             if (!field.isUse())
               continue;
             flag &= checkIn(getXmlline(), field, getReportTypeLine().getReportLine());
-            if ((field.getType() != FieldFormatEnum.BLOB)) {
+            if ((field.getTypeFormat() != FieldFormatEnum.BLOB)) {
               if (field.isEmptyOrNullBuffer()) {
                 setNull(pstmt, i, field);
               } else {

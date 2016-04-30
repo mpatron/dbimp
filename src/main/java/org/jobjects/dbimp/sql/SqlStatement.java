@@ -19,8 +19,6 @@ import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
-import org.jobjects.dbimp.xml.XmlField;
-
 
 /**
  * Class d'utilitaire pour les class herités.
@@ -32,23 +30,19 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
   private static Logger log = Logger.getLogger(SqlStatement.class.getName());
 
-  private Line           xmlline        = null;
+  private Line xmlline = null;
 
-  private ReportTypeLine    reportTypeLine = null;
+  private ReportTypeLine reportTypeLine = null;
 
-  private Collection<String>        primaries      = null;
+  private Collection<String> primaries = null;
 
-  private boolean           cached         = false;
+  private boolean cached = false;
 
-  private PreparedStatement pstmtCached    = null;
+  private PreparedStatement pstmtCached = null;
 
-  private String            sql            = null;
+  private String sql = null;
 
-  protected SqlStatement(Connection connection,
-      String schemaName,
-      boolean cached,
-      Line xmlline,
-      ReportTypeLine reportTypeLine) throws SQLException {
+  protected SqlStatement(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
     super(connection, schemaName);
     this.cached = cached;
     this.reportTypeLine = reportTypeLine;
@@ -58,8 +52,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
     sql = createSQL();
     log.fine("Bufferisation : " + sql);
     if (StringUtils.isEmpty(sql)) {
-      log.severe("La requête, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR
-          + xmlline.toString());
+      log.severe("La requête, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR + xmlline.toString());
     }
     if (cached) {
       this.pstmtCached = getConnection().prepareStatement(sql);

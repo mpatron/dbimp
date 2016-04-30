@@ -115,6 +115,7 @@ public class XmlLine implements Line {
   public boolean loadFields(Connection connection, String ligne, ReportLine reporting) {
     boolean returnValue= true;
     
+//    for(XmlField field : fields) {
     for (Iterator<Field> it= fields.iterator(); it.hasNext();) {
       XmlField field= (XmlField) it.next();
       returnValue &= field.loadBuffer(connection, ligne, reporting.getReportField(field));

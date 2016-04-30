@@ -199,7 +199,7 @@ public class SqlUpdateBlob extends SqlStatement {
       XmlField field = (XmlField) it.next();
       if (!field.isUse())
         continue;
-      if (field.getType() == FieldFormatEnum.BLOB) {
+      if (FieldFormatEnum.BLOB.equals(field.getType())) {
         returnValue = true;
       }
     }

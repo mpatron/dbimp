@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +22,6 @@ import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Key;
 import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
-import org.jobjects.dbimp.xml.XmlField;
 import org.jobjects.dbimp.xml.XmlLine;
 
 /**
@@ -63,9 +61,8 @@ public class LineAndRecordSet {
       this.InsertAndUpdate = xmlline.getAction();
     }
     this.reportTypeLine = reportTypeLine;
-    // for(Field field : xmlline.getFields()) {
-    for (Iterator<Field> it = xmlline.getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+
+    for (Field field : xmlline.getFields()) {
       if (!field.isUse())
         continue;
       if (StringUtils.isNotEmpty(field.getCheckInSql())) {

@@ -216,5 +216,21 @@ public interface Field {
    * @return boolean
    */
   public boolean isNullableError();
+
+  /**
+   * @return Returns the checkInSql.
+   */
+  public String getCheckInSql();
+
+  /**
+   * @param checkInSql
+   *          The checkInSql to set.
+   */
+  public void setCheckInSql(String checkInSql);
   
+  /**
+   * @param checkIn
+   *          The checkIn to set.
+   */
+  public void setCheckIn(Collection<String> checkIn);
 }

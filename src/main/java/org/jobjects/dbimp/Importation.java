@@ -2,6 +2,8 @@ package org.jobjects.dbimp;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -162,7 +164,17 @@ public class Importation {
       user = line.getOptionValue("U");
       password = line.getOptionValue("P");
       ascfile = line.getOptionValue("f");
+      if(!Files.isReadable(Paths.get(ascfile))) {
+        System.err.println("ascfile n'existe pas ou n'est par readable : " + ascfile);
+        formatter.printHelp(cmdLineSyntax, header, options, footer);
+        return 1;
+      }
       xmlfile = line.getOptionValue("x");
+      if(!Files.isReadable(Paths.get(xmlfile))) {
+        System.err.println("xmlfile n'existe pas ou n'est par readable : " + xmlfile);
+        formatter.printHelp(cmdLineSyntax, header, options, footer);
+        return 1;
+      }      
       if (StringUtils.isEmpty(line.getOptionValue("e"))) {
         ascfile_encode = "ISO-8859-1";
       } else {

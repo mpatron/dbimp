@@ -17,36 +17,45 @@ import org.testng.annotations.Test;
 public class ImportationTest {
   private Logger LOGGER = Logger.getLogger(getClass().getName());
 
-  @BeforeClass(groups = "MaSuite")
+  private Connection conn;
+  
+  @BeforeClass(groups = "MaSuite")  
   public void beforeClass() throws Exception {
-    // DerbyStart.setUpBeforeClass();
+ // DerbyStart.setUpBeforeClass();
+    Class.forName(DerbyConstantes.DRIVER_CLASSNAME);
+    Properties p = new Properties();
+    p.setProperty(DerbyConstantes.USER, DerbyConstantes.USER_VALUE);
+    p.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
+    p.setProperty("create", "true");// +";create=true"
+    conn = DriverManager.getConnection(DerbyConstantes.URL, p);
+
+    Statement stmp = conn.createStatement();
+    try {
+      stmp.execute("create schema " + DerbyConstantes.SCHEMA_NAME + " AUTHORIZATION " + DerbyConstantes.USER_VALUE);
+    } catch (Exception e) {
+      LOGGER.log(Level.WARNING, e.getMessage());
+    } finally {
+      stmp.close();
+    }
+    CreateSchema.createSchema(conn, DerbyConstantes.SCHEMA_NAME);
   }
 
   @AfterClass(groups = "MaSuite")
   public void afterClass() throws Exception {
     // DerbyStop.tearDownAfterClass();
+    conn.close();
+
   }
 
   @Test(groups = "MaSuite")
+  public void importFileParam() {
+    
+  }
+
+  
+  @Test(groups = "MaSuite")
   public void importFile() {
     try {
-      Class.forName(DerbyConstantes.DRIVER_CLASSNAME);
-      Properties p = new Properties();
-      p.setProperty(DerbyConstantes.USER, DerbyConstantes.USER_VALUE);
-      p.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
-      p.setProperty("create", "true");// +";create=true"
-      Connection conn = DriverManager.getConnection(DerbyConstantes.URL, p);
-
-      Statement stmp = conn.createStatement();
-      try {
-        stmp.execute("create schema " + DerbyConstantes.SCHEMA_NAME + " AUTHORIZATION " + DerbyConstantes.USER_VALUE);
-      } catch (Exception e) {
-        LOGGER.log(Level.WARNING, e.getMessage());
-      } finally {
-        stmp.close();
-      }
-      CreateSchema.createSchema(conn, DerbyConstantes.SCHEMA_NAME);
-
       System.out.println(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc"));
       String fileSource = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc").toURI()).getAbsolutePath();
       String fileSourceEncoding = "ISO-8859-1";
@@ -58,7 +67,6 @@ public class ImportationTest {
       System.out.println("fileNameReport=" + fileNameReport);
       Importation.importFile(fileSource, fileSourceEncoding, fileNameParameter, conn, DerbyConstantes.SCHEMA_NAME, cached, verbose, fileNameReport);
 
-      conn.close();
     } catch (Exception e) {
       e.printStackTrace();
     }

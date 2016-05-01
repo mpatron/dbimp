@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jobjects.dbimp.sql.SqlUtils;
+
 public class CreateSchema {
 	private static Logger LOGGER = Logger.getLogger(CreateSchema.class
 			.getName());
@@ -70,6 +72,16 @@ public class CreateSchema {
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e.getMessage());
 		}
+	}
 
+	public static void afficheSchema(Connection conn, String schema) {
+	  try (Statement stmt = conn.createStatement()) {
+	    SqlUtils.Affiche(stmt.executeQuery("SELECT * FROM "+schema+".SECU_USER"));
+	    SqlUtils.Affiche(stmt.executeQuery("SELECT * FROM "+schema+".SECU_USER_ROLE"));
+	    SqlUtils.Affiche(stmt.executeQuery("SELECT * FROM "+schema+".MYTABLE"));
+	    
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e.getMessage());
+    }
 	}
 }

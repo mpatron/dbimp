@@ -43,6 +43,7 @@ public class ImportationTest {
   @AfterClass(groups = "MaSuite")
   public void afterClass() throws Exception {
     // DerbyStop.tearDownAfterClass();
+    CreateSchema.afficheSchema(conn, DerbyConstantes.SCHEMA_NAME);
     conn.close();
 
   }

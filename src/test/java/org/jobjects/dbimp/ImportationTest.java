@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.jobjects.derby.CreateSchema;
 import org.jobjects.derby.DerbyConstantes;
 import org.jobjects.derby.DerbySingleton;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -36,10 +37,8 @@ public class ImportationTest {
 
   @AfterClass(groups = "MaSuite")
   public void afterClass() throws Exception {
-    // DerbyStop.tearDownAfterClass();
     CreateSchema.afficheSchema(conn, DerbyConstantes.SCHEMA_NAME);
     conn.close();
-
   }
 
   @Test(groups = "MaSuite")
@@ -50,7 +49,7 @@ public class ImportationTest {
   @Test(groups = "MaSuite")
   public void importFile() {
     try {
-      System.out.println(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc"));
+      LOGGER.fine("" + ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc"));
       String fileSource = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc").toURI()).getAbsolutePath();
       String fileSourceEncoding = "ISO-8859-1";
       String fileNameParameter = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.xml").toURI()).getAbsolutePath();
@@ -58,11 +57,13 @@ public class ImportationTest {
       boolean cached = false;
       boolean verbose = true;
       String fileNameReport = File.createTempFile("imp", ".txt").getAbsolutePath();
-      System.out.println("fileNameReport=" + fileNameReport);
-      Importation.importFile(fileSource, fileSourceEncoding, fileNameParameter, conn, DerbyConstantes.SCHEMA_NAME, cached, verbose, fileNameReport);
-
+      LOGGER.fine("fileNameReport=" + fileNameReport);
+      Importation.importFile(fileSource, fileSourceEncoding, fileNameParameter, conn, DerbyConstantes.SCHEMA_NAME, cached, verbose,
+          fileNameReport);
+      Assert.assertTrue(true); // ??? Pas sur
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+      Assert.assertTrue(false);
     }
 
   }

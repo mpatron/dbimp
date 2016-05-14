@@ -13,7 +13,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
@@ -64,15 +63,15 @@ public class XmlParams extends DefaultHandler {
   /** Returns a string of the location. */
   private String getLocationString(SAXParseException ex) {
     StringBuffer str = new StringBuffer();
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("Ligne:" + ex.getLineNumber());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("Column:" + ex.getColumnNumber());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("PublicId:" + ex.getPublicId());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("SystemId:" + ex.getSystemId());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
 
     // String systemId= ex.getSystemId();
     //
@@ -92,7 +91,7 @@ public class XmlParams extends DefaultHandler {
   } // getLocationString(SAXParseException):String
 
   public void startDocument() {
-    // System.out.println("startDocument");
+    LOGGER.finest("startDocument");
   }
 
   public void startElement(String uri, String local, String raw, Attributes attrs) {
@@ -107,7 +106,7 @@ public class XmlParams extends DefaultHandler {
         }
       }
 
-      // System.out.println(Path);
+      LOGGER.finest("Path=" + Path);
       if ("document".equals(Path)) {
         if (attrs != null) {
           document = new XmlDocument();
@@ -173,6 +172,8 @@ public class XmlParams extends DefaultHandler {
 
           for (int i = 0; i < len; i++) {
             try {
+              LOGGER.finest(String.format("QName=%s Value=%s", attrs.getQName(i), attrs.getValue(i)));
+
               if ("value".equalsIgnoreCase(attrs.getQName(i))) {
                 key.setValue(attrs.getValue(i));
               }
@@ -186,8 +187,7 @@ public class XmlParams extends DefaultHandler {
               }
 
               if ("isBlank".equalsIgnoreCase(attrs.getQName(i))) {
-                // System.out.println(attrs.getValue(i));
-                key.setIsBlank(BooleanUtils.toBooleanObject(attrs.getValue(i)));
+                key.setBlank(BooleanUtils.toBoolean(attrs.getValue(i)));
               }
             } catch (Exception e) {
               e.printStackTrace();
@@ -629,18 +629,18 @@ public class XmlParams extends DefaultHandler {
       }
     } catch (Throwable t) {
       String message = "Unknow error";
-      message += SystemUtils.LINE_SEPARATOR + "  Path =";
+      message += System.lineSeparator() + "  Path =";
       for (int i = 0; i < xmlPath.length; i++) {
         message += xmlPath[i] + ".";
       }
-      message += SystemUtils.LINE_SEPARATOR + "  uri=" + uri;
-      message += SystemUtils.LINE_SEPARATOR + "  local=" + local;
-      message += SystemUtils.LINE_SEPARATOR + "  raw=" + raw;
-      message += SystemUtils.LINE_SEPARATOR + "  level=" + level;
-      message += SystemUtils.LINE_SEPARATOR + "  attrs=";
+      message += System.lineSeparator() + "  uri=" + uri;
+      message += System.lineSeparator() + "  local=" + local;
+      message += System.lineSeparator() + "  raw=" + raw;
+      message += System.lineSeparator() + "  level=" + level;
+      message += System.lineSeparator() + "  attrs=";
       if (attrs != null) {
         for (int i = 0; i < attrs.getLength(); i++) {
-          message += SystemUtils.LINE_SEPARATOR + "    attr=(" + attrs.getQName(i) + ", " + attrs.getValue(i) + ")";
+          message += System.lineSeparator() + "    attr=(" + attrs.getQName(i) + ", " + attrs.getValue(i) + ")";
         }
         if (attrs.getLength() == 0) {
           message += " aucun élément.";
@@ -659,7 +659,7 @@ public class XmlParams extends DefaultHandler {
 
   public void characters(char[] ch, int start, int length) {
     // Donne de contenu du valeur d'un node
-    // System.out.println(new String(ch, start, length));
+    LOGGER.finest(new String(ch, start, length));
   }
 
   public XmlDocument parseFile(File file) throws SAXException // "D:\\Personnel\\generate\\tmp\\table.xml"

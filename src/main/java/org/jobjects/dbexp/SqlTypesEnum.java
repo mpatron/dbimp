@@ -12,10 +12,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * <p>Title: IHM</p>
- * <p>Description: Exportation dbExp</p>
- * <p>Copyright: Copyright (c) 2004</p>
- * <p>Company: JObjects</p>
+ * <p>
+ * Title: IHM
+ * </p>
+ * <p>
+ * Description: Exportation dbExp
+ * </p>
+ * <p>
+ * Copyright: Copyright (c) 2004
+ * </p>
+ * <p>
+ * Company: JObjects
+ * </p>
  * 
  * @author Mickael Patron
  * @version 1.0
@@ -96,8 +104,8 @@ public class SqlTypesEnum implements Serializable, Comparable<SqlTypesEnum> {
 
   // ---------------------------------------------------------------------------
 
-  public SqlTypesEnum(String COLUMN_NAME, short DATA_TYPE, int COLUMN_SIZE,
-      int DECIMAL_DIGITS, int NULLABLE, int ORDINAL_POSITION, String TYPE_NAME) {
+  public SqlTypesEnum(String COLUMN_NAME, short DATA_TYPE, int COLUMN_SIZE, int DECIMAL_DIGITS, int NULLABLE, int ORDINAL_POSITION,
+      String TYPE_NAME) {
 
     name = COLUMN_NAME;
     dataType = DATA_TYPE;
@@ -139,14 +147,12 @@ public class SqlTypesEnum implements Serializable, Comparable<SqlTypesEnum> {
         preparedStatement = SqlTypesEnum.PREPAREDSTATEMENT_LONG;
         xmlType = SqlTypesEnum._long;
       }
-      if ((1 < getSize()) && (getSize() <= 38) && (0 < getDecimalDigits())
-          && (getDecimalDigits() <= 7)) {
+      if ((1 < getSize()) && (getSize() <= 38) && (0 < getDecimalDigits()) && (getDecimalDigits() <= 7)) {
         javaType = SqlTypesEnum.FLOAT;
         preparedStatement = SqlTypesEnum.PREPAREDSTATEMENT_FLOAT;
         xmlType = SqlTypesEnum._float;
       }
-      if ((1 < getSize()) && (getSize() <= 38) && (7 < getDecimalDigits())
-          && (getDecimalDigits() <= 15)) {
+      if ((1 < getSize()) && (getSize() <= 38) && (7 < getDecimalDigits()) && (getDecimalDigits() <= 15)) {
         javaType = SqlTypesEnum.DOUBLE;
         preparedStatement = SqlTypesEnum.PREPAREDSTATEMENT_DOUBLE;
         xmlType = SqlTypesEnum._double;
@@ -373,15 +379,12 @@ public class SqlTypesEnum implements Serializable, Comparable<SqlTypesEnum> {
     return returnValue;
   }
 
-  public static Collection<SqlTypesEnum> getColumns(DatabaseMetaData metadata,
-      String schemaName, String tableName) throws SQLException {
+  public static Collection<SqlTypesEnum> getColumns(DatabaseMetaData metadata, String schemaName, String tableName) throws SQLException {
     LinkedList<SqlTypesEnum> returnValue = new LinkedList<SqlTypesEnum>();
     ResultSet rs = metadata.getColumns(null, schemaName, tableName, "%");
     while (rs.next()) {
-      SqlTypesEnum f = new SqlTypesEnum(rs.getString("COLUMN_NAME"),
-          (short) rs.getInt("DATA_TYPE"), rs.getInt("COLUMN_SIZE"),
-          rs.getInt("DECIMAL_DIGITS"), rs.getInt("NULLABLE"),
-          rs.getInt("ORDINAL_POSITION"), rs.getString("TYPE_NAME"));
+      SqlTypesEnum f = new SqlTypesEnum(rs.getString("COLUMN_NAME"), (short) rs.getInt("DATA_TYPE"), rs.getInt("COLUMN_SIZE"),
+          rs.getInt("DECIMAL_DIGITS"), rs.getInt("NULLABLE"), rs.getInt("ORDINAL_POSITION"), rs.getString("TYPE_NAME"));
       returnValue.add(f);
     }
     rs.close();
@@ -415,8 +418,7 @@ public class SqlTypesEnum implements Serializable, Comparable<SqlTypesEnum> {
    * @see java.lang.Object#hashCode()
    */
   public int hashCode() {
-    return new HashCodeBuilder(1429000583, -239805079).append(this.name)
-        .toHashCode();
+    return new HashCodeBuilder(1429000583, -239805079).append(this.name).toHashCode();
   }
 
   /**

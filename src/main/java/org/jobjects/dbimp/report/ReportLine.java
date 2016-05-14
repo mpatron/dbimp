@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.trigger.Field;
 
 /**
@@ -33,7 +32,7 @@ public class ReportLine implements Reporting {
 
   private BufferedWriter bufferedWriter = null;
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   private int numberLine = 0;
 
@@ -70,10 +69,10 @@ public class ReportLine implements Reporting {
    * Method showParameter : ligne {0} : Info : Detail de la ligne
    */
   public void showParameter() {
-    internalBuffer.append(SystemUtils.LINE_SEPARATOR);
+    internalBuffer.append(System.lineSeparator());
     internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE", new Object[] { new Integer(numberLine) }));
     for (Field field : reportTypeLine.getLine().getFields()) {
-      internalBuffer.append(SystemUtils.LINE_SEPARATOR);
+      internalBuffer.append(System.lineSeparator());
       try {
         switch (field.getDiscriminator()) {
         case POSITION:
@@ -82,16 +81,18 @@ public class ReportLine implements Reporting {
           break;
 
         case CONSTANTE:
-          internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE_CONSTANTE", new Object[] { field.getName(), field.getConstante().getValue() }));
+          internalBuffer.append(
+              RessourceReporting.getString("PARAMETER_LINE_CONSTANTE", new Object[] { field.getName(), field.getConstante().getValue() }));
           break;
 
         case QUERY:
-          internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE_CONSTANTE", new Object[] { field.getName(), field.getQuery().getSql() }));
+          internalBuffer.append(
+              RessourceReporting.getString("PARAMETER_LINE_CONSTANTE", new Object[] { field.getName(), field.getQuery().getSql() }));
           break;
         }
       } catch (Exception ex) {
         internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE_UNKNOW_ERROR", new Object[] { field.getName() }));
-        log.log(Level.SEVERE, "", ex);
+        LOGGER.log(Level.SEVERE, "", ex);
       }
     }
     used = true;
@@ -100,31 +101,32 @@ public class ReportLine implements Reporting {
   // ---------------------------------------------------------------------------
 
   public void showLine() {
-    internalBuffer.append("Line(" + numberLine + ") " + reportTypeLine.getLine().getName() + ":" + SystemUtils.LINE_SEPARATOR);
+    internalBuffer.append("Line(" + numberLine + ") " + reportTypeLine.getLine().getName() + ":" + System.lineSeparator());
 
     for (Field field : reportTypeLine.getLine().getFields()) {
       try {
         switch (field.getDiscriminator()) {
         case POSITION:
-          internalBuffer.append("  " + field.getName() + "(" + field.getPosition().getStartposition() + ", " + field.getPosition().getSize() + ") = \"");
+          internalBuffer.append(
+              "  " + field.getName() + "(" + field.getPosition().getStartposition() + ", " + field.getPosition().getSize() + ") = \"");
           internalBuffer.append(field.getBuffer());
-          internalBuffer.append("\"" + SystemUtils.LINE_SEPARATOR);
+          internalBuffer.append("\"" + System.lineSeparator());
           break;
 
         case CONSTANTE:
           internalBuffer.append("  " + field.getName() + "(cste) = \"");
           internalBuffer.append(field.getConstante().getValue());
-          internalBuffer.append("\"" + SystemUtils.LINE_SEPARATOR);
+          internalBuffer.append("\"" + System.lineSeparator());
           break;
 
         case QUERY:
           internalBuffer.append("  " + field.getName() + "(query) = \"");
           internalBuffer.append(field.getQuery().getSql());
-          internalBuffer.append("\"" + SystemUtils.LINE_SEPARATOR);
+          internalBuffer.append("\"" + System.lineSeparator());
           break;
         }
       } catch (Exception exinternal) {
-        internalBuffer.append("  " + field.getName() + " (unkown error)" + SystemUtils.LINE_SEPARATOR);
+        internalBuffer.append("  " + field.getName() + " (unkown error)" + System.lineSeparator());
       }
     }
     used = true;
@@ -146,7 +148,7 @@ public class ReportLine implements Reporting {
    * Method INFO_LINE_DESTROY : ligne {0} : Info : Ligne detruite
    */
   public void INFO_LINE_DESTROY() {
-    internalBuffer.append(SystemUtils.LINE_SEPARATOR);
+    internalBuffer.append(System.lineSeparator());
     internalBuffer.append(RessourceReporting.getString("INFO_LINE_DESTROY", new Object[] { new Integer(numberLine) }));
     used = true;
   }
@@ -157,7 +159,7 @@ public class ReportLine implements Reporting {
    * @param message
    */
   public void ERROR_MESSAGE(String lineName, String message) {
-    internalBuffer.append(SystemUtils.LINE_SEPARATOR);
+    internalBuffer.append(System.lineSeparator());
     internalBuffer.append(RessourceReporting.getString("ERROR_MESSAGE", new Object[] { new Integer(numberLine), lineName, message }));
     used = true;
   }

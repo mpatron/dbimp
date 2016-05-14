@@ -1,6 +1,10 @@
 package org.jobjects.dbimp;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class SQLServerTest {
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   private java.sql.Connection con = null;
 
@@ -30,20 +34,17 @@ public class SQLServerTest {
   }
 
   private String getConnectionUrl() {
-    return url + serverName + ":" + portNumber + ";databaseName="
-        + databaseName + ";selectMethod=" + selectMethod + ";";
+    return url + serverName + ":" + portNumber + ";databaseName=" + databaseName + ";selectMethod=" + selectMethod + ";";
   }
 
   private java.sql.Connection getConnection() {
     try {
       Class.forName("com.microsoft.jdbc.sqlserver.SQLServerDriver");
-      con = java.sql.DriverManager.getConnection(getConnectionUrl(), userName,
-          password);
+      con = java.sql.DriverManager.getConnection(getConnectionUrl(), userName, password);
       if (con != null)
-        System.out.println("Connection Successful!");
+        LOGGER.fine("Connection Successful!");
     } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("Error Trace in getConnection() : " + e.getMessage());
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
     return con;
   }
@@ -59,25 +60,24 @@ public class SQLServerTest {
       con = this.getConnection();
       if (con != null) {
         dm = con.getMetaData();
-        System.out.println("Driver Information");
-        System.out.println("\tDriver Name: " + dm.getDriverName());
-        System.out.println("\tDriver Version: " + dm.getDriverVersion());
-        System.out.println("\nDatabase Information ");
-        System.out.println("\tDatabase Name: " + dm.getDatabaseProductName());
-        System.out.println("\tDatabase Version: "
-            + dm.getDatabaseProductVersion());
-        System.out.println("Avalilable Catalogs ");
+        LOGGER.finest("Driver Information");
+        LOGGER.finest("\tDriver Name: " + dm.getDriverName());
+        LOGGER.finest("\tDriver Version: " + dm.getDriverVersion());
+        LOGGER.finest("\nDatabase Information ");
+        LOGGER.finest("\tDatabase Name: " + dm.getDatabaseProductName());
+        LOGGER.finest("\tDatabase Version: " + dm.getDatabaseProductVersion());
+        LOGGER.finest("Avalilable Catalogs ");
         rs = dm.getCatalogs();
         while (rs.next()) {
-          System.out.println("\tcatalog: " + rs.getString(1));
+          LOGGER.finest("\tcatalog: " + rs.getString(1));
         }
         rs.close();
         rs = null;
         closeConnection();
       } else
-        System.out.println("Error: No active Connection");
+        LOGGER.severe("Error: No active Connection");
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
     dm = null;
   }

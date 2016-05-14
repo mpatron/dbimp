@@ -13,26 +13,23 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Projet : dbimp 
- * Fichier :
- * Creer le : 14 oct. 2004 15:59:49
+ * Projet : dbimp Fichier : Creer le : 14 oct. 2004 15:59:49
  * 
  * @author Mickaël Patron
  * 
  */
 public class FileAsciiReader {
 
-  private FileInputStream   fileInputStream   = null;
+  private FileInputStream fileInputStream = null;
 
   private InputStreamReader inputStreamReader = null;
 
-  private BufferedReader  bufferedReader  = null;
+  private BufferedReader bufferedReader = null;
 
   public FileAsciiReader(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
     this(fileName, "ISO-8859-1");
   }
 
-  
   public FileAsciiReader(String fileName, String encoding) throws FileNotFoundException, UnsupportedEncodingException {
     fileInputStream = new FileInputStream(fileName);
     inputStreamReader = new InputStreamReader(fileInputStream, encoding);
@@ -54,15 +51,14 @@ public class FileAsciiReader {
    * @throws FileNotFoundException
    * @throws UnsupportedEncodingException
    */
-  public FileAsciiReader(InputStream inputStream, String encoding) throws FileNotFoundException,
-      UnsupportedEncodingException {
+  public FileAsciiReader(InputStream inputStream, String encoding) throws FileNotFoundException, UnsupportedEncodingException {
     inputStreamReader = new InputStreamReader(inputStream, encoding);
     bufferedReader = new BufferedReader(inputStreamReader);
   }
 
-  
   /**
-   * @param file Le fichier
+   * @param file
+   *          Le fichier
    * @throws FileNotFoundException
    * @throws UnsupportedEncodingException
    */
@@ -70,20 +66,21 @@ public class FileAsciiReader {
     this(file, "ISO-8859-1");
   }
 
-  public FileAsciiReader(File file, String encoding) throws FileNotFoundException,
-      UnsupportedEncodingException {
+  public FileAsciiReader(File file, String encoding) throws FileNotFoundException, UnsupportedEncodingException {
     fileInputStream = new FileInputStream(file);
     inputStreamReader = new InputStreamReader(fileInputStream, encoding);
     bufferedReader = new BufferedReader(inputStreamReader);
   }
-  
+
   /**
    * @throws java.io.IOException
    */
   public void close() throws IOException {
     bufferedReader.close();
-    if (inputStreamReader != null) inputStreamReader.close();
-    if (fileInputStream != null) fileInputStream.close();
+    if (inputStreamReader != null)
+      inputStreamReader.close();
+    if (fileInputStream != null)
+      fileInputStream.close();
   }
 
   /**
@@ -102,8 +99,7 @@ public class FileAsciiReader {
   }
 
   /**
-   * @return @throws
-   *         java.io.IOException
+   * @return @throws java.io.IOException
    */
   public int read() throws IOException {
     return bufferedReader.read();
@@ -111,8 +107,7 @@ public class FileAsciiReader {
 
   /**
    * @param cbuf
-   * @return @throws
-   *         java.io.IOException
+   * @return @throws java.io.IOException
    */
   public int read(char[] cbuf) throws IOException {
     return bufferedReader.read(cbuf);
@@ -122,24 +117,21 @@ public class FileAsciiReader {
    * @param cbuf
    * @param off
    * @param len
-   * @return @throws
-   *         java.io.IOException
+   * @return @throws java.io.IOException
    */
   public int read(char[] cbuf, int off, int len) throws IOException {
     return bufferedReader.read(cbuf, off, len);
   }
 
   /**
-   * @return @throws
-   *         java.io.IOException
+   * @return @throws java.io.IOException
    */
   public String readLine() throws IOException {
     return bufferedReader.readLine();
   }
 
   /**
-   * @return @throws
-   *         java.io.IOException
+   * @return @throws java.io.IOException
    */
   public boolean ready() throws IOException {
     return bufferedReader.ready();
@@ -154,8 +146,7 @@ public class FileAsciiReader {
 
   /**
    * @param n
-   * @return @throws
-   *         java.io.IOException
+   * @return @throws java.io.IOException
    */
   public long skip(long n) throws IOException {
     return bufferedReader.skip(n);

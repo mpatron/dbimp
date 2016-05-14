@@ -20,10 +20,11 @@ import org.jobjects.dbimp.trigger.Line;
  */
 public class SqlUpdate extends SqlStatement {
 
-  // mettre static car log doit être construit avant le constructeur pour qu'il
+  // mettre static car LOGGER doit être construit avant le constructeur pour
+  // qu'il
   // soit non null pour createSQL();
   // qui est appellé par le constructeur SqlStatement.
-  private static Logger log = Logger.getLogger(SqlUpdate.class.getName());
+  private static Logger LOGGER = Logger.getLogger(SqlUpdate.class.getName());
 
   private int countUpdate = 0;
   // ---------------------------------------------------------------------------
@@ -39,7 +40,8 @@ public class SqlUpdate extends SqlStatement {
    *          est pointeur sur le Rapport.
    * @throws SQLException
    */
-  public SqlUpdate(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  public SqlUpdate(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
   }
   // ---------------------------------------------------------------------------
@@ -70,8 +72,9 @@ public class SqlUpdate extends SqlStatement {
     }
 
     if (first) {
-      String message = RessourceReporting.getString("ERROR_PARAMETRAGE", new Object[] { getXmlline().getName(), getXmlline().getTableName() });
-      log.severe(message);
+      String message = RessourceReporting.getString("ERROR_PARAMETRAGE",
+          new Object[] { getXmlline().getName(), getXmlline().getTableName() });
+      LOGGER.severe(message);
       return null;
     }
 
@@ -158,7 +161,7 @@ public class SqlUpdate extends SqlStatement {
         }
         if (flag) {
           returnValue = pstmt.executeUpdate();
-          log.fine("Mise à jour effectué : " + getSql());
+          LOGGER.fine("Mise à jour effectué : " + getSql());
           if (getXmlline().getTrigger() != null) {
             getXmlline().getTrigger().afterUpdate(getConnection(), nbLigne, getReportTypeLine().getReportTrigger(), getXmlline());
           }

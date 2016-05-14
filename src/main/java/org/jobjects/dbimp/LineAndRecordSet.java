@@ -32,7 +32,7 @@ import org.jobjects.dbimp.xml.XmlLine;
  * @version 2.0
  */
 public class LineAndRecordSet {
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
   // ---------------------------------------------------------------------------
   private Connection connection = null;
   private Line xmlline = null;
@@ -50,7 +50,8 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
 
-  public LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  public LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
 
     this.connection = connection;
     this.xmlline = xmlline;
@@ -84,33 +85,33 @@ public class LineAndRecordSet {
           }
           stmt = null;
         } catch (Exception ex) {
-          log.log(Level.SEVERE, "", ex);
+          LOGGER.log(Level.SEVERE, "", ex);
           field.setCheckIn(null);
           field.setCheckInSql(null);
         }
       }
     }
     sql_select = new SqlSelect(connection, schemaName, cached, xmlline, reportTypeLine);
-    log.finest("Load SqlSelect.");
+    LOGGER.finest("Load SqlSelect.");
     if ((LineActionTypeEnum.INSERT.equals(InsertAndUpdate)) || (LineActionTypeEnum.INSERT_UPDATE.equals(InsertAndUpdate))) {
       sql_insert = new SqlInsert(connection, schemaName, cached, xmlline, reportTypeLine);
-      log.finest("Load SqlInsert.");
+      LOGGER.finest("Load SqlInsert.");
       if (SqlUpdateBlob.hasBlob(xmlline)) {
         sql_update_blob = new SqlUpdateBlob(connection, schemaName, cached, xmlline, reportTypeLine);
-        log.finest("Load SqlUpdateBlob.");
+        LOGGER.finest("Load SqlUpdateBlob.");
       }
     }
     if ((LineActionTypeEnum.UPDATE.equals(InsertAndUpdate)) || (LineActionTypeEnum.INSERT_UPDATE.equals(InsertAndUpdate))) {
       sql_update = new SqlUpdate(connection, schemaName, cached, xmlline, reportTypeLine);
-      log.finest("Load SqlUpdate.");
+      LOGGER.finest("Load SqlUpdate.");
       if (SqlUpdateBlob.hasBlob(xmlline)) {
         sql_update_blob = new SqlUpdateBlob(connection, schemaName, cached, xmlline, reportTypeLine);
-        log.finest("Load SqlUpdateBlob.");
+        LOGGER.finest("Load SqlUpdateBlob.");
       }
     }
     if (LineActionTypeEnum.DELETE.equals(InsertAndUpdate)) {
       sql_delete = new SqlDelete(connection, schemaName, cached, xmlline, reportTypeLine);
-      log.finest("Load SqlDelete.");
+      LOGGER.finest("Load SqlDelete.");
     }
     if (xmlline.getTrigger() != null)
       xmlline.getTrigger().beforeAction(connection, nbLigne, reportTypeLine.getReportTrigger(), xmlline);
@@ -149,7 +150,7 @@ public class LineAndRecordSet {
   public boolean isActive(String ligne) {
     boolean returnValue = true;
     for (Key key : xmlline.getKeys()) {
-      if (key.getIsBlank() == null) {
+      if (!key.isBlank()) {
         if ((key.getStartposition() > ligne.length()) || ((key.getStartposition() + key.getSize()) > ligne.length())) {
           returnValue &= false;
           break;
@@ -159,7 +160,7 @@ public class LineAndRecordSet {
         }
       } else {
         String buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
-        returnValue &= !(key.getIsBlank().booleanValue() ^ StringUtils.isEmpty(buffer.trim()));
+        returnValue &= !(key.isBlank() ^ StringUtils.isEmpty(buffer.trim()));
       }
     }
     return returnValue;
@@ -216,7 +217,7 @@ public class LineAndRecordSet {
               connection.commit();
             } else {
               connection.rollback();
-              log.log(Level.SEVERE, "ligne " + nbLigne + " not deleted, try to delete more one line.");
+              LOGGER.log(Level.SEVERE, "ligne " + nbLigne + " not deleted, try to delete more one line.");
             }
             connection.setAutoCommit(true);
           } catch (SQLException ex) {
@@ -233,7 +234,7 @@ public class LineAndRecordSet {
       // reportTypeLine.println(nbLigne,
       // "Erreur non afficheable nullable_error=false", xmlline);
       // reportTypeLine.ERROR_FIELD_NULL(nbLigne,"?");
-      log.finest("ligne " + nbLigne + " rejected.");
+      LOGGER.finest("ligne " + nbLigne + " rejected.");
     }
     ((XmlLine) xmlline).unloadFields();
   }
@@ -248,7 +249,7 @@ public class LineAndRecordSet {
   public void release() throws java.sql.SQLException {
     // if ((reportTypeLine != null) && (reportTypeLine.getLevel() >=
     // Report.VERBOSE)) {
-    // log.debug(
+    // LOGGER.debug(
     // reportTypeLine.INFO_STATUS(
     // getXmlLine().getName(),
     // sql_select == null ? 0 : sql_select.getCount(),

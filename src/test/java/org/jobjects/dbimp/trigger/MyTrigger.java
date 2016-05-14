@@ -24,8 +24,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public void beforeAction(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public void beforeAction(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "beforeAction : " + nbLigne);
   }
 
@@ -36,8 +35,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public void afterAction(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public void afterAction(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "afterAction : " + nbLigne);
   }
 
@@ -48,8 +46,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public boolean beforeInsert(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public boolean beforeInsert(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "beforeInsert : " + nbLigne);
     return true;
   }
@@ -61,8 +58,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public void afterInsert(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public void afterInsert(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "beforeInsert : " + nbLigne);
   }
 
@@ -73,8 +69,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public boolean beforeUpdate(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public boolean beforeUpdate(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "beforeUpdate : " + nbLigne);
     return true;
   }
@@ -86,8 +81,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public void afterUpdate(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public void afterUpdate(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "afterUpdate : " + nbLigne);
   }
 
@@ -98,8 +92,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public boolean beforeDelete(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public boolean beforeDelete(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "beforeDelete : " + nbLigne);
     return true;
   }
@@ -111,8 +104,7 @@ public class MyTrigger implements Trigger {
    * int, org.jobjects.dbimp.report.ReportTrigger,
    * org.jobjects.dbimp.trigger.Line)
    */
-  public void afterDelete(Connection connection, int nbLigne,
-      ReportTrigger report, Line line) {
+  public void afterDelete(Connection connection, int nbLigne, ReportTrigger report, Line line) {
     log.log(Level.INFO, "afterDelete : " + nbLigne);
   }
 

@@ -2,6 +2,8 @@ package org.jobjects.dbimp.xml;
 
 import java.util.LinkedList;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Tag query. Utilisé dans la lecture du fichier de paramètrage.
  * 
@@ -11,6 +13,7 @@ import java.util.LinkedList;
 
 public class XmlQuery {
 
+  @NotNull
   private String sql = null;
 
   private LinkedList<XmlQueryParam> queryParams = new LinkedList<XmlQueryParam>();

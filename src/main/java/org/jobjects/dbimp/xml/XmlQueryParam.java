@@ -3,7 +3,6 @@ package org.jobjects.dbimp.xml;
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
 
-
 /**
  * Tag query-param. Utilisé dans la lecture du fichier de paramètrage.
  * 

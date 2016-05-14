@@ -4,15 +4,26 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 /**
- * <p>Title: IHM</p>
- * <p>Description: Exportation dbExp</p>
- * <p>Copyright: Copyright (c) 2004</p>
- * <p>Company: JObjects</p>
- * <p>Date :  4 sept. 2003</p>
+ * <p>
+ * Title: IHM
+ * </p>
+ * <p>
+ * Description: Exportation dbExp
+ * </p>
+ * <p>
+ * Copyright: Copyright (c) 2004
+ * </p>
+ * <p>
+ * Company: JObjects
+ * </p>
+ * <p>
+ * Date : 4 sept. 2003
+ * </p>
+ * 
  * @author Mickael Patron
  * @version 1.0
  */
-public class RessourceReporting /* extends ResourceBundle */{
+public class RessourceReporting /* extends ResourceBundle */ {
 
   private static ResourceBundle instance = null;
 
@@ -25,8 +36,7 @@ public class RessourceReporting /* extends ResourceBundle */{
   public static final ResourceBundle getBundle() {
     ResourceBundle returnValue = instance;
     if (instance == null) {
-      instance = ResourceBundle.getBundle(RessourceReporting.class.getPackage()
-          .getName() + ".reporting");
+      instance = ResourceBundle.getBundle(RessourceReporting.class.getPackage().getName() + ".reporting");
       // instance= getBundle(RessourceReporting.class.getPackage().getName());
       // instance=
       // ResourceBundle.getBundle("org.jobjects.dbimp.report.reporting");

@@ -18,13 +18,14 @@ import org.jobjects.dbimp.trigger.Line;
  */
 public class SqlDelete extends SqlStatement {
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   private int count = 0;
 
   // ---------------------------------------------------------------------------
 
-  public SqlDelete(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  public SqlDelete(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
   }
 
@@ -97,14 +98,14 @@ public class SqlDelete extends SqlStatement {
                 setAll(pstmt, i, field);
               }
               i++;
-              log.finest("(" + nbLigne + ") delete where fieldname=" + field.getName() + " value=" + field.getBuffer());
+              LOGGER.finest("(" + nbLigne + ") delete where fieldname=" + field.getName() + " value=" + field.getBuffer());
             }
           }
         }
 
         if (flag) {
           returnValue = pstmt.executeUpdate();
-          log.finest("Suppresion effectué : " + getSql());
+          LOGGER.finest("Suppresion effectué : " + getSql());
           if (getXmlline().getTrigger() != null) {
             getXmlline().getTrigger().afterDelete(getConnection(), nbLigne, getReportTypeLine().getReportTrigger(), getXmlline());
           }
@@ -123,7 +124,7 @@ public class SqlDelete extends SqlStatement {
     } catch (SQLException ex) {
       SqlUtils.AfficheSQLException(getXmlline(), getSql(), ex, getReportTypeLine().getReportLine());
     } catch (Exception throwable) {
-      log.log(Level.SEVERE, "Erreur grave", throwable);
+      LOGGER.log(Level.SEVERE, "Erreur grave", throwable);
     }
     count += returnValue;
     getReportTypeLine().addToNbDelete(returnValue);

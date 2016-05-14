@@ -3,10 +3,12 @@ package org.jobjects.dbimp.sql;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
@@ -34,7 +36,7 @@ import org.jobjects.dbimp.trigger.Line;
  */
 public class SqlUtils {
 
-  private static Logger log = Logger.getLogger(SqlUtils.class.getName());
+  private static Logger LOGGER = Logger.getLogger(SqlUtils.class.getName());
 
   public static void AfficheSQLException(Line xmlline, String message, SQLException ex, ReportLine reporting) {
     // ORA-02290: violation de contraintes
@@ -43,7 +45,7 @@ public class SqlUtils {
     String chaine = xmlline.getName() + " : " + "Ligne(" + reporting.getNumberLine() + ") : ";
     chaine += (ex.getMessage() + "." + System.lineSeparator());
     chaine += showLine(reporting.getNumberLine(), xmlline);
-    log.log(Level.SEVERE, message + System.lineSeparator() + chaine, ex);
+    LOGGER.log(Level.SEVERE, message + System.lineSeparator() + chaine, ex);
 
     reporting.ERROR_MESSAGE(xmlline.getName(), ex.getMessage());
     reporting.showLine();
@@ -57,7 +59,8 @@ public class SqlUtils {
       try {
         switch (field.getDiscriminator()) {
         case POSITION:
-          returnValue += ("  " + field.getName() + "(" + field.getPosition().getStartposition() + ", " + field.getPosition().getSize() + ") = \"");
+          returnValue += ("  " + field.getName() + "(" + field.getPosition().getStartposition() + ", " + field.getPosition().getSize()
+              + ") = \"");
           returnValue += field.getBuffer();
           returnValue += ("\"" + System.lineSeparator());
           break;
@@ -85,63 +88,54 @@ public class SqlUtils {
 
   /**
    * Affiche sur la sortie standard le contenu du RecordSet.
-   * @param rs est le RecordSet à Afficher
+   * 
+   * @param rs
+   *          est le RecordSet à Afficher
    * @return rien.
    */
-  public static void Affiche(ResultSet rs)
-  {
-    try
-    {
-      Vector<String[]> lignes = new Vector<String[]>();
+  public static void Affiche(ResultSet rs) {
+    try {
+      List<String[]> lignes = new ArrayList<String[]>();
 
       ResultSetMetaData rsmd = rs.getMetaData();
       int colcount = rsmd.getColumnCount();
 
-      String[] chaine = new String[colcount];
+      String[] chaines = new String[colcount];
       int[] colsize = new int[colcount];
 
-      for(int i=1; i<=colcount; i++)
-      {
-        chaine[i-1] = rsmd.getColumnName(i);
-        colsize[i-1] =  chaine[i-1].length();
+      for (int i = 1; i <= colcount; i++) {
+        chaines[i - 1] = rsmd.getColumnName(i);
+        colsize[i - 1] = chaines[i - 1].length();
       }
-      lignes.add(chaine);
+      lignes.add(chaines);
 
-
-      while(rs.next())
-      {
-        chaine = new String[colcount];
-        for(int i=1; i<=colcount; i++)
-        {
-          chaine[i-1] = rs.getString(i);
-          if(chaine[i-1] != null)
-          {
-            if(colsize[i-1] < chaine[i-1].length())
-            {
-              colsize[i-1] =  chaine[i-1].length();
+      while (rs.next()) {
+        chaines = new String[colcount];
+        for (int i = 1; i <= colcount; i++) {
+          chaines[i - 1] = rs.getString(i);
+          if (chaines[i - 1] != null) {
+            if (colsize[i - 1] < chaines[i - 1].length()) {
+              colsize[i - 1] = chaines[i - 1].length();
             }
           }
         }
-        lignes.add(chaine);
+        lignes.add(chaines);
       }
       rs.close();
 
-      int diff;
-      for(int i=0; i<lignes.size(); i++)
-      {
-        chaine = (String[])lignes.get(i);
-        for(int j=0; j<chaine.length; j++)
-        {
-          if(chaine[j]==null) chaine[j] = "Null";
-          diff = colsize[j] - chaine[j].length();
-          System.out.print(chaine[j] + " ");
-          for(int k=0; k<diff; k++) System.out.print(" ");
-          System.out.print(" ");
+      StringBuffer sb = new StringBuffer();
+      sb.append(System.lineSeparator());
+      for (String[] arrayChaine : lignes) {
+        for (int j = 0; j < arrayChaine.length; j++) {
+          sb.append(StringUtils.defaultString(arrayChaine[j]));
+          sb.append(StringUtils.repeat(" ", colsize[j] - StringUtils.length(arrayChaine[j]) + 2));
         }
-        System.out.println("");
+        sb.append(System.lineSeparator());
       }
+      LOGGER.finest(sb.toString());
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
-    catch(Exception e) { e.printStackTrace(System.err); }
   }
-  //------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------
 }

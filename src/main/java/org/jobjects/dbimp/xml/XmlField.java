@@ -109,7 +109,7 @@ public class XmlField implements Field, Comparable<XmlField> {
 
   private FieldTypeEnum discriminator = FieldTypeEnum.POSITION;
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   /**
    * Method getDiscriminator. Distingue le typeFormat de la source de donnée.
@@ -291,7 +291,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_INTEGER(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -306,7 +306,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_LONG(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -318,7 +318,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_FLOAT(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -331,7 +331,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_DOUBLE(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -349,7 +349,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (ParseException pe) {
         if (nullableError) {
           String message = reportField.ERROR_FIELD_NOT_A_DATETIME(buffer, getDateFormat());
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -589,11 +589,13 @@ public class XmlField implements Field, Comparable<XmlField> {
       case POSITION:
 
         try {
-          buffer = ligne.substring(this.getPosition().getStartposition(), this.getPosition().getStartposition() + this.getPosition().getSize()).trim();
+          buffer = ligne
+              .substring(this.getPosition().getStartposition(), this.getPosition().getStartposition() + this.getPosition().getSize())
+              .trim();
           returnValue = isBufferValid(reportField);
         } catch (IndexOutOfBoundsException ioobe) {
-          log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
-          log.log(Level.SEVERE, reportField.ERROR_FIELD_NOT_IN_FILE());
+          LOGGER.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
+          LOGGER.log(Level.SEVERE, reportField.ERROR_FIELD_NOT_IN_FILE());
           /*
            * Si on veut arrêter l'importation de la ligne si les champs est
            * inaxcessible alors il faut decommenter : 'returnValue= false;'
@@ -607,11 +609,11 @@ public class XmlField implements Field, Comparable<XmlField> {
         buffer = null;
         returnValue &= executeSubQuery(connection, ligne, reportField);
         /** *********************************** */
-        log.finest("Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
+        LOGGER.finest("Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
         break;
       }
     } catch (Exception ex) {
-      log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : ", ex);
+      LOGGER.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : ", ex);
       returnValue = false;
     }
 
@@ -645,11 +647,10 @@ public class XmlField implements Field, Comparable<XmlField> {
 
             case POSITION:
               try {
-                s_value = ligne
-                    .substring(queryparam.getPosition().getStartposition(), queryparam.getPosition().getStartposition() + queryparam.getPosition().getSize())
-                    .trim();
+                s_value = ligne.substring(queryparam.getPosition().getStartposition(),
+                    queryparam.getPosition().getStartposition() + queryparam.getPosition().getSize()).trim();
               } catch (IndexOutOfBoundsException ioobe) {
-                log.severe(reportField.ERROR_FIELD_NOT_IN_FILE());
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_IN_FILE());
                 setBuffer(null);
                 returnValue = false;
               }
@@ -674,7 +675,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.INTEGER);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_INTEGER(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_INTEGER(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -689,7 +690,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.INTEGER);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_LONG(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_LONG(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -704,7 +705,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.FLOAT);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_FLOAT(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_FLOAT(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -719,7 +720,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.DOUBLE);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_DOUBLE(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_DOUBLE(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -736,7 +737,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                     ts_value = new Timestamp(sdf.parse(s_value).getTime());
                   }
                 } catch (ParseException pe) {
-                  log.severe(reportField.ERROR_FIELD_NOT_A_DATETIME(s_value, queryparam.getDateformat()));
+                  LOGGER.severe(reportField.ERROR_FIELD_NOT_A_DATETIME(s_value, queryparam.getDateformat()));
                   setBuffer(null);
                   returnValue = false;
                 }
@@ -754,11 +755,11 @@ public class XmlField implements Field, Comparable<XmlField> {
               }
               break;
             }
-            // log.fatal( "("+i+")"+queryparam.type+"="+s_value);
+            // LOGGER.fatal( "("+i+")"+queryparam.type+"="+s_value);
             i++;
           }
 
-          // log.fatal(this.query().sql);
+          // LOGGER.fatal(this.query().sql);
           ResultSet rs = pstmt.executeQuery();
 
           try {
@@ -768,7 +769,7 @@ public class XmlField implements Field, Comparable<XmlField> {
 
             if (isEmptyOrNullBuffer() && (!isNullable())) {
               if (isNullableError()) {
-                log.info(reportField.ERROR_FIELD_MANDATORY(message_params.toString()));
+                LOGGER.info(reportField.ERROR_FIELD_MANDATORY(message_params.toString()));
               }
               returnValue = false;
             }
@@ -780,7 +781,8 @@ public class XmlField implements Field, Comparable<XmlField> {
           pstmt.close();
         }
       } catch (Exception ex) {
-        log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : " + getName() + " : " + getQuery().getSql(), ex);
+        LOGGER.log(Level.SEVERE,
+            "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : " + getName() + " : " + getQuery().getSql(), ex);
         returnValue = false;
       }
     } else {
@@ -802,7 +804,8 @@ public class XmlField implements Field, Comparable<XmlField> {
           stmt.close();
         }
       } catch (Exception ex) {
-        log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : " + getName() + " : " + getQuery().getSql(), ex);
+        LOGGER.log(Level.SEVERE,
+            "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : " + getName() + " : " + getQuery().getSql(), ex);
         returnValue = false;
       }
     }

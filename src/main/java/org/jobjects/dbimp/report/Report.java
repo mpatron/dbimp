@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jobjects.dbimp.FileAsciiWriter;
 import org.jobjects.dbimp.trigger.Line;
@@ -49,7 +48,7 @@ public class Report implements Reporting {
   private StringBuffer internalBuffer = new StringBuffer();
 
   /*-----------------------------------*/
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
   private FileAsciiWriter bw = null;
 
   /**
@@ -146,7 +145,7 @@ public class Report implements Reporting {
       try {
         returnValue = new ReportTypeLine(this, line);
       } catch (IOException ioe) {
-        log.log(Level.SEVERE, "Error while creating temporary file.", ioe);
+        LOGGER.log(Level.SEVERE, "Error while creating temporary file.", ioe);
       }
       reportTypeLinesHashMap.put(line.getName(), returnValue);
       reportTypeLines.push(returnValue);
@@ -168,20 +167,20 @@ public class Report implements Reporting {
    */
   public String INFO_STATUS(String status, int selected, int inserted, int updated, int deleted, int rejected) {
     String returnValue = null;
-    internalBuffer.append(SystemUtils.LINE_SEPARATOR);
+    internalBuffer.append(System.lineSeparator());
     internalBuffer.append("+=============================================================================+");
-    internalBuffer.append(SystemUtils.LINE_SEPARATOR);
+    internalBuffer.append(System.lineSeparator());
     internalBuffer.append("|");
-    internalBuffer.append(SystemUtils.LINE_SEPARATOR);
-    returnValue = RessourceReporting.getString("INFO_STATUS", new Object[] { status }) + SystemUtils.LINE_SEPARATOR;
-    returnValue += RessourceReporting.getString("INFO_STATUS_SELECT", new Object[] { new Integer(selected) }) + SystemUtils.LINE_SEPARATOR;
-    returnValue += RessourceReporting.getString("INFO_STATUS_INSERT", new Object[] { new Integer(inserted) }) + SystemUtils.LINE_SEPARATOR;
-    returnValue += RessourceReporting.getString("INFO_STATUS_UPDATE", new Object[] { new Integer(updated) }) + SystemUtils.LINE_SEPARATOR;
-    returnValue += RessourceReporting.getString("INFO_STATUS_DELETE", new Object[] { new Integer(deleted) }) + SystemUtils.LINE_SEPARATOR;
+    internalBuffer.append(System.lineSeparator());
+    returnValue = RessourceReporting.getString("INFO_STATUS", new Object[] { status }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_SELECT", new Object[] { new Integer(selected) }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_INSERT", new Object[] { new Integer(inserted) }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_UPDATE", new Object[] { new Integer(updated) }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_DELETE", new Object[] { new Integer(deleted) }) + System.lineSeparator();
     // returnValue += RessourceReporting.getString("INFO_STATUS_REJECT", new
     // Object[] { new Integer(rejected)})
-    // + SystemUtils.LINE_SEPARATOR;
-    log.finest(returnValue);
+    // + System.lineSeparator();
+    LOGGER.finest(returnValue);
     internalBuffer.append(returnValue);
     return returnValue;
   }
@@ -201,7 +200,8 @@ public class Report implements Reporting {
     bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_DATE"), 29, "") + ": " + date);
     bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_FILE_INPUT"), 29, "") + ": " + inputFile);
     bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_FILE_PARAMETER"), 29, "") + ": " + paramFile);
-    bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_DURATION"), 29, "") + ": " + getDuration() + " milisecondes.");
+    bw.writeln(
+        "|" + StringUtils.center(RessourceReporting.getString("PROCESS_DURATION"), 29, "") + ": " + getDuration() + " milisecondes.");
     bw.write("|");
     bw.flush();
 

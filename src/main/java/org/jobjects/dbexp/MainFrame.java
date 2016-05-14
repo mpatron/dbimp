@@ -104,16 +104,13 @@ public class MainFrame extends JFrame {
     statusBar.setText(" ");
     jMenuFile.setText("File");
     jMenuFileExit.setText("Exit");
-    jMenuFileExit
-        .addActionListener(new Frame1_jMenuFileExit_ActionAdapter(this));
+    jMenuFileExit.addActionListener(new Frame1_jMenuFileExit_ActionAdapter(this));
     jMenuHelp.setText("Help");
     jMenuHelpAbout.setText("About");
-    jMenuHelpAbout.addActionListener(new Frame1_jMenuHelpAbout_ActionAdapter(
-        this));
+    jMenuHelpAbout.addActionListener(new Frame1_jMenuHelpAbout_ActionAdapter(this));
     jPanel1.setLayout(xYLayout1);
     jButtonAction.setText("Run");
-    jButtonAction
-        .addActionListener(new Frame1_jButtonAction_actionAdapter(this));
+    jButtonAction.addActionListener(new Frame1_jButtonAction_actionAdapter(this));
     jLabelUsername.setText("User :");
     jLabelPassword.setText("Password :");
     jTextUsername.setText("dbExp");
@@ -129,11 +126,9 @@ public class MainFrame extends JFrame {
     jTextLnReplace.setText("");
     jTextNcLnCodTypReplace.setText("");
     jButtonChooseAscFile.setText("...");
-    jButtonChooseAscFile
-        .addActionListener(new Frame1_jButtonChooseAscFile_actionAdapter(this));
+    jButtonChooseAscFile.addActionListener(new Frame1_jButtonChooseAscFile_actionAdapter(this));
     jButtonChooseXmlFile.setText("...");
-    jButtonChooseXmlFile
-        .addActionListener(new Frame1_jButtonChooseXmlFile_actionAdapter(this));
+    jButtonChooseXmlFile.addActionListener(new Frame1_jButtonChooseXmlFile_actionAdapter(this));
     jTextChooseAscFile.setText("c:\\temp\\toto.asc");
     jTextChooseXmlFile.setText("c:\\temp\\toto.xml");
     jLabelAscFile.setText("Ascii File :");
@@ -182,12 +177,11 @@ public class MainFrame extends JFrame {
     Dimension dlgSize = dlg.getPreferredSize();
     Dimension frmSize = getSize();
     Point loc = getLocation();
-    dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
-        (frmSize.height - dlgSize.height) / 2 + loc.y);
+    dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
     dlg.setModal(true);
     dlg.pack();
     dlg.setVisible(true);
-    //dlg.show();
+    // dlg.show();
   }
 
   // Overridden so we can exit when window is closed
@@ -207,8 +201,7 @@ public class MainFrame extends JFrame {
     jButtonAction.setEnabled(false);
     statusBar.setText(null);
     try {
-      threadExpData = new ThreadExportData(jTextUrl.getText(),
-          jTextUsername.getText(), jTextPassword.getText(),
+      threadExpData = new ThreadExportData(jTextUrl.getText(), jTextUsername.getText(), jTextPassword.getText(),
           jTextChooseAscFile.getText(), jTextChooseXmlFile.getText());
       threadExpData.start();
 
@@ -283,8 +276,7 @@ class Frame1_jMenuHelpAbout_ActionAdapter implements ActionListener {
   }
 }
 
-class Frame1_jButtonAction_actionAdapter implements
-    java.awt.event.ActionListener {
+class Frame1_jButtonAction_actionAdapter implements java.awt.event.ActionListener {
   MainFrame adaptee;
 
   Frame1_jButtonAction_actionAdapter(MainFrame adaptee) {
@@ -296,8 +288,7 @@ class Frame1_jButtonAction_actionAdapter implements
   }
 }
 
-class Frame1_jButtonChooseAscFile_actionAdapter implements
-    java.awt.event.ActionListener {
+class Frame1_jButtonChooseAscFile_actionAdapter implements java.awt.event.ActionListener {
   MainFrame adaptee;
 
   Frame1_jButtonChooseAscFile_actionAdapter(MainFrame adaptee) {
@@ -309,8 +300,7 @@ class Frame1_jButtonChooseAscFile_actionAdapter implements
   }
 }
 
-class Frame1_jButtonChooseXmlFile_actionAdapter implements
-    java.awt.event.ActionListener {
+class Frame1_jButtonChooseXmlFile_actionAdapter implements java.awt.event.ActionListener {
   MainFrame adaptee;
 
   Frame1_jButtonChooseXmlFile_actionAdapter(MainFrame adaptee) {

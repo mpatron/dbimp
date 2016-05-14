@@ -17,13 +17,14 @@ import org.jobjects.dbimp.trigger.Line;
  */
 public class SqlInsert extends SqlStatement {
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   private int countInsert = 0;
 
   // ---------------------------------------------------------------------------
 
-  public SqlInsert(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  public SqlInsert(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
   }
 
@@ -97,7 +98,7 @@ public class SqlInsert extends SqlStatement {
 
         if (flag) {
           returnValue = pstmt.executeUpdate();
-          log.finest(getSql());
+          LOGGER.finest(getSql());
           if (getXmlline().getTrigger() != null) {
             getXmlline().getTrigger().afterInsert(getConnection(), nbLigne, getReportTypeLine().getReportTrigger(), getXmlline());
           }

@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
+import javax.validation.constraints.NotNull;
+
 import org.jobjects.dbimp.report.ReportField;
 import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.trigger.Field;
@@ -22,6 +24,9 @@ import org.jobjects.dbimp.trigger.Trigger;
  * @version 2.0
  */
 public class XmlLine implements Line {
+
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
+  // ---------------------------------------------------------------------------
 
   /**
    * Constructeur d'une line.
@@ -68,16 +73,19 @@ public class XmlLine implements Line {
   /**
    * Nom du type de ligne, il doit être unique.
    */
+  @NotNull
   private String name = null;
 
   /**
    * Nom de la table de la base de donnée.
    */
+  @NotNull
   private String tableName = null;
 
   /**
    * Type de l'action du type de ligne : INSERT|UPDATE|INSERT_UPDATE|DELETE|SHOW
    */
+  @NotNull
   private LineActionTypeEnum action = null;
 
   /**
@@ -100,9 +108,6 @@ public class XmlLine implements Line {
   }
 
   // ---------------------------------------------------------------------------
-  private Logger log = Logger.getLogger(getClass().getName());
-  // ---------------------------------------------------------------------------
-
   /**
    * Method loadFields. Chargement de l'attribut buffer de tout les champs pour
    * la ligne en cours. Si des erreurs sont reperés, elles seront enregistrés
@@ -119,14 +124,14 @@ public class XmlLine implements Line {
   public boolean loadFields(Connection connection, String ligne, ReportLine reporting) {
     boolean returnValue = true;
 
-//     for(Field field : fields) {
+    // for(Field field : fields) {
     for (Iterator<Field> it = fields.iterator(); it.hasNext();) {
       XmlField field = (XmlField) it.next();
       returnValue &= field.loadBuffer(connection, ligne, reporting.getReportField(field));
 
       if (field.isEmptyOrNullBuffer() && (!field.isNullable())) {
         if (field.isNullableError()) {
-          log.info(reporting.getReportField(field).ERROR_FIELD_MANDATORY());
+          LOGGER.info(reporting.getReportField(field).ERROR_FIELD_MANDATORY());
         }
         returnValue = false;
       }

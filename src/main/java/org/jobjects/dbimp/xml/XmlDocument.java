@@ -18,10 +18,10 @@ public class XmlDocument {
 
   @NotNull
   private String description = null;
-  
+
   @NotNull
   private FiletypeEnum filetype = FiletypeEnum.FILE_TEXT;
-  
+
   public String toString() {
     String returnValue = "<document>" + System.lineSeparator();
 
@@ -59,13 +59,13 @@ public class XmlDocument {
   }
 
   /**
-   * @param filetype the filetype to set
+   * @param filetype
+   *          the filetype to set
    */
   public void setFiletype(FiletypeEnum filetype) {
     this.filetype = filetype;
   }
 
-  
   /**
    * @return Returns the lines.
    */

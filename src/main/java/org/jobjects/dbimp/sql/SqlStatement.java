@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jobjects.dbimp.report.ReportLine;
 import org.jobjects.dbimp.report.ReportTypeLine;
@@ -28,7 +27,7 @@ import org.jobjects.dbimp.trigger.Line;
  */
 public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
-  private static Logger log = Logger.getLogger(SqlStatement.class.getName());
+  private static Logger LOGGER = Logger.getLogger(SqlStatement.class.getName());
 
   private Line xmlline = null;
 
@@ -42,7 +41,8 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
   private String sql = null;
 
-  protected SqlStatement(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  protected SqlStatement(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
     super(connection, schemaName);
     this.cached = cached;
     this.reportTypeLine = reportTypeLine;
@@ -50,9 +50,9 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
 
     primaries = getPrimaryColumns(xmlline.getTableName());
     sql = createSQL();
-    log.fine("Bufferisation : " + sql);
+    LOGGER.fine("Bufferisation : " + sql);
     if (StringUtils.isEmpty(sql)) {
-      log.severe("La requête, vennant du parametrage suivant, est vide :" + SystemUtils.LINE_SEPARATOR + xmlline.toString());
+      LOGGER.severe("La requête, vennant du parametrage suivant, est vide :" + System.lineSeparator() + xmlline.toString());
     }
     if (cached) {
       this.pstmtCached = getConnection().prepareStatement(sql);
@@ -89,7 +89,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
           }
           String message = "Line (" + reporting.getNumberLine() + ") " + xmlfield.getName() + " has a bad value. ";
           message += SqlUtils.showLine(reporting.getNumberLine(), xmlline);
-          log.severe(message);
+          LOGGER.severe(message);
 
           returnValue = false;
         }
@@ -198,7 +198,7 @@ public abstract class SqlStatement extends SqlPrimary implements SqlAction {
         throw new SQLException(field.getName() + " = " + field.getBuffer() + " type de champ du parametrage inconnu.");
       }
     } catch (Exception pe) {
-      log.severe(ExceptionUtils.getStackTrace(pe));
+      LOGGER.severe(ExceptionUtils.getStackTrace(pe));
       // new SQLException("String message", pe);
       throw new SQLException(field.getName() + " = '" + field.getBuffer() + "' " + pe.getMessage());
     }

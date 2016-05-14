@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.FileAsciiReader;
 import org.jobjects.dbimp.FileAsciiWriter;
 
@@ -80,7 +79,7 @@ public class ThreadExportData extends Thread {
 
       FileAsciiWriter fileWriterAsc = new FileAsciiWriter(fileAsc, Charset.defaultCharset().name());
       FileAsciiWriter fileWriterXml = new FileAsciiWriter(fileXml);
-      fileWriterXml.write(SystemUtils.LINE_SEPARATOR);
+      fileWriterXml.write(System.lineSeparator());
       ExpTable expTable = new ExpTable(connection, username.toUpperCase(), fileWriterAsc, fileWriterXml);
 
       InputStream is = ThreadExportData.class.getResourceAsStream("header.xml");
@@ -88,7 +87,7 @@ public class ThreadExportData extends Thread {
       String buffer = null;
       while ((buffer = far.readLine()) != null) {
         fileWriterXml.write(buffer);
-        fileWriterXml.write(SystemUtils.LINE_SEPARATOR);
+        fileWriterXml.write(System.lineSeparator());
       }
       far.close();
       is.close();
@@ -115,7 +114,7 @@ public class ThreadExportData extends Thread {
       }
 
       fileWriterXml.write("</document>");
-      fileWriterXml.write(SystemUtils.LINE_SEPARATOR);
+      fileWriterXml.write(System.lineSeparator());
       fileWriterAsc.close();
       fileWriterXml.close();
 

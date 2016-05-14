@@ -8,16 +8,16 @@ public class XmlFieldTypesTest {
 
   @Test(groups = "MaSuite")
   public void XmlFieldTypes() {
-    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"),FieldFormatEnum.INTEGER);
+    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
   }
 
   @Test(groups = "MaSuite")
   public void getTypeInt() {
-    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"),FieldFormatEnum.INTEGER);
+    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
   }
 
   @Test(groups = "MaSuite")
   public void getTypeString() {
-    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"),FieldFormatEnum.INTEGER);
+    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
   }
 }

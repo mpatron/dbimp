@@ -5,12 +5,13 @@ public interface Key {
   /**
    * @return Returns the isBlank.
    */
-  public abstract Boolean getIsBlank();
+  public abstract boolean isBlank();
 
   /**
-   * @param isBlank The isBlank to set.
+   * @param isBlank
+   *          The isBlank to set.
    */
-  public abstract void setIsBlank(Boolean isBlank);
+  public abstract void setBlank(boolean isBlank);
 
   /**
    * @return Returns the size.

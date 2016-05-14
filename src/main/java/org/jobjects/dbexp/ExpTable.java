@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.FileAsciiWriter;
 
 /**
@@ -34,7 +33,7 @@ import org.jobjects.dbimp.FileAsciiWriter;
  */
 
 public class ExpTable {
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   private Connection connection = null;
   private String schema = null;
@@ -65,9 +64,9 @@ public class ExpTable {
           int position = 0;
           int old_position = 0;
           xml.append("<line name=\"" + tablename + "\" tablename=\"" + tablename + "\">");
-          xml.append(SystemUtils.LINE_SEPARATOR);
+          xml.append(System.lineSeparator());
           xml.append("  <key value=\"" + tablename + "#\" startposition=\"0\" size=\"" + (tablename.length() + 1) + "\"/>");
-          xml.append(SystemUtils.LINE_SEPARATOR);
+          xml.append(System.lineSeparator());
           position = tablename.length() + 1; // le +1 du au #
           old_position = position;
           while (rs.next()) {
@@ -77,7 +76,8 @@ public class ExpTable {
             for (SqlTypesEnum sqlTypesEnum : fields) {
               String format = "MM/dd/yyyy HH:mm:ss.SSS";
               String buffer = null;
-              if ((sqlTypesEnum.getDataType() == Types.TIMESTAMP) || (sqlTypesEnum.getDataType() == Types.TIME) || (sqlTypesEnum.getDataType() == Types.DATE)) {
+              if ((sqlTypesEnum.getDataType() == Types.TIMESTAMP) || (sqlTypesEnum.getDataType() == Types.TIME)
+                  || (sqlTypesEnum.getDataType() == Types.DATE)) {
                 Timestamp timestamp = rs.getTimestamp(sqlTypesEnum.getName());
                 buffer = formatWithLength(timestamp, format.length(), format);
                 position += format.length();
@@ -100,7 +100,7 @@ public class ExpTable {
                 xml.append("<position startposition=\"" + old_position + "\"");
                 xml.append(" size=\"" + (position - old_position) + "\"/>");
                 xml.append("</field>");
-                xml.append(SystemUtils.LINE_SEPARATOR);
+                xml.append(System.lineSeparator());
               }
               old_position = position;
 
@@ -108,12 +108,12 @@ public class ExpTable {
 
             }
 
-            fileWriterAsc.write(SystemUtils.LINE_SEPARATOR);
+            fileWriterAsc.write(System.lineSeparator());
             first = false;
           }
 
           xml.append("</line>");
-          xml.append(SystemUtils.LINE_SEPARATOR);
+          xml.append(System.lineSeparator());
 
           if (!first) {
             fileWriterXml.write(xml.toString());
@@ -128,9 +128,9 @@ public class ExpTable {
       }
       stmt = null;
     } catch (SQLException e) {
-      log.log(Level.SEVERE, sql, e);
+      LOGGER.log(Level.SEVERE, sql, e);
     } catch (IOException e) {
-      log.log(Level.SEVERE, sql, e);
+      LOGGER.log(Level.SEVERE, sql, e);
     }
   }
 
@@ -166,7 +166,7 @@ public class ExpTable {
         }
       }
     } catch (Exception e) {
-      log.log(Level.SEVERE, "Error during the formatting of string", e);
+      LOGGER.log(Level.SEVERE, "Error during the formatting of string", e);
     }
     return returnValue;
   }
@@ -197,7 +197,7 @@ public class ExpTable {
         }
       }
     } catch (Exception e) {
-      log.log(Level.SEVERE, "Error during formatting of timestamp.", e);
+      LOGGER.log(Level.SEVERE, "Error during formatting of timestamp.", e);
     }
     return returnValue;
   }

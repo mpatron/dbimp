@@ -17,8 +17,8 @@ public class DerbySingleton {
   protected DerbySingleton() {
     try {
       JObjectsLogFormatter.initializeLogging();
-      Class.forName(DerbyConstantes.DRIVER_EMBEDDED_CLASSNAME).newInstance();      
-      //Class.forName(DerbyConstantes.DRIVER_CLASSNAME).newInstance();
+      Class.forName(DerbyConstantes.DRIVER_EMBEDDED_CLASSNAME).newInstance();
+      // Class.forName(DerbyConstantes.DRIVER_CLASSNAME).newInstance();
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }

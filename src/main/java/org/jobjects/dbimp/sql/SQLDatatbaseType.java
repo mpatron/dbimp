@@ -8,11 +8,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum SQLDatatbaseType {
 
-  UNKNOW_DATABASE("sun.jdbc.odbc.JdbcOdbcDriver"),
-  ORACLE("oracle.jdbc.OracleDriver"),
-  SQLSERVER("com.microsoft.jdbc.sqlserver.SQLServerDriver"),
-  DB2AS400("com.ibm.as400.access.AS400JDBCDriver"),
-  DERBY("org.apache.derby.jdbc.EmbeddedDriver");
+  UNKNOW_DATABASE("sun.jdbc.odbc.JdbcOdbcDriver"), ORACLE("oracle.jdbc.OracleDriver"), SQLSERVER(
+      "com.microsoft.jdbc.sqlserver.SQLServerDriver"), DB2AS400(
+          "com.ibm.as400.access.AS400JDBCDriver"), DERBY("org.apache.derby.jdbc.EmbeddedDriver");
 
   private static final long serialVersionUID = 1L;
 
@@ -44,7 +42,7 @@ public enum SQLDatatbaseType {
       // jdbc:derby:memory:<base>
       returnValue = DERBY;
     }
-    
+
     return returnValue;
   }
 

@@ -33,7 +33,7 @@ import org.jobjects.dbimp.trigger.Line;
  * @version 1.0
  */
 public class SqlUpdateBlob extends SqlStatement {
-  private static Logger log = Logger.getLogger(SqlUpdateBlob.class.getName());
+  private static Logger LOGGER = Logger.getLogger(SqlUpdateBlob.class.getName());
 
   private int count = 0;
 
@@ -47,7 +47,8 @@ public class SqlUpdateBlob extends SqlStatement {
    * @param reportTypeLine
    * @throws SQLException
    */
-  public SqlUpdateBlob(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  public SqlUpdateBlob(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
   }
 
@@ -78,7 +79,7 @@ public class SqlUpdateBlob extends SqlStatement {
     }
     returnValue += (" from " + getSQLSchemaName() + getXmlline().getTableName());
     if (first) {
-      log.severe("Error no field with type BLOB.");
+      LOGGER.severe("Error no field with type BLOB.");
       return null;
     }
     first = true;
@@ -107,7 +108,7 @@ public class SqlUpdateBlob extends SqlStatement {
    */
   public int execute(int nbLigne) {
     HashMap<String, String> returnValue = null;
-    log.fine(getSql());
+    LOGGER.fine(getSql());
     try {
       boolean autoCommit = getConnection().getAutoCommit();
       getConnection().setAutoCommit(false);
@@ -148,7 +149,8 @@ public class SqlUpdateBlob extends SqlStatement {
               // BLOB blob= ((OracleResultSet) rs).getBLOB(field.getName());
               // String filename= field.getBuffer();
               // File binaryFile= new File(filename);
-              // log.debug("" + filename + " length = " + binaryFile.length());
+              // LOGGER.debug("" + filename + " length = " +
+              // binaryFile.length());
               // DataInputStream fis= null;
               // try {
               // fis = new DataInputStream(new BufferedInputStream(new
@@ -165,7 +167,7 @@ public class SqlUpdateBlob extends SqlStatement {
               // os= null;
               // fis= null;
               // } catch (IOException ioe) {
-              // log.error("" + field.getBuffer(), ioe);
+              // LOGGER.error("" + field.getBuffer(), ioe);
               // }
               /*
                * ===============================================================

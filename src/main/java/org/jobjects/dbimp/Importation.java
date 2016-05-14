@@ -58,7 +58,7 @@ import org.jobjects.dbimp.xml.XmlQueryParam;
  */
 public class Importation {
 
-  private static Logger log = Logger.getLogger(Importation.class.getName());
+  private static Logger LOGGER = Logger.getLogger(Importation.class.getName());
 
   private static String dirnameReporte = System.getProperty("java.io.tmpdir");
 
@@ -224,7 +224,7 @@ public class Importation {
     String driverClassName = SQLDatatbaseType.getType(url).getDriver();
     try {
       Driver driver = (Driver) Class.forName(driverClassName).newInstance();
-      System.out.println("JDBC driver version : " + driver.getMajorVersion() + "." + driver.getMinorVersion());
+      LOGGER.finest("JDBC driver version : " + driver.getMajorVersion() + "." + driver.getMinorVersion());
       DriverManager.registerDriver(driver);
       Connection connection = DriverManager.getConnection(url, user, password);
 
@@ -235,18 +235,18 @@ public class Importation {
       DriverManager.deregisterDriver(driver);
     } catch (Exception e) {
       String messageErr = new String();
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - driverClassName=" + driverClassName;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - url=" + url;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - user=" + user;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - password=" + password;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - filenameReporte=" + filenameReporte;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - extnameReporte=" + extnameReporte;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte=" + dirnameReporte;
-      log.log(Level.SEVERE, messageErr, e);
+      messageErr += System.lineSeparator() + "  - driverClassName=" + driverClassName;
+      messageErr += System.lineSeparator() + "  - url=" + url;
+      messageErr += System.lineSeparator() + "  - user=" + user;
+      messageErr += System.lineSeparator() + "  - password=" + password;
+      messageErr += System.lineSeparator() + "  - filenameReporte=" + filenameReporte;
+      messageErr += System.lineSeparator() + "  - extnameReporte=" + extnameReporte;
+      messageErr += System.lineSeparator() + "  - dirnameReporte=" + dirnameReporte;
+      LOGGER.log(Level.SEVERE, messageErr, e);
       returnValue = 1;
     }
     long t_end = System.currentTimeMillis();
-    System.out.println("Duration : " + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS") + ".");
+    LOGGER.info("Duration : " + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS") + ".");
     return returnValue;
   }
 
@@ -280,14 +280,14 @@ public class Importation {
   public static void importFile(String fileSource, String fileSourceEncoding, String fileNameParameter, Connection conn, String schemaName,
       boolean cached, boolean verbose, String fileNameReport) {
 
-    String message = "DBImp starting... " + SystemUtils.LINE_SEPARATOR;
-    message += "  - fileSource=" + fileSource + SystemUtils.LINE_SEPARATOR;
-    message += "  - fileSourceEncoding=" + fileSourceEncoding + SystemUtils.LINE_SEPARATOR;
-    message += "  - fileNameReport=" + fileNameReport + SystemUtils.LINE_SEPARATOR;
-    message += "  - schemaName=" + schemaName + SystemUtils.LINE_SEPARATOR;
-    message += "  - cached=" + cached + SystemUtils.LINE_SEPARATOR;
-    message += "  - verbose=" + verbose + SystemUtils.LINE_SEPARATOR;
-    log.config(message);
+    String message = "DBImp starting... " + System.lineSeparator();
+    message += "  - fileSource=" + fileSource + System.lineSeparator();
+    message += "  - fileSourceEncoding=" + fileSourceEncoding + System.lineSeparator();
+    message += "  - fileNameReport=" + fileNameReport + System.lineSeparator();
+    message += "  - schemaName=" + schemaName + System.lineSeparator();
+    message += "  - cached=" + cached + System.lineSeparator();
+    message += "  - verbose=" + verbose + System.lineSeparator();
+    LOGGER.config(message);
 
     FileAsciiWriter faw = null;
     long l_start = System.currentTimeMillis();
@@ -306,9 +306,9 @@ public class Importation {
         reporting.setInputFile(fileSource);
         reporting.setParamFile(fileNameParameter);
         reporting.setVerbose(verbose);
-        log.finest("Rapport : " + dirnameReporte);
+        LOGGER.finest("Rapport : " + dirnameReporte);
       } catch (Exception ex) {
-        log.log(Level.SEVERE, "", ex);
+        LOGGER.log(Level.SEVERE, "", ex);
       }
       /**
        * Chargement du parametrage des lignes et des recordset associé.
@@ -317,7 +317,7 @@ public class Importation {
       XmlParams param = new XmlParams();
       XmlDocument document = param.parseFile(new File(fileNameParameter));
 
-      if (log.isLoggable(Level.FINER)) {
+      if (LOGGER.isLoggable(Level.FINER)) {
         afficheDocument(document);
       }
 
@@ -336,7 +336,7 @@ public class Importation {
       flux = new FileAsciiReader(fileSource, fileSourceEncoding);
       int numberLine = 1;
       while ((ligne = flux.readLine()) != null) {
-        log.info("lecture de la ligne = " + numberLine);
+        LOGGER.info("lecture de la ligne = " + numberLine);
         for (LineAndRecordSet lrs : lineAndRecordSets) {
           if (lrs.isActive(ligne)) {
             lrs.execute(numberLine, ligne);
@@ -360,53 +360,75 @@ public class Importation {
         lrs.release();
       }
 
-      log.finest(reporting.INFO_STATUS("total", selected, inserted, updated, deleted, rejected));
+      LOGGER.finest(reporting.INFO_STATUS("total", selected, inserted, updated, deleted, rejected));
       reporting.setDuration(System.currentTimeMillis() - l_start);
       reporting.write();
       faw.flush();
       faw.close();
       faw = null;
     } catch (Throwable t) {
-      log.log(Level.SEVERE, "", t);
+      LOGGER.log(Level.SEVERE, "", t);
     }
     l_end = System.currentTimeMillis();
-    log.info("Duration : " + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS") + ".");
+    LOGGER.info("Duration : " + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS") + ".");
   }
 
   // ---------------------------------------------------------------------------
   private static void afficheDocument(XmlDocument document) {
     try {
+      StringBuffer sb = new StringBuffer();
       for (Line line : document.getLines()) {
-        System.out.println("<line name='" + line.getName() + "' tablename='" + line.getTableName() + "'>");
+        sb.append("<line name='" + line.getName() + "' tablename='" + line.getTableName() + "'>");
+        sb.append(System.lineSeparator());
         for (Key key : line.getKeys()) {
-          System.out.println(
-              "  " + "<key value='" + key.getValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
+          sb.append("  ");
+          sb.append("<key value='" + key.getValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
+          sb.append(System.lineSeparator());
         }
         for (Field field : line.getFields()) {
-          System.out.println("  " + "<field fieldname='" + field.getName() + "' type='" + field.getTypeFormat().getTypeString()
-              + "' dateformat='" + field.getDateFormat() + "'>");
+          sb.append("  ");
+          sb.append("<field fieldname='" + field.getName() + "' type='" + field.getTypeFormat().getTypeString() + "' dateformat='"
+              + field.getDateFormat() + "'>");
+          sb.append(System.lineSeparator());
           switch (field.getDiscriminator()) {
           case CONSTANTE:
-            System.out.println("  " + "  " + "<constante value='" + field.getConstante().getValue() + "'/>");
+            sb.append("  ");
+            sb.append("  ");
+            sb.append("<constante value='" + field.getConstante().getValue() + "'/>");
+            sb.append(System.lineSeparator());
             break;
           case POSITION:
-            System.out.println("  " + "  " + "<position startposition='" + field.getPosition().getStartposition() + "' size='"
-                + field.getPosition().getSize() + "'/>");
+            sb.append("  ");
+            sb.append("  ");
+            sb.append(
+                "<position startposition='" + field.getPosition().getStartposition() + "' size='" + field.getPosition().getSize() + "'/>");
+            sb.append(System.lineSeparator());
             break;
           case QUERY:
-            System.out.println("  " + "  " + "<query sql='" + field.getQuery().getSql() + "'/>");
+            sb.append("  ");
+            sb.append("  ");
+            sb.append("<query sql='" + field.getQuery().getSql() + "'/>");
+            sb.append(System.lineSeparator());
             for (XmlQueryParam queryparam : field.getQuery().getQueryParams()) {
-              System.out.println("  " + "  " + "  " + "<query-param><" + queryparam.getType().getTypeString() + "/>" + "</query-param>");
+              sb.append("  ");
+              sb.append("  ");
+              sb.append("  ");
+              sb.append("<query-param><" + queryparam.getType().getTypeString() + "/>" + "</query-param>");
+              sb.append(System.lineSeparator());
             }
             break;
           default:
           }
-          System.out.println("  " + "</field>");
+          sb.append("  ");
+          sb.append("</field>");
+          sb.append(System.lineSeparator());
         }
-        System.out.println("</line>");
+        sb.append("</line>");
+        sb.append(System.lineSeparator());
       }
+      LOGGER.fine(sb.toString());
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
     }
   }
 

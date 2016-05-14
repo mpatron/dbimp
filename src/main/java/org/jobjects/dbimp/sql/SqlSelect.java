@@ -25,7 +25,7 @@ import org.jobjects.dbimp.trigger.Line;
  */
 public class SqlSelect extends SqlStatement {
 
-  private static Logger log = Logger.getLogger(SqlSelect.class.getName());
+  private static Logger LOGGER = Logger.getLogger(SqlSelect.class.getName());
 
   private int countSelect = 0;
 
@@ -39,9 +39,10 @@ public class SqlSelect extends SqlStatement {
    * @param reportTypeLine
    * @throws SQLException
    */
-  public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine) throws SQLException {
+  public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+      throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
-    log.info("schemaName=" + schemaName);
+    LOGGER.info("schemaName=" + schemaName);
   }
 
   // ---------------------------------------------------------------------------
@@ -71,7 +72,7 @@ public class SqlSelect extends SqlStatement {
     returnValue += (" from " + getSQLSchemaName() + getXmlline().getTableName());
 
     if (first) {
-      log.severe("Error no field");
+      LOGGER.severe("Error no field");
 
       return null;
     }
@@ -106,7 +107,7 @@ public class SqlSelect extends SqlStatement {
    */
   public int execute(int nbLigne) {
     Map<String, Object> returnValue = null;
-    log.fine(getSql());
+    LOGGER.fine(getSql());
 
     PreparedStatement pstmt = null;
     try {
@@ -318,15 +319,19 @@ public class SqlSelect extends SqlStatement {
           }
         }
       } catch (NumberFormatException nfe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(), nfe);
+        LOGGER.log(Level.SEVERE,
+            "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(),
+            nfe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       } catch (ParseException pe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(), pe);
+        LOGGER.log(Level.SEVERE,
+            "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(),
+            pe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       }
 
       if ((returnValue != 0) && flag) {
-        log.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer() + " in database=" + value);
+        LOGGER.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer() + " in database=" + value);
         if (value == null) {
           value = "";
         }

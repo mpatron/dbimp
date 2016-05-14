@@ -55,9 +55,8 @@ public class XYLayout implements LayoutManager2, Serializable {
   }
 
   public String toString() {
-    return String.valueOf(String.valueOf((new StringBuffer(
-        "PositionLayout[width=")).append(width).append(",height=")
-        .append(height).append("]")));
+    return String
+        .valueOf(String.valueOf((new StringBuffer("PositionLayout[width=")).append(width).append(",height=").append(height).append("]")));
   }
 
   public void addLayoutComponent(String s, Component component1) {
@@ -82,8 +81,7 @@ public class XYLayout implements LayoutManager2, Serializable {
       Component component = target.getComponent(i);
       if (component.isVisible()) {
         Rectangle r = getComponentBounds(component, true);
-        component.setBounds(insets.left + r.x, insets.top + r.y, r.width,
-            r.height);
+        component.setBounds(insets.left + r.x, insets.top + r.y, r.width, r.height);
       }
     }
 
@@ -113,11 +111,9 @@ public class XYLayout implements LayoutManager2, Serializable {
     XYConstraints constraints = (XYConstraints) info.get(component);
     if (constraints == null)
       constraints = defaultConstraints;
-    Rectangle r = new Rectangle(constraints.getX(), constraints.getY(),
-        constraints.getWidth(), constraints.getHeight());
+    Rectangle r = new Rectangle(constraints.getX(), constraints.getY(), constraints.getWidth(), constraints.getHeight());
     if (r.width <= 0 || r.height <= 0) {
-      Dimension d = doPreferred ? component.getPreferredSize() : component
-          .getMinimumSize();
+      Dimension d = doPreferred ? component.getPreferredSize() : component.getMinimumSize();
       if (r.width <= 0)
         r.width = d.width;
       if (r.height <= 0)

@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
+import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
 import org.jobjects.dbimp.trigger.Trigger;
 import org.xml.sax.Attributes;
@@ -113,6 +114,9 @@ public class XmlParams extends DefaultHandler {
             try {
               if ("description".equalsIgnoreCase(attrs.getQName(i))) {
                 document.setDescription(attrs.getValue(i));
+              }
+              if("filetype".equalsIgnoreCase(attrs.getQName(i))) {
+                document.setFiletype(FiletypeEnum.valueOf(attrs.getValue(i)));
               }
             } catch (Exception e) {
               log.log(Level.SEVERE, "Error in document", e);

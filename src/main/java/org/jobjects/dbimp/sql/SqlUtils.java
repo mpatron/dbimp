@@ -41,9 +41,9 @@ public class SqlUtils {
     // ORA-00001: unicité
     // if(!ex.getMessage().startsWith("ORA-00001")) {
     String chaine = xmlline.getName() + " : " + "Ligne(" + reporting.getNumberLine() + ") : ";
-    chaine += (ex.getMessage() + "." + System.getProperty("line.separator"));
+    chaine += (ex.getMessage() + "." + System.lineSeparator());
     chaine += showLine(reporting.getNumberLine(), xmlline);
-    log.log(Level.SEVERE, message + System.getProperty("line.separator") + chaine, ex);
+    log.log(Level.SEVERE, message + System.lineSeparator() + chaine, ex);
 
     reporting.ERROR_MESSAGE(xmlline.getName(), ex.getMessage());
     reporting.showLine();
@@ -51,7 +51,7 @@ public class SqlUtils {
   // ---------------------------------------------------------------------------
 
   public static String showLine(int nbLigne, Line xmlline) {
-    String returnValue = "Ligne(" + nbLigne + ") :" + System.getProperty("line.separator");
+    String returnValue = "Ligne(" + nbLigne + ") :" + System.lineSeparator();
 
     for (Field field : xmlline.getFields()) {
       try {
@@ -59,23 +59,23 @@ public class SqlUtils {
         case POSITION:
           returnValue += ("  " + field.getName() + "(" + field.getPosition().getStartposition() + ", " + field.getPosition().getSize() + ") = \"");
           returnValue += field.getBuffer();
-          returnValue += ("\"" + System.getProperty("line.separator"));
+          returnValue += ("\"" + System.lineSeparator());
           break;
 
         case CONSTANTE:
           returnValue += ("  " + field.getName() + "(cste) = \"");
           returnValue += field.getConstante().getValue();
-          returnValue += ("\"" + System.getProperty("line.separator"));
+          returnValue += ("\"" + System.lineSeparator());
           break;
 
         case QUERY:
           returnValue += ("  " + field.getName() + "(query) = \"");
           returnValue += field.getQuery().getSql();
-          returnValue += ("\"" + System.getProperty("line.separator"));
+          returnValue += ("\"" + System.lineSeparator());
           break;
         }
       } catch (Exception exinternal) {
-        returnValue += ("  " + field.getName() + " (unkown error)" + System.getProperty("line.separator"));
+        returnValue += ("  " + field.getName() + " (unkown error)" + System.lineSeparator());
       }
     }
 

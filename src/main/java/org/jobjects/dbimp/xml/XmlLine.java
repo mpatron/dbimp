@@ -152,14 +152,14 @@ public class XmlLine implements Line {
    */
   public String toString() {
     String returnValue = "  <line name=\"" + name + "\" tablename=\"" + tableName + "\">";
-    returnValue += System.getProperty("line.separator");
+    returnValue += System.lineSeparator();
     for (Iterator<Key> it = keys.iterator(); it.hasNext();) {
-      returnValue += it.next().toString() + System.getProperty("line.separator");
+      returnValue += it.next().toString() + System.lineSeparator();
     }
     for (Iterator<Field> it = fields.iterator(); it.hasNext();) {
-      returnValue += it.next().toString() + System.getProperty("line.separator");
+      returnValue += it.next().toString() + System.lineSeparator();
     }
-    returnValue += "</line>" + System.getProperty("line.separator");
+    returnValue += "</line>" + System.lineSeparator();
     return returnValue;
   }
 

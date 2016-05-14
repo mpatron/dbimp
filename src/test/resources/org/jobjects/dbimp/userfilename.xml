@@ -3,6 +3,7 @@
 
 <!ELEMENT document (line+)>
 <!ATTLIST document description CDATA #IMPLIED>
+<!ATTLIST document filetype (FILE_TEXT|FILE_CSV) 'FILE_TEXT'>
 
 <!ELEMENT line (key*, field+)>
 <!ATTLIST line

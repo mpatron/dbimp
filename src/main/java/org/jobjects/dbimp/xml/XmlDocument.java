@@ -2,6 +2,7 @@ package org.jobjects.dbimp.xml;
 
 import java.util.LinkedList;
 
+import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.Line;
 
 /**
@@ -14,12 +15,13 @@ public class XmlDocument {
   private LinkedList<Line> lines = new LinkedList<Line>();
 
   private String description = null;
-
+  private FiletypeEnum filetype = FiletypeEnum.FILE_TEXT;
+  
   public String toString() {
-    String returnValue = "<document>" + System.getProperty("line.separator");
+    String returnValue = "<document>" + System.lineSeparator();
 
     for (Line line : lines) {
-      returnValue += line.toString() + System.getProperty("line.separator");
+      returnValue += line.toString() + System.lineSeparator();
     }
     returnValue += "</document>";
     return returnValue;
@@ -44,6 +46,21 @@ public class XmlDocument {
     this.description = description;
   }
 
+  /**
+   * @return the filetype
+   */
+  public FiletypeEnum getFiletype() {
+    return filetype;
+  }
+
+  /**
+   * @param filetype the filetype to set
+   */
+  public void setFiletype(FiletypeEnum filetype) {
+    this.filetype = filetype;
+  }
+
+  
   /**
    * @return Returns the lines.
    */

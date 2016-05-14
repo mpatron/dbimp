@@ -240,9 +240,9 @@ public class XmlField implements Field, Comparable<XmlField> {
       break;
     case QUERY:
       if (query != null) {
-        returnValue += System.getProperty("line.separator");
+        returnValue += System.lineSeparator();
         returnValue += query.toString();
-        returnValue += System.getProperty("line.separator");
+        returnValue += System.lineSeparator();
       }
       break;
     default:
@@ -251,7 +251,7 @@ public class XmlField implements Field, Comparable<XmlField> {
     }
 
     if (checkInSql != null && !checkInSql.trim().equals("")) {
-      returnValue += System.getProperty("line.separator");
+      returnValue += System.lineSeparator();
       returnValue += "<check_in sql=\"" + checkInSql + "\"/>";
     }
 

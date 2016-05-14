@@ -52,7 +52,7 @@ public class XmlQuery {
   public String toString() {
     String returnValue = "      <query sql=\"" + sql + "\">";
     for (XmlQueryParam queryParam : queryParams) {
-      returnValue += queryParam.toString() + System.getProperty("line.separator");
+      returnValue += queryParam.toString() + System.lineSeparator();
     }
     returnValue += "      </query>";
     return returnValue;

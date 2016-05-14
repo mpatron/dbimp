@@ -301,7 +301,7 @@ public class Importation {
     try {
       Report reporting = null;
       try {
-        faw = new FileAsciiWriter(fileNameReport, "UTF-8");
+        faw = new FileAsciiWriter(fileNameReport, Charset.defaultCharset().name());
         reporting = new Report(faw);
         reporting.setInputFile(fileSource);
         reporting.setParamFile(fileNameParameter);

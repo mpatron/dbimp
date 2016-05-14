@@ -2,14 +2,13 @@ package org.jobjects.dbimp;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jobjects.derby.CreateSchema;
 import org.jobjects.derby.DerbyConstantes;
+import org.jobjects.derby.DerbySingleton;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -18,16 +17,11 @@ public class ImportationTest {
   private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   private Connection conn;
-  
-  @BeforeClass(groups = "MaSuite")  
+
+  @BeforeClass(groups = "MaSuite")
   public void beforeClass() throws Exception {
- // DerbyStart.setUpBeforeClass();
-    Class.forName(DerbyConstantes.DRIVER_CLASSNAME);
-    Properties p = new Properties();
-    p.setProperty(DerbyConstantes.USER, DerbyConstantes.USER_VALUE);
-    p.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
-    p.setProperty("create", "true");// +";create=true"
-    conn = DriverManager.getConnection(DerbyConstantes.URL, p);
+    DerbySingleton.getInstance().start();
+    conn = DerbySingleton.getInstance().getConnection();
 
     Statement stmp = conn.createStatement();
     try {
@@ -50,10 +44,9 @@ public class ImportationTest {
 
   @Test(groups = "MaSuite")
   public void importFileParam() {
-    
+
   }
 
-  
   @Test(groups = "MaSuite")
   public void importFile() {
     try {

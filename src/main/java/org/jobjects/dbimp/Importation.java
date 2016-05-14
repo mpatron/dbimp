@@ -2,6 +2,7 @@ package org.jobjects.dbimp;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -13,13 +14,13 @@ import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -96,7 +97,7 @@ public class Importation {
     HelpFormatter formatter = new HelpFormatter();
     String cmdLineSyntax = "$JAVA_HOME/bin/java " + Importation.class.getName();
     String header = "Importation directe version 3.2";
-    String footer = "Copyright © 2006 JObjects Corp. All Rights Reserved";
+    String footer = "Copyright © 2006-2016 JObjects Corp. All Rights Reserved";
 
     Options options = new Options();
     Option option = new Option("u", "url", true,
@@ -157,7 +158,7 @@ public class Importation {
     option.setRequired(false);
     options.addOption(option);
 
-    CommandLineParser parser = new PosixParser();
+    CommandLineParser parser = new DefaultParser();
     try {
       CommandLine line = parser.parse(options, args);
       url = line.getOptionValue("u");
@@ -176,10 +177,9 @@ public class Importation {
         return 1;
       }      
       if (StringUtils.isEmpty(line.getOptionValue("e"))) {
-        ascfile_encode = "ISO-8859-1";
-      } else {
-        if (!("US-ASCII".equals(line.getOptionValue("e")) || "ISO-8859-1".equals(line.getOptionValue("e")) || "UTF-8".equals(line.getOptionValue("e"))
-            || "UTF-16".equals(line.getOptionValue("e")))) {
+        ascfile_encode = Charset.defaultCharset().name();        
+      } else {        
+        if (!Charset.isSupported(line.getOptionValue("e"))) {
           System.err.println("Error : encode=" + line.getOptionValue("e"));
           formatter.printHelp(cmdLineSyntax, header, options, footer);
           return 1;
@@ -209,7 +209,7 @@ public class Importation {
       }
 
     } catch (ParseException pe) {
-      formatter.printHelp(cmdLineSyntax, header, options, footer);
+      formatter.printHelp(160, cmdLineSyntax, header, options, footer);
       if ((pe instanceof MissingOptionException) || (pe instanceof MissingArgumentException)) {
         System.err.println("Parametres manquant : " + pe.getMessage());
       }

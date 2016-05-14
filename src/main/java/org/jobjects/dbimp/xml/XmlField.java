@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -46,6 +48,7 @@ public class XmlField implements Field, Comparable<XmlField> {
   /**
    * Nom du champs.
    */
+  @NotNull
   private String name = null;
 
   /**

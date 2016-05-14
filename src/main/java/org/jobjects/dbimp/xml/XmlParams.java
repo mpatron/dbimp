@@ -1,9 +1,14 @@
 package org.jobjects.dbimp.xml;
 
 import java.io.File;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -18,7 +23,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-
 /**
  * Utilisé dans la lecture du fichier de paramètrage.
  * 
@@ -28,15 +32,15 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlParams extends DefaultHandler {
 
-  private XmlDocument document     = null;
+  private XmlDocument document = null;
 
-  private int         level        = 0;
+  private int level = 0;
 
-  private String[]    xmlPath      = new String[100];
+  private String[] xmlPath = new String[100];
 
-  private boolean     error_in_xml = false;
+  private boolean error_in_xml = false;
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   /** Warning. */
   public void warning(SAXParseException ex) {
@@ -115,11 +119,11 @@ public class XmlParams extends DefaultHandler {
               if ("description".equalsIgnoreCase(attrs.getQName(i))) {
                 document.setDescription(attrs.getValue(i));
               }
-              if("filetype".equalsIgnoreCase(attrs.getQName(i))) {
+              if ("filetype".equalsIgnoreCase(attrs.getQName(i))) {
                 document.setFiletype(FiletypeEnum.valueOf(attrs.getValue(i)));
               }
             } catch (Exception e) {
-              log.log(Level.SEVERE, "Error in document", e);
+              LOGGER.log(Level.SEVERE, "Error in document", e);
               error_in_xml = true;
             }
           }
@@ -638,13 +642,13 @@ public class XmlParams extends DefaultHandler {
         for (int i = 0; i < attrs.getLength(); i++) {
           message += SystemUtils.LINE_SEPARATOR + "    attr=(" + attrs.getQName(i) + ", " + attrs.getValue(i) + ")";
         }
-        if(attrs.getLength()==0) {
+        if (attrs.getLength() == 0) {
           message += " aucun élément.";
         }
       } else {
         message += " null";
       }
-      log.log(Level.SEVERE,message, t);
+      LOGGER.log(Level.SEVERE, message, t);
     }
     level++;
   }
@@ -667,13 +671,24 @@ public class XmlParams extends DefaultHandler {
       SAXParser parser = factory.newSAXParser();
       error_in_xml = false;
       parser.parse(file, this);
-      //parser.parse(uri);
+      // parser.parse(uri);
+
+      ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+      Validator validator = validatorFactory.getValidator();
+      Set<ConstraintViolation<XmlDocument>> violations = validator.validate(document);
+      StringBuffer sb = new StringBuffer();
+      for (ConstraintViolation<XmlDocument> violation : violations) {
+        sb.append(String.format("%s: %s%n", violation.getPropertyPath(), violation.getMessage()));
+        sb.append(System.lineSeparator());
+      }
+      LOGGER.log(Level.SEVERE, "Validation du xml : " + sb.toString());
+
       if (error_in_xml) {
-    	  log.log(Level.SEVERE,"Error in the file " + file);
+        LOGGER.log(Level.SEVERE, "Error in the file " + file);
       }
     } catch (Exception e) {
-    	log.log(Level.SEVERE,"Unknow error with the file " + file, e);
-    	throw new SAXException(e);
+      LOGGER.log(Level.SEVERE, "Unknow error with the file " + file, e);
+      throw new SAXException(e);
     }
 
     return document;

@@ -1,5 +1,7 @@
 package org.jobjects.dbimp.xml;
 
+import javax.validation.constraints.NotNull;
+
 import org.jobjects.dbimp.trigger.Key;
 
 
@@ -10,6 +12,7 @@ import org.jobjects.dbimp.trigger.Key;
  * @version 2.0
  */
 public class XmlKey implements Key {
+  @NotNull
   private String value = null;
   private int startposition = 0;
   private int size = 0;

@@ -2,6 +2,8 @@ package org.jobjects.dbimp.xml;
 
 import java.util.LinkedList;
 
+import javax.validation.constraints.NotNull;
+
 import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.Line;
 
@@ -14,7 +16,10 @@ import org.jobjects.dbimp.trigger.Line;
 public class XmlDocument {
   private LinkedList<Line> lines = new LinkedList<Line>();
 
+  @NotNull
   private String description = null;
+  
+  @NotNull
   private FiletypeEnum filetype = FiletypeEnum.FILE_TEXT;
   
   public String toString() {

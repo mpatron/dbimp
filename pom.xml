@@ -197,6 +197,10 @@
 							<name>derby.stream.error.file</name>
 							<value>${basedir}/target/derby.log</value>
 						</property>
+						<property>
+							<name>derby.system.home</name>
+							<value>${basedir}/target/derby</value>
+						</property>						
 					</systemProperties>
 				</configuration>
 			</plugin>

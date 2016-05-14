@@ -131,8 +131,9 @@ public class Importation {
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("e", "encode", true, "[ US-ASCII | ISO-8859-1 | UTF-8 | UTF-16 ] encodage par defaut ISO-8859-1.");
-    option.setArgName("encodage [ISO-8859-1]");
+    option = new Option("e", "encode", true, String.format("[ %s ] encodage par defaut %s.",
+        StringUtils.join(Charset.availableCharsets().keySet(), " | "), Charset.defaultCharset().name()));
+    option.setArgName(String.format("encodage [%s]", Charset.defaultCharset().name()));
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
@@ -149,7 +150,8 @@ public class Importation {
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("s", "schema", true, "Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
+    option = new Option("s", "schema", true,
+        "Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
@@ -165,20 +167,20 @@ public class Importation {
       user = line.getOptionValue("U");
       password = line.getOptionValue("P");
       ascfile = line.getOptionValue("f");
-      if(!Files.isReadable(Paths.get(ascfile))) {
+      if (!Files.isReadable(Paths.get(ascfile))) {
         System.err.println("ascfile n'existe pas ou n'est par readable : " + ascfile);
         formatter.printHelp(cmdLineSyntax, header, options, footer);
         return 1;
       }
       xmlfile = line.getOptionValue("x");
-      if(!Files.isReadable(Paths.get(xmlfile))) {
+      if (!Files.isReadable(Paths.get(xmlfile))) {
         System.err.println("xmlfile n'existe pas ou n'est par readable : " + xmlfile);
         formatter.printHelp(cmdLineSyntax, header, options, footer);
         return 1;
-      }      
+      }
       if (StringUtils.isEmpty(line.getOptionValue("e"))) {
-        ascfile_encode = Charset.defaultCharset().name();        
-      } else {        
+        ascfile_encode = Charset.defaultCharset().name();
+      } else {
         if (!Charset.isSupported(line.getOptionValue("e"))) {
           System.err.println("Error : encode=" + line.getOptionValue("e"));
           formatter.printHelp(cmdLineSyntax, header, options, footer);
@@ -226,7 +228,8 @@ public class Importation {
       DriverManager.registerDriver(driver);
       Connection connection = DriverManager.getConnection(url, user, password);
 
-      String fileNameReport = File.createTempFile(filenameReporte + "-" + getNextNumber() + "-", extnameReporte, new File(dirnameReporte)).getAbsolutePath();
+      String fileNameReport = File.createTempFile(filenameReporte + "-" + getNextNumber() + "-", extnameReporte, new File(dirnameReporte))
+          .getAbsolutePath();
       importFile(ascfile, ascfile_encode, xmlfile, connection, schemaName, cached, verbose, fileNameReport);
       connection.close();
       DriverManager.deregisterDriver(driver);
@@ -274,8 +277,8 @@ public class Importation {
    * @param fileNameReport
    *          Nom du fichier contenant le rapport.
    */
-  public static void importFile(String fileSource, String fileSourceEncoding, String fileNameParameter, Connection conn, String schemaName, boolean cached,
-      boolean verbose, String fileNameReport) {
+  public static void importFile(String fileSource, String fileSourceEncoding, String fileNameParameter, Connection conn, String schemaName,
+      boolean cached, boolean verbose, String fileNameReport) {
 
     String message = "DBImp starting... " + SystemUtils.LINE_SEPARATOR;
     message += "  - fileSource=" + fileSource + SystemUtils.LINE_SEPARATOR;
@@ -376,18 +379,19 @@ public class Importation {
       for (Line line : document.getLines()) {
         System.out.println("<line name='" + line.getName() + "' tablename='" + line.getTableName() + "'>");
         for (Key key : line.getKeys()) {
-          System.out.println("  " + "<key value='" + key.getValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
+          System.out.println(
+              "  " + "<key value='" + key.getValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
         }
         for (Field field : line.getFields()) {
-          System.out.println(
-              "  " + "<field fieldname='" + field.getName() + "' type='" + field.getTypeFormat().getTypeString() + "' dateformat='" + field.getDateFormat() + "'>");
+          System.out.println("  " + "<field fieldname='" + field.getName() + "' type='" + field.getTypeFormat().getTypeString()
+              + "' dateformat='" + field.getDateFormat() + "'>");
           switch (field.getDiscriminator()) {
           case CONSTANTE:
             System.out.println("  " + "  " + "<constante value='" + field.getConstante().getValue() + "'/>");
             break;
           case POSITION:
-            System.out.println(
-                "  " + "  " + "<position startposition='" + field.getPosition().getStartposition() + "' size='" + field.getPosition().getSize() + "'/>");
+            System.out.println("  " + "  " + "<position startposition='" + field.getPosition().getStartposition() + "' size='"
+                + field.getPosition().getSize() + "'/>");
             break;
           case QUERY:
             System.out.println("  " + "  " + "<query sql='" + field.getQuery().getSql() + "'/>");

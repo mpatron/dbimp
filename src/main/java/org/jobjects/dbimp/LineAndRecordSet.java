@@ -164,16 +164,12 @@ public class LineAndRecordSet {
           returnValue &= false;
           break;
         } else {
-          if(FiletypeEnum.FILE_TEXT.equals(filetype)) {
-            buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
-          } else {
-            throw new RuntimeException("pas encore fait..");
-            //buffer = 
-          }
-          returnValue &= buffer.equals(key.getValue());
+          buffer = key.getValue(ligne);
+          returnValue &= buffer.equals(key.getKeyValue());
         }
       } else {
-        buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
+        buffer = key.getValue(ligne);
+        //buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
         returnValue &= !(key.isBlank() ^ StringUtils.isEmpty(buffer.trim()));
       }
     }

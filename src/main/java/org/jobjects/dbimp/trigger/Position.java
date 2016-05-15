@@ -24,5 +24,11 @@ public interface Position {
    */
   void setStartposition(int startposition);
 
-  String getValue(Line line);
+
+  /**
+   * Retourne la valeur du champs de la position à partir de la ligne donnée en paramettre.
+   * @param ligne
+   * @return
+   */
+  String getValue(String ligne);
 }

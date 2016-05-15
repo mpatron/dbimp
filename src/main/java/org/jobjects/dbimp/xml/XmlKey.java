@@ -2,6 +2,7 @@ package org.jobjects.dbimp.xml;
 
 import javax.validation.constraints.NotNull;
 
+import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.Key;
 
 /**
@@ -10,15 +11,16 @@ import org.jobjects.dbimp.trigger.Key;
  * @author Mickael Patron
  * @version 2.0
  */
-public class XmlKey implements Key {
+public class XmlKey extends XmlPosition implements Key {
+
   @NotNull
   private String keyValue = null;
 
-  private int startposition = 0;
-
-  private int size = 0;
-
   private boolean isBlank = false;
+
+  public XmlKey(FiletypeEnum filetype) {
+    super(filetype);
+  }
 
   /*
    * (non-Javadoc)
@@ -41,43 +43,9 @@ public class XmlKey implements Key {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jobjects.dbimp.xml.Key#getSize()
-   */
-  public int getSize() {
-    return size;
-  }
-
-  /**
-   * @param size
-   *          The size to set.
-   */
-  public void setSize(int size) {
-    this.size = size;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jobjects.dbimp.xml.Key#getStartposition()
-   */
-  public int getStartposition() {
-    return startposition;
-  }
-
-  /**
-   * @param startposition
-   *          The startposition to set.
-   */
-  public void setStartposition(int startposition) {
-    this.startposition = startposition;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
    * @see org.jobjects.dbimp.xml.Key#getValue()
    */
-  public String getValue() {
+  public String getKeyValue() {
     return keyValue;
   }
 
@@ -92,10 +60,10 @@ public class XmlKey implements Key {
   public String toString() {
     String returnValue = "";
     if (keyValue != null && !keyValue.trim().equals("")) {
-      returnValue = "    <key value=\"" + keyValue + "\" startposition=\"" + startposition + "\" size=\"" + size + "\"/>";
+      returnValue = "    <key value=\"" + keyValue + "\" startposition=\"" + getStartposition() + "\" size=\"" + getSize() + "\"/>";
     }
     if (isBlank) {
-      returnValue = "    <key isBlank=\"" + isBlank + "\" startposition=\"" + startposition + "\" size=\"" + size + "\"/>";
+      returnValue = "    <key isBlank=\"" + isBlank + "\" startposition=\"" + getStartposition() + "\" size=\"" + getSize() + "\"/>";
     }
     return returnValue;
   }

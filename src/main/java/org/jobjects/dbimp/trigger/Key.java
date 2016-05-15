@@ -1,6 +1,6 @@
 package org.jobjects.dbimp.trigger;
 
-public interface Key {
+public interface Key extends Position {
 
   /**
    * @return Returns the isBlank.
@@ -26,6 +26,6 @@ public interface Key {
   /**
    * @return Returns the value.
    */
-  public abstract String getValue();
+  public abstract String getKeyValue();
 
 }

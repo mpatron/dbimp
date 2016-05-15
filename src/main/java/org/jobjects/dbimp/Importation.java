@@ -382,7 +382,7 @@ public class Importation {
         sb.append(System.lineSeparator());
         for (Key key : line.getKeys()) {
           sb.append("  ");
-          sb.append("<key value='" + key.getValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
+          sb.append("<key value='" + key.getKeyValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
           sb.append(System.lineSeparator());
         }
         for (Field field : line.getFields()) {

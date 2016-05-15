@@ -1,7 +1,9 @@
 package org.jobjects.dbimp.xml;
 
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jobjects.dbimp.trigger.FiletypeEnum;
-import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.trigger.Position;
 
 /**
@@ -14,15 +16,18 @@ import org.jobjects.dbimp.trigger.Position;
  * @version 2.0
  */
 public class XmlPosition implements Position {
+  @NotNull
   private FiletypeEnum filetype;
   private int startposition = 0;
   private int size = 0;
-  
+
   public XmlPosition(FiletypeEnum filetype) {
-    this.filetype=filetype;
+    this.filetype = filetype;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Position#getSize()
    */
   @Override
@@ -30,7 +35,9 @@ public class XmlPosition implements Position {
     return size;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Position#setSize(int)
    */
   @Override
@@ -38,7 +45,9 @@ public class XmlPosition implements Position {
     this.size = size;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Position#getStartposition()
    */
   @Override
@@ -46,7 +55,9 @@ public class XmlPosition implements Position {
     return startposition;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Position#setStartposition(int)
    */
   @Override
@@ -54,16 +65,35 @@ public class XmlPosition implements Position {
     this.startposition = startposition;
   }
 
-  public String getValue(Line line) {
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jobjects.dbimp.xml.Position#getValue(Line)
+   */
+  @Override
+  public String getValue(String ligne) {
     String returnValue = null;
-    if(FiletypeEnum.FILE_TEXT.equals(filetype)) {
-//      throw new RuntimeException("to do...");
-    } else {
-//      throw new RuntimeException("to do...");
+    switch (filetype) {
+    case FILE_TEXT:
+      returnValue = StringUtils.substring(ligne, getStartposition(), getStartposition() + getSize());
+      break;
+    case FILE_CSV:
+      String separatorChar = ",";
+      String[] champs = StringUtils.split(ligne, separatorChar);
+      returnValue = champs[getStartposition()];
+      break;
+    default:
+      StringBuffer sb = new StringBuffer();
+      sb.append("Type de fichier :").append(filetype).append(System.lineSeparator());
+      sb.append("Startposition").append(getStartposition()).append(System.lineSeparator());
+      sb.append("Size").append(getSize()).append(System.lineSeparator());
+      sb.append("Ligne :").append(ligne);
+      throw new IllegalArgumentException(sb.toString());
+      // break;
     }
     return returnValue;
   }
-  
+
   public String toString() {
     String returnValue = "<position startposition=\"" + startposition + "\" size=\"" + size + "\"/>";
     return returnValue;

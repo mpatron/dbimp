@@ -584,15 +584,12 @@ public class XmlField implements Field, Comparable<XmlField> {
     try {
       switch (this.getDiscriminator()) {
       case CONSTANTE:
-        buffer = this.getConstante().getValue();
+        buffer = getConstante().getValue();
         break;
 
       case POSITION:
-
         try {
-          buffer = ligne
-              .substring(this.getPosition().getStartposition(), this.getPosition().getStartposition() + this.getPosition().getSize())
-              .trim();
+          buffer = getPosition().getValue(ligne);
           returnValue = isBufferValid(reportField);
         } catch (IndexOutOfBoundsException ioobe) {
           LOGGER.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);

@@ -168,7 +168,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.key".equals(Path)) {
         if (attrs != null) {
-          XmlKey key = new XmlKey();
+          XmlKey key = new XmlKey(document.getFiletype());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {

@@ -12,7 +12,7 @@ import org.jobjects.dbimp.trigger.Key;
  */
 public class XmlKey implements Key {
   @NotNull
-  private String value = null;
+  private String keyValue = null;
 
   private int startposition = 0;
 
@@ -78,21 +78,21 @@ public class XmlKey implements Key {
    * @see org.jobjects.dbimp.xml.Key#getValue()
    */
   public String getValue() {
-    return value;
+    return keyValue;
   }
 
   /**
-   * @param value
-   *          The value to set.
+   * @param keyValue
+   *          The keyValue to set.
    */
-  public void setValue(String value) {
-    this.value = value;
+  public void setKeyValue(String value) {
+    this.keyValue = value;
   }
 
   public String toString() {
     String returnValue = "";
-    if (value != null && !value.trim().equals("")) {
-      returnValue = "    <key value=\"" + value + "\" startposition=\"" + startposition + "\" size=\"" + size + "\"/>";
+    if (keyValue != null && !keyValue.trim().equals("")) {
+      returnValue = "    <key value=\"" + keyValue + "\" startposition=\"" + startposition + "\" size=\"" + size + "\"/>";
     }
     if (isBlank) {
       returnValue = "    <key isBlank=\"" + isBlank + "\" startposition=\"" + startposition + "\" size=\"" + size + "\"/>";

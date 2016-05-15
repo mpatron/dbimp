@@ -176,7 +176,7 @@ public class XmlParams extends DefaultHandler {
               LOGGER.finest(String.format("QName=%s Value=%s", attrs.getQName(i), attrs.getValue(i)));
 
               if ("value".equalsIgnoreCase(attrs.getQName(i))) {
-                key.setValue(attrs.getValue(i));
+                key.setKeyValue(attrs.getValue(i));
               }
 
               if ("startposition".equalsIgnoreCase(attrs.getQName(i))) {

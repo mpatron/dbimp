@@ -22,6 +22,7 @@ import org.jobjects.dbimp.report.ReportField;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.Position;
 
 /**
  * Tag field. Utilisé dans la lecture du fichier de paramètrage.
@@ -101,7 +102,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    */
   private boolean isUse = true;
 
-  private XmlPosition position = null;
+  private Position position = null;
 
   private XmlConstante constante = null;
 
@@ -128,7 +129,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @return XmlPosition
    * @throws Exception
    */
-  public XmlPosition getPosition() throws Exception {
+  public Position getPosition() throws Exception {
     if (!FieldTypeEnum.POSITION.equals(discriminator)) {
       throw new Exception("is not a position.");
     }
@@ -143,7 +144,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    * 
    * @param position
    */
-  public void setPosition(XmlPosition position) {
+  public void setPosition(Position position) {
     discriminator = FieldTypeEnum.POSITION;
     this.position = position;
   }

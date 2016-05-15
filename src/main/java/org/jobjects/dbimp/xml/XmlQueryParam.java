@@ -2,6 +2,7 @@ package org.jobjects.dbimp.xml;
 
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.Position;
 
 /**
  * Tag query-param. Utilisé dans la lecture du fichier de paramètrage.
@@ -17,7 +18,7 @@ public class XmlQueryParam {
   private FieldFormatEnum type = FieldFormatEnum.STRING;
   private String dateformat = null;
 
-  private XmlPosition position = null;
+  private Position position = null;
   private XmlConstante constante = null;
   private FieldTypeEnum discriminator = FieldTypeEnum.POSITION;
 
@@ -57,7 +58,7 @@ public class XmlQueryParam {
     this.type = type;
   }
 
-  public XmlPosition getPosition() throws Exception {
+  public Position getPosition() throws Exception {
     if (!FieldTypeEnum.POSITION.equals(discriminator)) {
       throw new Exception();
     }
@@ -66,7 +67,7 @@ public class XmlQueryParam {
 
   // ---------------------------------------------------------------------------
 
-  public void setPosition(XmlPosition position) {
+  public void setPosition(Position position) {
     discriminator = FieldTypeEnum.POSITION;
     this.position = position;
   }

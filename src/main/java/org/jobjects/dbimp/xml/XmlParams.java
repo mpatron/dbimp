@@ -16,6 +16,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
+import org.jobjects.dbimp.trigger.Position;
 import org.jobjects.dbimp.trigger.Trigger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -361,7 +362,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.field.position".equals(Path)) {
         if (attrs != null) {
-          XmlPosition position = new XmlPosition();
+          Position position = new XmlPosition(document.getFiletype());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {
@@ -546,7 +547,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.field.query.query-param.position".equals(Path)) {
         if (attrs != null) {
-          XmlPosition position = new XmlPosition();
+          Position position = new XmlPosition(document.getFiletype());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {

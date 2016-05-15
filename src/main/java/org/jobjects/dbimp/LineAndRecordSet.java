@@ -19,6 +19,7 @@ import org.jobjects.dbimp.sql.SqlUpdate;
 import org.jobjects.dbimp.sql.SqlUpdateBlob;
 import org.jobjects.dbimp.sql.SqlUtils;
 import org.jobjects.dbimp.trigger.Field;
+import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.Key;
 import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
@@ -36,6 +37,7 @@ public class LineAndRecordSet {
   // ---------------------------------------------------------------------------
   private Connection connection = null;
   private Line xmlline = null;
+  private FiletypeEnum filetype = null;
   private int countRejected = 0;
   private LineActionTypeEnum InsertAndUpdate = LineActionTypeEnum.INSERT;
   private int nbLigne = 1;
@@ -50,11 +52,17 @@ public class LineAndRecordSet {
 
   // ---------------------------------------------------------------------------
 
-  public LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
+  private LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
       throws SQLException {
+    this(connection, schemaName, cached, xmlline, FiletypeEnum.FILE_TEXT, reportTypeLine);
+  }
+
+  public LineAndRecordSet(Connection connection, String schemaName, boolean cached, Line xmlline, FiletypeEnum filetype,
+      ReportTypeLine reportTypeLine) throws SQLException {
 
     this.connection = connection;
     this.xmlline = xmlline;
+    this.filetype = filetype;
 
     if (xmlline.getAction() == null) {
       this.InsertAndUpdate = LineActionTypeEnum.INSERT_UPDATE;
@@ -149,17 +157,23 @@ public class LineAndRecordSet {
    */
   public boolean isActive(String ligne) {
     boolean returnValue = true;
+    String buffer = null;
     for (Key key : xmlline.getKeys()) {
       if (!key.isBlank()) {
         if ((key.getStartposition() > ligne.length()) || ((key.getStartposition() + key.getSize()) > ligne.length())) {
           returnValue &= false;
           break;
         } else {
-          String buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
+          if(FiletypeEnum.FILE_TEXT.equals(filetype)) {
+            buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
+          } else {
+            throw new RuntimeException("pas encore fait..");
+            //buffer = 
+          }
           returnValue &= buffer.equals(key.getValue());
         }
       } else {
-        String buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
+        buffer = ligne.substring(key.getStartposition(), key.getStartposition() + key.getSize());
         returnValue &= !(key.isBlank() ^ StringUtils.isEmpty(buffer.trim()));
       }
     }

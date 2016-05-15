@@ -9,7 +9,6 @@ package org.jobjects.dbimp.trigger;
 import java.util.Collection;
 
 import org.jobjects.dbimp.xml.XmlConstante;
-import org.jobjects.dbimp.xml.XmlPosition;
 import org.jobjects.dbimp.xml.XmlQuery;
 
 /**
@@ -209,7 +208,7 @@ public interface Field {
    * @return XmlPosition
    * @throws Exception
    */
-  public XmlPosition getPosition() throws Exception;
+  public Position getPosition() throws Exception;
 
   /**
    * Method getQuery. Retourne la requête source de donnée du champ.

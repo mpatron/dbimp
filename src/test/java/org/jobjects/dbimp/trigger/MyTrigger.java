@@ -15,7 +15,7 @@ import org.jobjects.dbimp.report.ReportTrigger;
  */
 public class MyTrigger implements Trigger {
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   /*
    * (non-Javadoc)
@@ -25,7 +25,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public void beforeAction(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "beforeAction : " + nbLigne);
+    LOGGER.log(Level.INFO, "beforeAction : " + nbLigne);
   }
 
   /*
@@ -36,7 +36,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public void afterAction(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "afterAction : " + nbLigne);
+    LOGGER.log(Level.INFO, "afterAction : " + nbLigne);
   }
 
   /*
@@ -47,7 +47,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public boolean beforeInsert(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "beforeInsert : " + nbLigne);
+    LOGGER.log(Level.INFO, "beforeInsert : " + nbLigne);
     return true;
   }
 
@@ -59,7 +59,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public void afterInsert(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "beforeInsert : " + nbLigne);
+    LOGGER.log(Level.INFO, "beforeInsert : " + nbLigne);
   }
 
   /*
@@ -70,7 +70,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public boolean beforeUpdate(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "beforeUpdate : " + nbLigne);
+    LOGGER.log(Level.INFO, "beforeUpdate : " + nbLigne);
     return true;
   }
 
@@ -82,7 +82,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public void afterUpdate(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "afterUpdate : " + nbLigne);
+    LOGGER.log(Level.INFO, "afterUpdate : " + nbLigne);
   }
 
   /*
@@ -93,7 +93,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public boolean beforeDelete(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "beforeDelete : " + nbLigne);
+    LOGGER.log(Level.INFO, "beforeDelete : " + nbLigne);
     return true;
   }
 
@@ -105,7 +105,7 @@ public class MyTrigger implements Trigger {
    * org.jobjects.dbimp.trigger.Line)
    */
   public void afterDelete(Connection connection, int nbLigne, ReportTrigger report, Line line) {
-    log.log(Level.INFO, "afterDelete : " + nbLigne);
+    LOGGER.log(Level.INFO, "afterDelete : " + nbLigne);
   }
 
 }

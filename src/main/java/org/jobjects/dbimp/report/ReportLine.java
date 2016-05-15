@@ -168,8 +168,9 @@ public class ReportLine implements Reporting {
    * @see org.jobjects.dbimp.report.Reporting#write()
    */
   public void write() throws IOException {
-    bufferedWriter.newLine();
-    bufferedWriter.write("|                                                                             |");
+//    bufferedWriter.newLine();
+//    bufferedWriter.write("|                                                                             |");
+    bufferedWriter.write("|");
     bufferedWriter.newLine();
     bufferedWriter.write("|    " + RessourceReporting.getString("PROCESS_TITLE_LINE") + " :" + numberLine);
 

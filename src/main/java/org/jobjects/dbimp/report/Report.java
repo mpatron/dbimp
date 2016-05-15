@@ -192,16 +192,16 @@ public class Report implements Reporting {
   }
 
   public void write() throws IOException {
-    bw.writeln("+-----------------------------------------------------------------------------+");
+    bw.writeln("+=============================================================================+");
     bw.writeln("|");
     bw.writeln("|    " + RessourceReporting.getString("PROCESS_DESCRIPTION") + " : " + description);
     bw.writeln("+=============================================================================+");
     bw.writeln("|");
-    bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_DATE"), 29, "") + ": " + date);
-    bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_FILE_INPUT"), 29, "") + ": " + inputFile);
-    bw.writeln("|" + StringUtils.center(RessourceReporting.getString("PROCESS_FILE_PARAMETER"), 29, "") + ": " + paramFile);
+    bw.writeln("|    " + StringUtils.rightPad(RessourceReporting.getString("PROCESS_DATE"), 25, "") + ": " + date);
+    bw.writeln("|    " + StringUtils.rightPad(RessourceReporting.getString("PROCESS_FILE_INPUT"), 25, "") + ": " + inputFile);
+    bw.writeln("|    " + StringUtils.rightPad(RessourceReporting.getString("PROCESS_FILE_PARAMETER"), 25, "") + ": " + paramFile);
     bw.writeln(
-        "|" + StringUtils.center(RessourceReporting.getString("PROCESS_DURATION"), 29, "") + ": " + getDuration() + " milisecondes.");
+        "|    " + StringUtils.rightPad(RessourceReporting.getString("PROCESS_DURATION"), 25, "") + ": " + getDuration() + " milisecondes.");
     bw.write("|");
     bw.flush();
 
@@ -229,7 +229,7 @@ public class Report implements Reporting {
     }
 
     bw.write(internalBuffer.toString());
-    bw.newLine();
+    //bw.newLine();
     bw.writeln("+=============================================================================+");
     bw.flush();
   }

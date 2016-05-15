@@ -162,12 +162,12 @@ public class ReportTypeLine implements Reporting {
 
   public String writeBegin() {
     StringBuffer sb = new StringBuffer();
-    sb.append(System.lineSeparator());
+    //sb.append(System.lineSeparator());
     sb.append("+=============================================================================+");
     sb.append(System.lineSeparator());
     sb.append("|");
     sb.append(System.lineSeparator());
-    sb.append("|  " + RessourceReporting.getString("PROCESS_TYPE_LINE") + " : " + getName());
+    sb.append("|    " + RessourceReporting.getString("PROCESS_TYPE_LINE") + " : " + getName());
     sb.append(System.lineSeparator());
     sb.append("|  ---------------------------------------------------------------------------+");
     return sb.toString();
@@ -179,8 +179,9 @@ public class ReportTypeLine implements Reporting {
   public void write() throws IOException {
 
     if ((reportTrigger != null) && reportTrigger.isUsed()) {
-      bufferedWriter.newLine();
-      bufferedWriter.write("|                                                                             |");
+      //bufferedWriter.newLine();
+      //bufferedWriter.write("|                                                                             |");
+      bufferedWriter.write("|");
       bufferedWriter.newLine();
       if (getReportLine().getNumberLine() == 0) {
         bufferedWriter.write("|    " + RessourceReporting.getString("ERROR_TRIGGER_START_FILE") + " :");

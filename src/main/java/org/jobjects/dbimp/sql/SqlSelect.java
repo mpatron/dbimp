@@ -42,7 +42,7 @@ public class SqlSelect extends SqlStatement {
   public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
       throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
-    LOGGER.info("schemaName=" + schemaName);
+    LOGGER.finest("schemaName=" + schemaName);
   }
 
   // ---------------------------------------------------------------------------

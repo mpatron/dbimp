@@ -324,7 +324,7 @@ public class Importation {
       description = document.getDescription();
       reporting.setDescription(description);
       for (Line line : document.getLines()) {
-        LineAndRecordSet lrs = new LineAndRecordSet(conn, schemaName, cached, line, document.getFiletype(),reporting.getTypeLine(line));
+        LineAndRecordSet lrs = new LineAndRecordSet(conn, schemaName, cached, line, reporting.getTypeLine(line));
         lineAndRecordSets.add(lrs);
       }
 

@@ -11,18 +11,18 @@ INFO_LINE_DESTROY=ligne {0} : Info   : Ligne detruite
 ERROR_MESSAGE=ligne {0} : Erreur : {1} : {2}
 
 ERROR_FIELD_NULL=|        Le champ est null alors qu'il est not nullable.
-ERROR_FIELD_TYPE=|        Le champ a pour valeur "{0}" ne correspond pas \u00c3\u00a0 son type {1}
-ERROR_FIELD_NUMERIC=|        Le champ a pour valeur "{0}" n''est pas un num\u00c3\u00a9rique du type {1}.
-ERROR_FIELD_VALUE_IN_LIST=|        Le champ a pour valeur "{0}" et elle n appartient pas \u00c3\u00a0 sa liste de valeur.
-ERROR_FIELD_MANDATORY=|      !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne reject\u00c3\u00a9e.
-ERROR_FIELD_NOT_IN_FILE=|        Le champ est inaxessible. La ligne a une longueur trop courte. La valeur est positionn\u00c3\u00a9 \u00c3\u00a0 null.
+ERROR_FIELD_TYPE=|        Le champ a pour valeur "{0}" ne correspond pas à son type {1}
+ERROR_FIELD_NUMERIC=|        Le champ a pour valeur "{0}" n''est pas un numérique du type {1}.
+ERROR_FIELD_VALUE_IN_LIST=|        Le champ a pour valeur "{0}" et elle n appartient pas à sa liste de valeur.
+ERROR_FIELD_MANDATORY=|      !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne rejectée.
+ERROR_FIELD_NOT_IN_FILE=|        Le champ est inaxessible. La ligne a une longueur trop courte. La valeur est positionné à null.
 ERROR_FIELD_NOT_A_INTEGER=|        La valeur "{0}" du champ n est pas un entier.
 ERROR_FIELD_NOT_A_LONG=|        La valeur "{0}" du champ n''est pas un long.
 ERROR_FIELD_NOT_A_FLOAT=|        La valeur "{0}" du champ n''est pas un reel.
 ERROR_FIELD_NOT_A_DOUBLE=|        La valeur "{0}" du champ n''est pas un reel long.
 ERROR_FIELD_NOT_A_DATETIME=|        La valeur "{0}" du champ n''est pas une date heure de format {1}.
 
-ERROR_PARAMETRAGE=Erreur de param\u00c3\u00a9trage de {0} le mode UPDATE et INSERT_UPDATE sont impossibles. En effet la table {1} a tous ses champs qui appartiennent \u00c3\u00a0 la clef primaire.
+ERROR_PARAMETRAGE=Erreur de paramétrage de {0} le mode UPDATE et INSERT_UPDATE sont impossibles. En effet la table {1} a tous ses champs qui appartiennent à la clef primaire.
 
 ERROR_TRIGGER=|        Message : {0}
 ERROR_TRIGGER_START_FILE=Erreur du triggers dans le traitement executer en debut de fichier
@@ -36,17 +36,17 @@ INFO_NUMBER_OF_DELETE=Nombre de detete
 INFO_FIELD=|      Champ : {0}
 
 INFO_STATUS       =|  Status sur l''importation {0} :
-INFO_STATUS_SELECT=|    total de ligne selectionn\u00c3\u00a9 : {0}
-INFO_STATUS_INSERT=|    total de ligne inser\u00c3\u00a9 : {0}
-INFO_STATUS_UPDATE=|    total de ligne mis \u00c3\u00a0 jour : {0}
-INFO_STATUS_DELETE=|    total de ligne supprim\u00c3\u00a9 : {0}
-INFO_STATUS_REJECT=|    total de ligne rejet\u00c3\u00a9 : {0}
+INFO_STATUS_SELECT=|    total de ligne selectionné : {0}
+INFO_STATUS_INSERT=|    total de ligne inseré : {0}
+INFO_STATUS_UPDATE=|    total de ligne mis à jour : {0}
+INFO_STATUS_DELETE=|    total de ligne supprimé : {0}
+INFO_STATUS_REJECT=|    total de ligne rejeté : {0}
 
 PROCESS_DESCRIPTION=Description
 PROCESS_DATE=Date
-PROCESS_FILE_INPUT=Fichier en entr\u00c3\u00a9e
-PROCESS_FILE_PARAMETER=Fichier de param\u00c3\u00a9trage
-PROCESS_DURATION=Dur\u00c3\u00a9e du traitement
+PROCESS_FILE_INPUT=Fichier en entrée
+PROCESS_FILE_PARAMETER=Fichier de paramétrage
+PROCESS_DURATION=Durée du traitement
 
 PROCESS_TITLE_LINE=Ligne
 PROCESS_TITLE_FIELDS=Liste des champs

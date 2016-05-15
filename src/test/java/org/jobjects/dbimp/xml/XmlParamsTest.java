@@ -16,7 +16,7 @@ public class XmlParamsTest {
   public void parseFile() {
     try {
       XmlParams xmlParams = new XmlParams();
-      URL url = Class.class.getResource("/org/jobjects/dbimp/userfilename.xml");
+      URL url = Class.class.getResource("/org/jobjects/dbimp/userfilename-asc.xml");
       XmlDocument xmld = xmlParams.parseFile(new File(url.toURI()));
       StringBuffer sb = new StringBuffer();
       LinkedList<Line> lines = xmld.getLines();

@@ -47,12 +47,33 @@ public class ImportationTest {
   }
 
   @Test(groups = "MaSuite")
-  public void importFile() {
+  public void importFileAsc() {
     try {
       LOGGER.fine("" + ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc"));
       String fileSource = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.asc").toURI()).getAbsolutePath();
       String fileSourceEncoding = "ISO-8859-1";
-      String fileNameParameter = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.xml").toURI()).getAbsolutePath();
+      String fileNameParameter = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename-asc.xml").toURI()).getAbsolutePath();
+      // String schemaName="MYDERBYDB";
+      boolean cached = false;
+      boolean verbose = true;
+      String fileNameReport = File.createTempFile("imp", ".txt").getAbsolutePath();
+      LOGGER.fine("fileNameReport=" + fileNameReport);
+      Importation.importFile(fileSource, fileSourceEncoding, fileNameParameter, conn, DerbyConstantes.SCHEMA_NAME, cached, verbose,
+          fileNameReport);
+      Assert.assertTrue(true); // ??? Pas sur
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+      Assert.assertTrue(false);
+    }
+  }
+
+  @Test(groups = "MaSuite")
+  public void importFileCsv() {
+    try {
+      LOGGER.fine("" + ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.csv"));
+      String fileSource = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename.csv").toURI()).getAbsolutePath();
+      String fileSourceEncoding = "ISO-8859-1";
+      String fileNameParameter = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename-csv.xml").toURI()).getAbsolutePath();
       // String schemaName="MYDERBYDB";
       boolean cached = false;
       boolean verbose = true;

@@ -308,7 +308,7 @@ public class Importation {
         reporting.setVerbose(verbose);
         LOGGER.finest("Rapport : " + dirnameReporte);
       } catch (Exception ex) {
-        LOGGER.log(Level.SEVERE, "", ex);
+        LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
       }
       /**
        * Chargement du parametrage des lignes et des recordset associé.
@@ -367,7 +367,7 @@ public class Importation {
       faw.close();
       faw = null;
     } catch (Throwable t) {
-      LOGGER.log(Level.SEVERE, "", t);
+      LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
     }
     l_end = System.currentTimeMillis();
     LOGGER.info("Duration : " + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS") + ".");
@@ -448,7 +448,7 @@ public class Importation {
           returnValue = Integer.parseInt(chaine);
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
       }
     }
     try {
@@ -457,7 +457,7 @@ public class Importation {
       fileAsciiWriter.close();
       fileAsciiWriter = null;
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
 
     return returnValue;

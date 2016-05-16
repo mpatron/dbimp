@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document [
+
+<!ELEMENT document (line+)>
+<!ATTLIST document description CDATA #IMPLIED>
+<!ATTLIST document filetype (FILE_TEXT|FILE_CSV) 'FILE_TEXT'>
+
+<!ELEMENT line (key*, field+)>
+<!ATTLIST line
+  name ID #REQUIRED
+  tablename CDATA #REQUIRED
+  action (INSERT|UPDATE|INSERT_UPDATE|DELETE|SHOW) 'INSERT_UPDATE'
+  trigger_class_name CDATA #IMPLIED
+>
+
+<!ELEMENT key (#PCDATA)>
+<!ATTLIST key
+  value CDATA #REQUIRED
+  startposition CDATA #REQUIRED
+  size CDATA #REQUIRED
+>
+
+<!ELEMENT field ((string|integer|long|float|double|datetime), (position|constante|query) , check_in?)>
+<!ATTLIST field
+  fieldname CDATA #REQUIRED
+  nullable (true|false) 'true'
+  nullable_error (true|false) 'true'
+  isuse (true|false) 'true'
+>
+
+<!ELEMENT position (#PCDATA)>
+<!ATTLIST position
+  startposition CDATA #REQUIRED
+  size CDATA #REQUIRED
+>
+
+<!ELEMENT constante (#PCDATA)>
+<!ATTLIST constante
+  value CDATA #REQUIRED
+>
+
+<!-- requête -->
+<!ELEMENT query (query-param*)>
+<!ATTLIST query
+  sql CDATA #REQUIRED
+>
+
+<!ELEMENT query-param ((string|integer|long|float|double|datetime), (position|constante))>
+
+<!ELEMENT string EMPTY>
+
+<!ELEMENT integer EMPTY>
+<!ATTLIST integer coefficient CDATA #IMPLIED>
+
+<!ELEMENT long EMPTY>
+<!ATTLIST long coefficient CDATA #IMPLIED>
+
+<!ELEMENT float EMPTY>
+<!ATTLIST float coefficient CDATA #IMPLIED>
+
+<!ELEMENT double EMPTY>
+<!ATTLIST double coefficient CDATA #IMPLIED>
+
+<!ELEMENT datetime EMPTY>
+<!ATTLIST datetime dateformat CDATA #REQUIRED>
+
+<!-- requête -->
+
+<!ELEMENT check_in EMPTY>
+<!ATTLIST check_in
+  sql CDATA #REQUIRED
+>
+]>
+<document description="Fichier de test users" filetype="FILE_CSV">
+<line name="SECU_USER" tablename="SECU_USER">
+  <field fieldname="USERNAME"><string/><position startposition="9" size="10"/></field>
+  <field fieldname="PASSWORD"><string/><position startposition="10" size="10"/></field>
+  <field fieldname="GENDER"><string/><position startposition="0" size="10"/></field>
+  <field fieldname="TITLE"><string/><position startposition="1" size="10"/></field>
+  <field fieldname="FIRSTNAME"><string/><position startposition="2" size="10"/></field>
+  <field fieldname="LASTNAME"><string/><position startposition="3" size="10"/></field>
+  <field fieldname="STREET"><string/><position startposition="4" size="10"/></field>
+  <field fieldname="CITY"><string/><position startposition="5" size="10"/></field>
+  <field fieldname="STATE"><string/><position startposition="6" size="10"/></field>
+  <field fieldname="EMAIL"><string/><position startposition="8" size="10"/></field>
+</line>
+</document>

@@ -282,6 +282,7 @@ public class Importation {
 
     String message = "DBImp starting... " + System.lineSeparator();
     message += "  - fileSource=" + fileSource + System.lineSeparator();
+    message += "  - fileNameParameter=" + fileNameParameter + System.lineSeparator();
     message += "  - fileSourceEncoding=" + fileSourceEncoding + System.lineSeparator();
     message += "  - fileNameReport=" + fileNameReport + System.lineSeparator();
     message += "  - schemaName=" + schemaName + System.lineSeparator();
@@ -301,7 +302,7 @@ public class Importation {
     try {
       Report reporting = null;
       try {
-        faw = new FileAsciiWriter(fileNameReport, Charset.defaultCharset().name());
+        faw = new FileAsciiWriter(fileNameReport, Charset.forName(fileSourceEncoding).name());
         reporting = new Report(faw);
         reporting.setInputFile(fileSource);
         reporting.setParamFile(fileNameParameter);

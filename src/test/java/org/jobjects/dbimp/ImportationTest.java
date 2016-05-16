@@ -86,6 +86,28 @@ public class ImportationTest {
       LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
       Assert.assertTrue(false);
     }
-
   }
+
+  @Test(groups = "MaSuite")
+  public void importFileCsvAll() {
+    try {
+      LOGGER.fine("" + ClassLoader.getSystemResource("org/jobjects/dbimp/api.randomuser.me.csv"));
+      String fileSource = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/api.randomuser.me.csv").toURI()).getAbsolutePath();
+      String fileSourceEncoding = "UTF-8";
+      String fileNameParameter = new File(ClassLoader.getSystemResource("org/jobjects/dbimp/api.randomuser.me.csv.xml").toURI()).getAbsolutePath();
+      // String schemaName="MYDERBYDB";
+      boolean cached = false;
+      boolean verbose = true;
+      String fileNameReport = File.createTempFile("imp", ".txt").getAbsolutePath();
+      LOGGER.fine("fileNameReport=" + fileNameReport);
+      Importation.importFile(fileSource, fileSourceEncoding, fileNameParameter, conn, DerbyConstantes.SCHEMA_NAME, cached, verbose,
+          fileNameReport);
+      Assert.assertTrue(true); // ??? Pas sur
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+      Assert.assertTrue(false);
+    }
+  }
+
+  
 }

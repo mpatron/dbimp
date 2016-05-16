@@ -31,11 +31,21 @@ public class CreateSchema {
       }
 
       {
+        //gender  name.title  name.first  name.last location.street location.city location.state  location.postcode email login.username  login.password
         Statement stmt = conn.createStatement();
         String sql = "CREATE TABLE " + schema + ".SECU_USER (";
-        sql += " USERNAME VARCHAR(255) NOT NULL,";
-        sql += " PASSWORD VARCHAR(255),";
+        sql += " USERNAME VARCHAR(20) NOT NULL,";
+        sql += " PASSWORD VARCHAR(64),";
         sql += " MONCHAMPSDATETIME TIMESTAMP,";
+        sql += " GENDER VARCHAR(10),";
+        sql += " TITLE VARCHAR(15),";
+        sql += " FIRSTNAME VARCHAR(20),";
+        sql += " LASTNAME VARCHAR(20),";
+        sql += " STREET VARCHAR(120),";
+        sql += " CITY VARCHAR(40),";
+        sql += " STATE VARCHAR(40),";
+        sql += " POSTCODE VARCHAR(20),";
+        sql += " EMAIL VARCHAR(320),";
         sql += " PRIMARY KEY (USERNAME)";
         sql += " )";
         stmt.execute(sql);

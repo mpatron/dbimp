@@ -96,7 +96,7 @@ public class Importation {
      */
     HelpFormatter formatter = new HelpFormatter();
     String cmdLineSyntax = "$JAVA_HOME/bin/java " + Importation.class.getName();
-    String header = "Importation directe version 3.2";
+    String header = "Importation directe version 4.0";
     String footer = "Copyright © 2006-2016 JObjects Corp. All Rights Reserved";
 
     Options options = new Options();

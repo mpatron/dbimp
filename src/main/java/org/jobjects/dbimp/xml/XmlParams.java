@@ -122,6 +122,9 @@ public class XmlParams extends DefaultHandler {
               if ("filetype".equalsIgnoreCase(attrs.getQName(i))) {
                 document.setFiletype(FiletypeEnum.valueOf(attrs.getValue(i)));
               }
+              if ("separateur".equalsIgnoreCase(attrs.getQName(i))) {
+                document.setSeparateur(attrs.getValue(i));
+              }
             } catch (Exception e) {
               LOGGER.log(Level.SEVERE, "Error in document", e);
               error_in_xml = true;
@@ -168,7 +171,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.key".equals(Path)) {
         if (attrs != null) {
-          XmlKey key = new XmlKey(document.getFiletype());
+          XmlKey key = new XmlKey(document.getFiletype(), document.getSeparateur());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {
@@ -362,7 +365,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.field.position".equals(Path)) {
         if (attrs != null) {
-          Position position = new XmlPosition(document.getFiletype());
+          Position position = new XmlPosition(document.getFiletype(), document.getSeparateur());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {
@@ -547,7 +550,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.field.query.query-param.position".equals(Path)) {
         if (attrs != null) {
-          Position position = new XmlPosition(document.getFiletype());
+          Position position = new XmlPosition(document.getFiletype(), document.getSeparateur());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {

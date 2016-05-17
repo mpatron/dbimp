@@ -18,8 +18,8 @@ public class XmlKey extends XmlPosition implements Key {
 
   private boolean isBlank = false;
 
-  public XmlKey(FiletypeEnum filetype) {
-    super(filetype);
+  public XmlKey(FiletypeEnum filetype, String separateur) {
+    super(filetype, separateur);
   }
 
   /*

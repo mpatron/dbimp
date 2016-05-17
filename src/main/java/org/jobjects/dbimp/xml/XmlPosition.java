@@ -18,11 +18,13 @@ import org.jobjects.dbimp.trigger.Position;
 public class XmlPosition implements Position {
   @NotNull
   private FiletypeEnum filetype;
+  private String separateur;
   private int startposition = 0;
   private int size = 0;
 
-  public XmlPosition(FiletypeEnum filetype) {
+  public XmlPosition(FiletypeEnum filetype, String separateur) {
     this.filetype = filetype;
+    this.separateur = separateur;
   }
 
   /*
@@ -78,7 +80,7 @@ public class XmlPosition implements Position {
       returnValue = StringUtils.substring(ligne, getStartposition(), getStartposition() + getSize());
       break;
     case FILE_CSV:
-      String separatorChar = ",";
+      String separatorChar = StringUtils.defaultString(separateur, ",");
       String[] champs = StringUtils.split(ligne, separatorChar);
       returnValue = champs[getStartposition()];
       break;

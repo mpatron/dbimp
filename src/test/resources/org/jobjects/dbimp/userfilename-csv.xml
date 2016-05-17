@@ -4,6 +4,7 @@
 <!ELEMENT document (line+)>
 <!ATTLIST document description CDATA #IMPLIED>
 <!ATTLIST document filetype (FILE_TEXT|FILE_CSV) 'FILE_TEXT'>
+<!ATTLIST document separateur CDATA #IMPLIED>
 
 <!ELEMENT line (key*, field+)>
 <!ATTLIST line
@@ -71,7 +72,7 @@
   sql CDATA #REQUIRED
 >
 ]>
-<document description="File de test !" filetype="FILE_CSV">
+<document description="File de test !" filetype="FILE_CSV" separateur=",">
 <line name="MYTABLE" tablename="MYTABLE" trigger_class_name="org.jobjects.dbimp.trigger.MyTrigger">
   <key value="MYTABLE" startposition="0" size="7"/>
   <field fieldname="MONCHAMPSTEXTE"><string/><position startposition="1" size="6"/></field>

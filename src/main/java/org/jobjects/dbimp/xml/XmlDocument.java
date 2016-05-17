@@ -21,6 +21,8 @@ public class XmlDocument {
 
   @NotNull
   private FiletypeEnum filetype = FiletypeEnum.FILE_TEXT;
+  
+  private String separateur = null;
 
   public String toString() {
     String returnValue = "<document>" + System.lineSeparator();
@@ -71,5 +73,16 @@ public class XmlDocument {
    */
   public LinkedList<Line> getLines() {
     return lines;
+  }
+
+  public void setSeparateur(String separateur) {
+    this.separateur=separateur;    
+  }
+
+  /**
+   * @return the separateur
+   */
+  public String getSeparateur() {
+    return separateur;
   }
 }

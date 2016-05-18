@@ -30,8 +30,9 @@ public enum SQLDatatbaseType {
       // jdbc:oracle:thin:@<server>:1521:<instance>
       returnValue = ORACLE;
     }
-    if (urlName.startsWith(StringUtils.lowerCase("jdbc:microsoft"), 0)) {
+    if (urlName.startsWith(StringUtils.lowerCase("jdbc:sqlserver"), 0)) {
       // jdbc:microsoft:sqlserver://<server>:1433;DatabaseName=<base>
+      // jdbc:sqlserver://<server>:1433;DatabaseName=<base>
       returnValue = SQLSERVER;
     }
     if (urlName.startsWith(StringUtils.lowerCase("jdbc:as400"), 0)) {

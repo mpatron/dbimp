@@ -163,6 +163,13 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.launch4j</groupId>
+			<artifactId>launch4j</artifactId>
+			<version>3.8.0</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -256,6 +263,72 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<shadedArtifactAttached>true</shadedArtifactAttached>
+					<shadedClassifierName>shaded</shadedClassifierName>
+					<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>org.jobjects.dbimp.Importation</mainClass>
+						</transformer>
+					</transformers>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>1.7.10</version>
+				<executions>
+					<execution>
+						<id>l4j-clui</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>console</headerType>
+							<jar>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</jar>
+							<outfile>${project.build.directory}/${project.artifactId}-${project.version}.exe</outfile>
+							<downloadUrl>http://java.com/download</downloadUrl>
+							<classPath>
+								<mainClass>
+									org.jobjects.dbimp.Importation</mainClass>
+								<preCp>anything</preCp>
+							</classPath>
+							<icon>src/main/resources/org/jobjects/dbimp/Icons8-Ios7-Logos-Java-Duke-Logo-Copyrighted.ico</icon>
+							<jre>
+								<minVersion>1.8.0</minVersion>
+								<jdkPreference>preferJre</jdkPreference>
+							</jre>
+							<versionInfo>
+								<fileVersion>1.0.0.0</fileVersion>
+								<txtFileVersion>${project.version}</txtFileVersion>
+								<fileDescription>${project.name}</fileDescription>
+								<copyright>2015 JObjects.org</copyright>
+								<productVersion>1.0.0.0</productVersion>
+								<txtProductVersion>1.0.0.0</txtProductVersion>
+								<productName>${project.name}</productName>
+								<companyName>JObjects</companyName>
+								<internalName>${project.artifactId}</internalName>
+								<originalFilename>${project.artifactId}-${project.version}.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 		<pluginManagement>
 			<plugins>

@@ -1,22 +1,27 @@
 package org.jobjects.dbimp.xml;
 
 import java.io.File;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.SystemUtils;
-import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.FieldFormatEnum;
+import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.LineActionTypeEnum;
+import org.jobjects.dbimp.trigger.Position;
 import org.jobjects.dbimp.trigger.Trigger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
-
 
 /**
  * Utilisé dans la lecture du fichier de paramètrage.
@@ -27,15 +32,15 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlParams extends DefaultHandler {
 
-  private XmlDocument document     = null;
+  private XmlDocument document = null;
 
-  private int         level        = 0;
+  private int level = 0;
 
-  private String[]    xmlPath      = new String[100];
+  private String[] xmlPath = new String[100];
 
-  private boolean     error_in_xml = false;
+  private boolean error_in_xml = false;
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   /** Warning. */
   public void warning(SAXParseException ex) {
@@ -59,15 +64,15 @@ public class XmlParams extends DefaultHandler {
   /** Returns a string of the location. */
   private String getLocationString(SAXParseException ex) {
     StringBuffer str = new StringBuffer();
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("Ligne:" + ex.getLineNumber());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("Column:" + ex.getColumnNumber());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("PublicId:" + ex.getPublicId());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
     str.append("SystemId:" + ex.getSystemId());
-    str.append(SystemUtils.LINE_SEPARATOR);
+    str.append(System.lineSeparator());
 
     // String systemId= ex.getSystemId();
     //
@@ -87,7 +92,7 @@ public class XmlParams extends DefaultHandler {
   } // getLocationString(SAXParseException):String
 
   public void startDocument() {
-    // System.out.println("startDocument");
+    LOGGER.finest("startDocument");
   }
 
   public void startElement(String uri, String local, String raw, Attributes attrs) {
@@ -102,7 +107,7 @@ public class XmlParams extends DefaultHandler {
         }
       }
 
-      // System.out.println(Path);
+      LOGGER.finest("Path=" + Path);
       if ("document".equals(Path)) {
         if (attrs != null) {
           document = new XmlDocument();
@@ -114,8 +119,14 @@ public class XmlParams extends DefaultHandler {
               if ("description".equalsIgnoreCase(attrs.getQName(i))) {
                 document.setDescription(attrs.getValue(i));
               }
+              if ("filetype".equalsIgnoreCase(attrs.getQName(i))) {
+                document.setFiletype(FiletypeEnum.valueOf(attrs.getValue(i)));
+              }
+              if ("separateur".equalsIgnoreCase(attrs.getQName(i))) {
+                document.setSeparateur(attrs.getValue(i));
+              }
             } catch (Exception e) {
-              log.log(Level.SEVERE, "Error in document", e);
+              LOGGER.log(Level.SEVERE, "Error in document", e);
               error_in_xml = true;
             }
           }
@@ -160,13 +171,15 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.key".equals(Path)) {
         if (attrs != null) {
-          XmlKey key = new XmlKey();
+          XmlKey key = new XmlKey(document.getFiletype(), document.getSeparateur());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {
             try {
+              LOGGER.finest(String.format("QName=%s Value=%s", attrs.getQName(i), attrs.getValue(i)));
+
               if ("value".equalsIgnoreCase(attrs.getQName(i))) {
-                key.setValue(attrs.getValue(i));
+                key.setKeyValue(attrs.getValue(i));
               }
 
               if ("startposition".equalsIgnoreCase(attrs.getQName(i))) {
@@ -178,8 +191,7 @@ public class XmlParams extends DefaultHandler {
               }
 
               if ("isBlank".equalsIgnoreCase(attrs.getQName(i))) {
-                // System.out.println(attrs.getValue(i));
-                key.setIsBlank(BooleanUtils.toBooleanObject(attrs.getValue(i)));
+                key.setBlank(BooleanUtils.toBoolean(attrs.getValue(i)));
               }
             } catch (Exception e) {
               e.printStackTrace();
@@ -196,7 +208,7 @@ public class XmlParams extends DefaultHandler {
         if (attrs != null) {
           int len = attrs.getLength();
           String name = null;
-          FieldTypeEnum type = FieldTypeEnum.STRING;
+          FieldFormatEnum type = FieldFormatEnum.STRING;
           boolean nullable = false;
           boolean nullableError = true;
           boolean isUse = true;
@@ -207,7 +219,7 @@ public class XmlParams extends DefaultHandler {
               }
 
               if ("type".equals(attrs.getQName(i))) {
-                type = FieldTypeEnum.valueOfByType(attrs.getValue(i));
+                type = FieldFormatEnum.valueOfByType(attrs.getValue(i));
               }
 
               if ("nullable".equals(attrs.getQName(i))) {
@@ -237,13 +249,13 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.string".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.STRING);
+        field.setTypeFormat(FieldFormatEnum.STRING);
       }
 
       if ("document.line.field.integer".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.INTEGER);
+        field.setTypeFormat(FieldFormatEnum.INTEGER);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -264,7 +276,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.long".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.LONG);
+        field.setTypeFormat(FieldFormatEnum.LONG);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -285,7 +297,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.float".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.FLOAT);
+        field.setTypeFormat(FieldFormatEnum.FLOAT);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -306,7 +318,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.double".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.DOUBLE);
+        field.setTypeFormat(FieldFormatEnum.DOUBLE);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -327,7 +339,7 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.datetime".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.DATETIME);
+        field.setTypeFormat(FieldFormatEnum.DATETIME);
 
         if (attrs != null) {
           int len = attrs.getLength();
@@ -348,12 +360,12 @@ public class XmlParams extends DefaultHandler {
       if ("document.line.field.file".equals(Path)) {
         XmlLine xmlline = (XmlLine) document.getLines().getLast();
         XmlField field = (XmlField) xmlline.getFields().getLast();
-        field.setType(FieldTypeEnum.BLOB);
+        field.setTypeFormat(FieldFormatEnum.BLOB);
       }
 
       if ("document.line.field.position".equals(Path)) {
         if (attrs != null) {
-          XmlPosition position = new XmlPosition();
+          Position position = new XmlPosition(document.getFiletype(), document.getSeparateur());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {
@@ -444,7 +456,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.STRING);
+          query_param.setType(FieldFormatEnum.STRING);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -458,7 +470,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.INTEGER);
+          query_param.setType(FieldFormatEnum.INTEGER);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -472,7 +484,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.LONG);
+          query_param.setType(FieldFormatEnum.LONG);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -486,7 +498,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.FLOAT);
+          query_param.setType(FieldFormatEnum.FLOAT);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -500,7 +512,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.DOUBLE);
+          query_param.setType(FieldFormatEnum.DOUBLE);
         } catch (Exception ex) {
           ex.printStackTrace();
           error_in_xml = true;
@@ -514,7 +526,7 @@ public class XmlParams extends DefaultHandler {
         try {
           XmlQuery query = field.getQuery();
           XmlQueryParam query_param = (XmlQueryParam) query.getQueryParams().getLast();
-          query_param.setType(FieldTypeEnum.DATETIME);
+          query_param.setType(FieldFormatEnum.DATETIME);
 
           if (attrs != null) {
             int len = attrs.getLength();
@@ -538,7 +550,7 @@ public class XmlParams extends DefaultHandler {
 
       if ("document.line.field.query.query-param.position".equals(Path)) {
         if (attrs != null) {
-          XmlPosition position = new XmlPosition();
+          Position position = new XmlPosition(document.getFiletype(), document.getSeparateur());
           int len = attrs.getLength();
 
           for (int i = 0; i < len; i++) {
@@ -621,26 +633,26 @@ public class XmlParams extends DefaultHandler {
       }
     } catch (Throwable t) {
       String message = "Unknow error";
-      message += SystemUtils.LINE_SEPARATOR + "  Path =";
+      message += System.lineSeparator() + "  Path =";
       for (int i = 0; i < xmlPath.length; i++) {
         message += xmlPath[i] + ".";
       }
-      message += SystemUtils.LINE_SEPARATOR + "  uri=" + uri;
-      message += SystemUtils.LINE_SEPARATOR + "  local=" + local;
-      message += SystemUtils.LINE_SEPARATOR + "  raw=" + raw;
-      message += SystemUtils.LINE_SEPARATOR + "  level=" + level;
-      message += SystemUtils.LINE_SEPARATOR + "  attrs=";
+      message += System.lineSeparator() + "  uri=" + uri;
+      message += System.lineSeparator() + "  local=" + local;
+      message += System.lineSeparator() + "  raw=" + raw;
+      message += System.lineSeparator() + "  level=" + level;
+      message += System.lineSeparator() + "  attrs=";
       if (attrs != null) {
         for (int i = 0; i < attrs.getLength(); i++) {
-          message += SystemUtils.LINE_SEPARATOR + "    attr=(" + attrs.getQName(i) + ", " + attrs.getValue(i) + ")";
+          message += System.lineSeparator() + "    attr=(" + attrs.getQName(i) + ", " + attrs.getValue(i) + ")";
         }
-        if(attrs.getLength()==0) {
+        if (attrs.getLength() == 0) {
           message += " aucun élément.";
         }
       } else {
         message += " null";
       }
-      log.log(Level.SEVERE,message, t);
+      LOGGER.log(Level.SEVERE, message, t);
     }
     level++;
   }
@@ -651,7 +663,7 @@ public class XmlParams extends DefaultHandler {
 
   public void characters(char[] ch, int start, int length) {
     // Donne de contenu du valeur d'un node
-    // System.out.println(new String(ch, start, length));
+    LOGGER.finest(new String(ch, start, length));
   }
 
   public XmlDocument parseFile(File file) throws SAXException // "D:\\Personnel\\generate\\tmp\\table.xml"
@@ -663,13 +675,24 @@ public class XmlParams extends DefaultHandler {
       SAXParser parser = factory.newSAXParser();
       error_in_xml = false;
       parser.parse(file, this);
-      //parser.parse(uri);
+      // parser.parse(uri);
+
+      ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+      Validator validator = validatorFactory.getValidator();
+      Set<ConstraintViolation<XmlDocument>> violations = validator.validate(document);
+      StringBuffer sb = new StringBuffer();
+      for (ConstraintViolation<XmlDocument> violation : violations) {
+        sb.append(String.format("%s: %s%n", violation.getPropertyPath(), violation.getMessage()));
+        sb.append(System.lineSeparator());
+      }
+      LOGGER.log(Level.SEVERE, "Validation du xml : " + sb.toString());
+
       if (error_in_xml) {
-    	  log.log(Level.SEVERE,"Error in the file " + file);
+        LOGGER.log(Level.SEVERE, "Error in the file " + file);
       }
     } catch (Exception e) {
-    	log.log(Level.SEVERE,"Unknow error with the file " + file, e);
-    	throw new SAXException(e);
+      LOGGER.log(Level.SEVERE, "Unknow error with the file " + file, e);
+      throw new SAXException(e);
     }
 
     return document;

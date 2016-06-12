@@ -3,6 +3,9 @@
 
 <!ELEMENT document (line+)>
 <!ATTLIST document description CDATA #IMPLIED>
+<!ATTLIST document filetype (FILE_TEXT|FILE_CSV) 'FILE_TEXT'>
+<!ATTLIST document separateur CDATA #IMPLIED>
+
 
 <!ELEMENT line (key*, field+)>
 <!ATTLIST line
@@ -70,25 +73,17 @@
   sql CDATA #REQUIRED
 >
 ]>
-<document description="File de test !">
-<line name="MYTABLE" tablename="MYTABLE" trigger_class_name="org.jobjects.dbimp.trigger.MyTrigger">
-  <key value="MYTABLE" startposition="0" size="7"/>
-  <field fieldname="MONCHAMPSTEXTE"><string/><position startposition="7" size="6"/></field>
-  <field fieldname="MONCHAMPSCHAR"><string/><position startposition="13" size="2"/></field>
-  <field fieldname="MONCHAMPSDATE"><datetime dateformat="MM/dd/yyyy"/><position startposition="15" size="10"/></field>
-  <field fieldname="MONCHAMPSDATETIME"><datetime dateformat="MM/dd/yyyy HH:mm:ss"/><position startposition="25" size="19"/></field>
-  <field fieldname="MONCHAMPSDECIMAL"><double/><position startposition="44" size="3"/></field>
-</line>
+<document description="Fichier de test users" filetype="FILE_CSV" separateur=",">
 <line name="SECU_USER" tablename="SECU_USER">
-  <key value="SECU_USER" startposition="0" size="9"/>
   <field fieldname="USERNAME"><string/><position startposition="9" size="10"/></field>
-  <field fieldname="PASSWORD"><string/><position startposition="19" size="10"/></field>
-  <field fieldname="MONCHAMPSDATETIME"><datetime dateformat="MM/dd/yyyy HH:mm:ss"/><position startposition="29" size="19"/></field>
-</line>
-<line name="SECU_USER_ROLE" tablename="SECU_USER_ROLE">
-  <key value="SECU_USER_ROLE" startposition="0" size="19"/>
-  <field fieldname="USERNAME"><string/><position startposition="19" size="35"/></field>
-  <field fieldname="ROLENAME"><string/><position startposition="54" size="20"/></field>
-  <field fieldname="MONCHAMPSDATETIME"><datetime dateformat="MM/dd/yyyy HH:mm:ss"/><position startposition="25" size="19"/></field>
+  <field fieldname="PASSWORD"><string/><position startposition="10" size="10"/></field>
+  <field fieldname="GENDER"><string/><position startposition="0" size="10"/></field>
+  <field fieldname="TITLE"><string/><position startposition="1" size="10"/></field>
+  <field fieldname="FIRSTNAME"><string/><position startposition="2" size="10"/></field>
+  <field fieldname="LASTNAME"><string/><position startposition="3" size="10"/></field>
+  <field fieldname="STREET"><string/><position startposition="4" size="10"/></field>
+  <field fieldname="CITY"><string/><position startposition="5" size="10"/></field>
+  <field fieldname="STATE"><string/><position startposition="6" size="10"/></field>
+  <field fieldname="EMAIL"><string/><position startposition="8" size="10"/></field>
 </line>
 </document>

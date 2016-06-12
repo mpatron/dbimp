@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +16,6 @@ import org.jobjects.dbimp.MathUtils;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
-import org.jobjects.dbimp.xml.XmlField;
 
 /**
  * Class permettant de vérifier si la donnée est présente dans la base. Créer le
@@ -27,7 +25,7 @@ import org.jobjects.dbimp.xml.XmlField;
  */
 public class SqlSelect extends SqlStatement {
 
-  private static Logger log = Logger.getLogger(SqlSelect.class.getName());
+  private static Logger LOGGER = Logger.getLogger(SqlSelect.class.getName());
 
   private int countSelect = 0;
 
@@ -44,7 +42,7 @@ public class SqlSelect extends SqlStatement {
   public SqlSelect(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
       throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
-    log.info("schemaName="+schemaName);
+    LOGGER.finest("schemaName=" + schemaName);
   }
 
   // ---------------------------------------------------------------------------
@@ -59,8 +57,7 @@ public class SqlSelect extends SqlStatement {
 
     boolean first = true;
 
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
 
@@ -75,15 +72,14 @@ public class SqlSelect extends SqlStatement {
     returnValue += (" from " + getSQLSchemaName() + getXmlline().getTableName());
 
     if (first) {
-      log.severe("Error no field");
+      LOGGER.severe("Error no field");
 
       return null;
     }
 
     first = true;
 
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
 
@@ -111,7 +107,7 @@ public class SqlSelect extends SqlStatement {
    */
   public int execute(int nbLigne) {
     Map<String, Object> returnValue = null;
-    log.fine(getSql());
+    LOGGER.fine(getSql());
 
     PreparedStatement pstmt = null;
     try {
@@ -124,8 +120,7 @@ public class SqlSelect extends SqlStatement {
       try {
         int i = 1;
 
-        for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-          XmlField field = (XmlField) it.next();
+        for (Field field : getXmlline().getFields()) {
           if (!field.isUse())
             continue;
 
@@ -145,14 +140,11 @@ public class SqlSelect extends SqlStatement {
           if (rs.next()) {
             returnValue = new HashMap<String, Object>();
 
-            Iterator<Field> enu = getXmlline().getFields().iterator();
-
-            while (enu.hasNext()) {
-              XmlField field = (XmlField) enu.next();
+            for (Field field : getXmlline().getFields()) {
               if (!field.isUse())
                 continue;
 
-              switch (field.getType()) {
+              switch (field.getTypeFormat()) {
               case INTEGER:
                 int i_value = rs.getInt(field.getName());
                 if (rs.wasNull()) {
@@ -246,8 +238,7 @@ public class SqlSelect extends SqlStatement {
     int returnValue = 0;
     boolean flag = true;
 
-    for (Iterator<Field> it = getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field = (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
 
@@ -265,7 +256,7 @@ public class SqlSelect extends SqlStatement {
             /**
              * buffer et value ne sont pas nulls.
              */
-            switch (field.getType()) {
+            switch (field.getTypeFormat()) {
             case INTEGER:
               double i_value = Double.parseDouble(field.getBuffer()) * field.getCoefficient();
               if (MathUtils.isInteger(i_value)) {
@@ -328,18 +319,19 @@ public class SqlSelect extends SqlStatement {
           }
         }
       } catch (NumberFormatException nfe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
-            + field.getType().getTypeString(), nfe);
+        LOGGER.log(Level.SEVERE,
+            "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(),
+            nfe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       } catch (ParseException pe) {
-        log.log(Level.SEVERE, "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a "
-            + field.getType().getTypeString(), pe);
+        LOGGER.log(Level.SEVERE,
+            "Line (" + nbLigne + ") " + field.getName() + "=" + field.getBuffer() + " is not a " + field.getTypeFormat().getTypeString(),
+            pe);
         getReportTypeLine().getReportLine().getReportField(field).ERROR_FIELD_TYPE();
       }
 
       if ((returnValue != 0) && flag) {
-        log.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer()
-            + " in database=" + value);
+        LOGGER.fine("Update for ligne=" + nbLigne + " " + field.getName() + " : in file=" + field.getBuffer() + " in database=" + value);
         if (value == null) {
           value = "";
         }
@@ -348,8 +340,7 @@ public class SqlSelect extends SqlStatement {
         // * dans le fichier de rapport, il ne faut pas executer cette commande.
         // */
         if (getReportTypeLine().getReporting().isVerbose()) {
-          getReportTypeLine().getReportLine().getReportField(field)
-              .INFO_FIELD_UPDATED_IN_DB(field.getBuffer(), value.toString());
+          getReportTypeLine().getReportLine().getReportField(field).INFO_FIELD_UPDATED_IN_DB(field.getBuffer(), value.toString());
         }
 
         flag = false;

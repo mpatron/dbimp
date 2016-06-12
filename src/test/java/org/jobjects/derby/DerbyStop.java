@@ -1,6 +1,5 @@
 package org.jobjects.derby;
 
-import java.sql.DriverManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,30 +8,22 @@ import org.testng.annotations.Test;
 
 public class DerbyStop {
 
-	private static Logger LOGGER = Logger.getLogger(DerbyStop.class.getName());
+  private static Logger LOGGER = Logger.getLogger(DerbyStop.class.getName());
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		try {
-			LOGGER.info("Extinction de Derby");
-			DriverManager.getConnection(DerbyConstantes.URL+";shutdown=true");
-		} catch (Exception ignored) {
-			LOGGER.log(Level.INFO, "Extinction de " + DerbyConstantes.URL + " : " + ignored.getLocalizedMessage());
-		}
-		try {
-			LOGGER.info("Extinction de Derby");
-			DriverManager.getConnection("jdbc:derby:;shutdown=true");
-		} catch (Exception ignored) {
-			LOGGER.log(Level.INFO, "Extinction de derby : " + ignored.getLocalizedMessage());
-		}
-	}
+  /**
+   * @throws java.lang.Exception
+   */
+  @AfterClass
+  public static void tearDownAfterClass() throws Exception {
+    DerbySingleton.getInstance().stop();
+    if (DerbySingleton.getInstance().isStarted()) {
+      LOGGER.log(Level.SEVERE, "Derby can not be stopped !");
+    }
+  }
 
-	@Test(groups = "MaSuite")
-	public void testStop() {
-		LOGGER.log(Level.INFO, "Derby Stop");
-	}
+  @Test(groups = "MaSuite")
+  public void testStop() {
+    LOGGER.log(Level.INFO, "Derby Stop");
+  }
 
 }

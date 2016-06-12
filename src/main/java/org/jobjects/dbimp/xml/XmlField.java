@@ -8,9 +8,10 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -19,7 +20,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.jobjects.dbimp.MathUtils;
 import org.jobjects.dbimp.report.ReportField;
 import org.jobjects.dbimp.trigger.Field;
+import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.Position;
 
 /**
  * Tag field. Utilisé dans la lecture du fichier de paramètrage.
@@ -29,14 +32,14 @@ import org.jobjects.dbimp.trigger.FieldTypeEnum;
  */
 public class XmlField implements Field, Comparable<XmlField> {
 
-  public XmlField(String name, FieldTypeEnum type) {
+  public XmlField(String name, FieldFormatEnum type) {
     this.name = name;
-    this.type = type;
+    this.typeFormat = type;
   }
 
-  public XmlField(String name, FieldTypeEnum type, boolean nullable, boolean nullableError, boolean isUse) {
+  public XmlField(String name, FieldFormatEnum type, boolean nullable, boolean nullableError, boolean isUse) {
     this.name = name;
-    this.type = type;
+    this.typeFormat = type;
     this.nullable = nullable;
     this.nullableError = nullableError;
     this.isUse = isUse;
@@ -46,6 +49,7 @@ public class XmlField implements Field, Comparable<XmlField> {
   /**
    * Nom du champs.
    */
+  @NotNull
   private String name = null;
 
   /**
@@ -57,16 +61,16 @@ public class XmlField implements Field, Comparable<XmlField> {
   /**
    * Type de la donnée.
    * 
-   * @see FieldTypeEnum#toInt(java.lang.String)
-   * @see FieldTypeEnum#toString(int)
+   * @see FieldFormatEnum#toInt(java.lang.String)
+   * @see FieldFormatEnum#toString(int)
    */
-  private FieldTypeEnum type = FieldTypeEnum.STRING;
+  private FieldFormatEnum typeFormat = FieldFormatEnum.STRING;
 
   private String dateFormat = null;
 
   /**
    * Coéficient de multiplication. Utilisé pour multiplié la valeur sielle est
-   * de type integer|long|float|double.
+   * de typeFormat integer|long|float|double.
    */
   private double coefficient = 1;
 
@@ -98,22 +102,22 @@ public class XmlField implements Field, Comparable<XmlField> {
    */
   private boolean isUse = true;
 
-  private XmlPosition position = null;
+  private Position position = null;
 
   private XmlConstante constante = null;
 
   private XmlQuery query = null;
 
-  private int discriminator = POSITION;
+  private FieldTypeEnum discriminator = FieldTypeEnum.POSITION;
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   /**
-   * Method getDiscriminator. Distingue le type de la source de donnée.
+   * Method getDiscriminator. Distingue le typeFormat de la source de donnée.
    * 
    * @return int = [ POSITION | CONSTANTE | QUERY ]
    */
-  public int getDiscriminator() {
+  public FieldTypeEnum getDiscriminator() {
     return discriminator;
   }
 
@@ -125,8 +129,8 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @return XmlPosition
    * @throws Exception
    */
-  public XmlPosition getPosition() throws Exception {
-    if (discriminator != POSITION) {
+  public Position getPosition() throws Exception {
+    if (!FieldTypeEnum.POSITION.equals(discriminator)) {
       throw new Exception("is not a position.");
     }
 
@@ -140,8 +144,8 @@ public class XmlField implements Field, Comparable<XmlField> {
    * 
    * @param position
    */
-  public void setPosition(XmlPosition position) {
-    discriminator = POSITION;
+  public void setPosition(Position position) {
+    discriminator = FieldTypeEnum.POSITION;
     this.position = position;
   }
 
@@ -154,7 +158,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @throws Exception
    */
   public XmlConstante getConstante() throws Exception {
-    if (discriminator != CONSTANTE) {
+    if (!FieldTypeEnum.CONSTANTE.equals(discriminator)) {
       throw new Exception("is not a constante.");
     }
 
@@ -169,7 +173,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @param constante
    */
   public void setConstante(XmlConstante constante) {
-    discriminator = CONSTANTE;
+    discriminator = FieldTypeEnum.CONSTANTE;
     this.constante = constante;
   }
 
@@ -182,7 +186,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @throws Exception
    */
   public XmlQuery getQuery() throws Exception {
-    if (discriminator != QUERY) {
+    if (!FieldTypeEnum.QUERY.equals(discriminator)) {
       throw new Exception("is not a query.");
     }
     return query;
@@ -196,7 +200,7 @@ public class XmlField implements Field, Comparable<XmlField> {
    * @param query
    */
   public void setQuery(XmlQuery query) {
-    discriminator = QUERY;
+    discriminator = FieldTypeEnum.QUERY;
     this.query = query;
   }
 
@@ -208,22 +212,22 @@ public class XmlField implements Field, Comparable<XmlField> {
   public String toString() {
     String returnValue = "    <field fieldname=\"" + name + "\">";
 
-    switch (type) {
+    switch (typeFormat) {
     case DATETIME:
-      returnValue += "<" + type.getTypeString() + " dateformat=\"" + getDateFormat() + "\"/>";
+      returnValue += "<" + typeFormat.getTypeString() + " dateformat=\"" + getDateFormat() + "\"/>";
       break;
     case DOUBLE:
     case FLOAT:
     case INTEGER:
     case LONG:
       if (coefficient != 1) {
-        returnValue += "<" + type.getTypeString() + " coefficient=\"" + coefficient + "\"/>";
+        returnValue += "<" + typeFormat.getTypeString() + " coefficient=\"" + coefficient + "\"/>";
       } else {
-        returnValue += "<" + type.getTypeString() + "/>";
+        returnValue += "<" + typeFormat.getTypeString() + "/>";
       }
       break;
     default: // XmlFieldTypes._STRING
-      returnValue += "<" + type.getTypeString() + "/>";
+      returnValue += "<" + typeFormat.getTypeString() + "/>";
       break;
     }
 
@@ -240,80 +244,22 @@ public class XmlField implements Field, Comparable<XmlField> {
       break;
     case QUERY:
       if (query != null) {
-        returnValue += System.getProperty("line.separator");
+        returnValue += System.lineSeparator();
         returnValue += query.toString();
-        returnValue += System.getProperty("line.separator");
+        returnValue += System.lineSeparator();
       }
       break;
     default:
-      returnValue += "<!-- Erreur de type -->";
+      returnValue += "<!-- Erreur de typeFormat -->";
       break;
     }
 
     if (checkInSql != null && !checkInSql.trim().equals("")) {
-      returnValue += System.getProperty("line.separator");
+      returnValue += System.lineSeparator();
       returnValue += "<check_in sql=\"" + checkInSql + "\"/>";
     }
 
     returnValue += "</field>";
-    return returnValue;
-  }
-
-  // ---------------------------------------------------------------------------
-
-  /**
-   * Method loadBuffer. Charge l'attribut 'buffer' à partir du contenu du
-   * fichier. Les erreurs seront envoyé sur 'reporting'.
-   * 
-   * @param connection
-   * @param ligne
-   *          Valeur de la ligne en cours de lecture.
-   * @param reportField
-   * @return Retourne faux si une erreur a été trouvé. Les problèmes de format,
-   *         de source de donnée, ... seront enregistrés dans 'reporting'.
-   */
-  public boolean loadBuffer(Connection connection, String ligne, ReportField reportField) {
-    boolean returnValue = true;
-    try {
-      switch (this.getDiscriminator()) {
-      case XmlField.CONSTANTE:
-        buffer = this.getConstante().getValue();
-        break;
-
-      case XmlField.POSITION:
-
-        try {
-          buffer = ligne.substring(this.getPosition().getStartposition(),
-              this.getPosition().getStartposition() + this.getPosition().getSize()).trim();
-          returnValue = isBufferValid(reportField);
-        } catch (IndexOutOfBoundsException ioobe) {
-          log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
-          log.log(Level.SEVERE, reportField.ERROR_FIELD_NOT_IN_FILE());
-          /*
-           * Si on veut arrêter l'importation de la ligne si les champs est
-           * inaxcessible alors il faut decommenter : 'returnValue= false;'
-           */
-          // returnValue= false;
-        }
-
-        break;
-
-      case XmlField.QUERY:
-        buffer = null;
-        returnValue &= executeSubQuery(connection, ligne, reportField);
-        /** *********************************** */
-        log.finest("Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
-        break;
-      }
-    } catch (Exception ex) {
-      log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : ", ex);
-      returnValue = false;
-    }
-
-    if (buffer != null) {
-      buffer = buffer.trim();
-    }
-
     return returnValue;
   }
 
@@ -336,7 +282,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       }
     }
 
-    switch (type) {
+    switch (typeFormat) {
     case INTEGER:
       try {
         double d = Double.parseDouble(buffer) * coefficient;
@@ -346,7 +292,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_INTEGER(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -361,7 +307,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_LONG(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -373,7 +319,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_FLOAT(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -386,7 +332,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (NumberFormatException nfe) {
         if (nullableError | !StringUtils.isBlank(buffer)) {
           String message = reportField.ERROR_FIELD_NOT_A_DOUBLE(buffer);
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -404,7 +350,7 @@ public class XmlField implements Field, Comparable<XmlField> {
       } catch (ParseException pe) {
         if (nullableError) {
           String message = reportField.ERROR_FIELD_NOT_A_DATETIME(buffer, getDateFormat());
-          log.warning(message);
+          LOGGER.warning(message);
         }
         returnValue = false;
       }
@@ -479,8 +425,8 @@ public class XmlField implements Field, Comparable<XmlField> {
   /**
    * @see org.jobjects.dbimp.trigger.Field#getType()
    */
-  public FieldTypeEnum getType() {
-    return type;
+  public FieldFormatEnum getTypeFormat() {
+    return typeFormat;
   }
 
   /**
@@ -555,13 +501,13 @@ public class XmlField implements Field, Comparable<XmlField> {
   }
 
   /**
-   * Sets the type.
+   * Sets the typeFormat.
    * 
-   * @param type
-   *          The type to set
+   * @param typeFormat
+   *          The typeFormat to set
    */
-  public void setType(FieldTypeEnum type) {
-    this.type = type;
+  public void setTypeFormat(FieldFormatEnum type) {
+    this.typeFormat = type;
   }
 
   /**
@@ -622,6 +568,62 @@ public class XmlField implements Field, Comparable<XmlField> {
     return new CompareToBuilder().append(this.name, object.name).toComparison();
   }
 
+  /**
+   * Method loadBuffer. Charge l'attribut 'buffer' à partir du contenu du
+   * fichier. Les erreurs seront envoyé sur 'reporting'.
+   * 
+   * @param connection
+   * @param ligne
+   *          Valeur de la ligne en cours de lecture.
+   * @param reportField
+   * @return Retourne faux si une erreur a été trouvé. Les problèmes de format,
+   *         de source de donnée, ... seront enregistrés dans 'reporting'.
+   */
+  public boolean loadBuffer(Connection connection, String ligne, ReportField reportField) {
+    boolean returnValue = true;
+    try {
+      switch (this.getDiscriminator()) {
+      case CONSTANTE:
+        buffer = getConstante().getValue();
+        break;
+
+      case POSITION:
+        try {
+          buffer = getPosition().getValue(ligne);
+          returnValue = isBufferValid(reportField);
+        } catch (IndexOutOfBoundsException ioobe) {
+          LOGGER.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
+          LOGGER.log(Level.SEVERE, reportField.ERROR_FIELD_NOT_IN_FILE());
+          /*
+           * Si on veut arrêter l'importation de la ligne si les champs est
+           * inaxcessible alors il faut decommenter : 'returnValue= false;'
+           */
+          // returnValue= false;
+        }
+
+        break;
+
+      case QUERY:
+        buffer = null;
+        returnValue &= executeSubQuery(connection, ligne, reportField);
+        /** *********************************** */
+        LOGGER.finest("Ligne(" + reportField.getReportLine().getNumberLine() + ") : " + buffer);
+        break;
+      }
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") : ", ex);
+      returnValue = false;
+    }
+
+    if (buffer != null) {
+      buffer = buffer.trim();
+    }
+
+    return returnValue;
+  }
+
+  // ---------------------------------------------------------------------------
+
   private boolean executeSubQuery(Connection connection, String ligne, ReportField reportField) throws Exception {
     boolean returnValue = true;
     if (getQuery().getQueryParams().size() != 0) {
@@ -630,32 +632,33 @@ public class XmlField implements Field, Comparable<XmlField> {
 
         try {
           int i = 1;
-          Iterator<XmlQueryParam> e_query_params = this.getQuery().getQueryParams().iterator();
           StringBuffer message_params = new StringBuffer();
 
-          while (e_query_params.hasNext()) {
-            XmlQueryParam queryparam = (XmlQueryParam) e_query_params.next();
-
+          for (XmlQueryParam queryparam : this.getQuery().getQueryParams()) {
             String s_value = null;
 
-            switch (queryparam.discriminator()) {
-            case XmlField.CONSTANTE:
+            switch (queryparam.getDiscriminator()) {
+            case CONSTANTE:
               s_value = queryparam.getConstante().getValue();
               message_params.append("|        " + i + ") Paramêtre Constante Valeur=" + s_value);
               break;
 
-            case XmlField.POSITION:
+            case POSITION:
               try {
                 s_value = ligne.substring(queryparam.getPosition().getStartposition(),
                     queryparam.getPosition().getStartposition() + queryparam.getPosition().getSize()).trim();
               } catch (IndexOutOfBoundsException ioobe) {
-                log.severe(reportField.ERROR_FIELD_NOT_IN_FILE());
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_IN_FILE());
                 setBuffer(null);
                 returnValue = false;
               }
-              message_params.append("|        " + i + ") Position=" + queryparam.getPosition().getStartposition()
-                  + " Size=" + queryparam.getPosition().getSize() + " Valeur=" + s_value);
+              message_params.append("|        " + i + ") Position=" + queryparam.getPosition().getStartposition() + " Size="
+                  + queryparam.getPosition().getSize() + " Valeur=" + s_value);
               break;
+            case QUERY:
+              throw new IllegalArgumentException("Pas de typeFormat QUERY en sous requête.");
+            default:
+              throw new IllegalArgumentException("Seul les types CONSTANTE et POSITION en sous requête.");
             }
 
             boolean isNull = s_value == null ? true : s_value.trim().equals("");
@@ -670,7 +673,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.INTEGER);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_INTEGER(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_INTEGER(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -685,7 +688,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.INTEGER);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_LONG(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_LONG(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -700,7 +703,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.FLOAT);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_FLOAT(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_FLOAT(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -715,7 +718,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                   pstmt.setNull(i, java.sql.Types.DOUBLE);
                 }
               } catch (NumberFormatException nfe) {
-                log.severe(reportField.ERROR_FIELD_NOT_A_DOUBLE(s_value));
+                LOGGER.severe(reportField.ERROR_FIELD_NOT_A_DOUBLE(s_value));
                 setBuffer(null);
                 returnValue = false;
               }
@@ -732,7 +735,7 @@ public class XmlField implements Field, Comparable<XmlField> {
                     ts_value = new Timestamp(sdf.parse(s_value).getTime());
                   }
                 } catch (ParseException pe) {
-                  log.severe(reportField.ERROR_FIELD_NOT_A_DATETIME(s_value, queryparam.getDateformat()));
+                  LOGGER.severe(reportField.ERROR_FIELD_NOT_A_DATETIME(s_value, queryparam.getDateformat()));
                   setBuffer(null);
                   returnValue = false;
                 }
@@ -750,11 +753,11 @@ public class XmlField implements Field, Comparable<XmlField> {
               }
               break;
             }
-            // log.fatal( "("+i+")"+queryparam.type+"="+s_value);
+            // LOGGER.fatal( "("+i+")"+queryparam.type+"="+s_value);
             i++;
           }
 
-          // log.fatal(this.query().sql);
+          // LOGGER.fatal(this.query().sql);
           ResultSet rs = pstmt.executeQuery();
 
           try {
@@ -764,7 +767,7 @@ public class XmlField implements Field, Comparable<XmlField> {
 
             if (isEmptyOrNullBuffer() && (!isNullable())) {
               if (isNullableError()) {
-                log.info(reportField.ERROR_FIELD_MANDATORY(message_params.toString()));
+                LOGGER.info(reportField.ERROR_FIELD_MANDATORY(message_params.toString()));
               }
               returnValue = false;
             }
@@ -776,8 +779,8 @@ public class XmlField implements Field, Comparable<XmlField> {
           pstmt.close();
         }
       } catch (Exception ex) {
-        log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : "
-            + getName() + " : " + getQuery().getSql(), ex);
+        LOGGER.log(Level.SEVERE,
+            "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : " + getName() + " : " + getQuery().getSql(), ex);
         returnValue = false;
       }
     } else {
@@ -799,8 +802,8 @@ public class XmlField implements Field, Comparable<XmlField> {
           stmt.close();
         }
       } catch (Exception ex) {
-        log.log(Level.SEVERE, "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : "
-            + getName() + " : " + getQuery().getSql(), ex);
+        LOGGER.log(Level.SEVERE,
+            "Ligne(" + reportField.getReportLine().getNumberLine() + ") for field name : " + getName() + " : " + getQuery().getSql(), ex);
         returnValue = false;
       }
     }

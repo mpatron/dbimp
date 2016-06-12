@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SqlPrimary {
 
-  private Logger log = Logger.getLogger(getClass().getName());
+  private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   protected Connection connection = null;
 
@@ -59,8 +59,7 @@ public class SqlPrimary {
     ResultSet rs = null;
     try {
       DatabaseMetaData metadata = connection.getMetaData();
-      SQLDatatbaseType sqlDatatbaseType = SQLDatatbaseType.getType(metadata
-          .getURL());
+      SQLDatatbaseType sqlDatatbaseType = SQLDatatbaseType.getType(metadata.getURL());
       /**
        * Specificité Oracle : Il y a des schema et pas de catalog Specificité
        * SQLServer : Il y a des catalogs et pas de schema
@@ -131,7 +130,7 @@ public class SqlPrimary {
       }
       rs = null;
     } catch (java.sql.SQLException sqle) {
-      log.log(Level.SEVERE, "", sqle);
+      LOGGER.log(Level.SEVERE, "", sqle);
     }
     return returnValue;
   }
@@ -143,8 +142,7 @@ public class SqlPrimary {
   // ---------------------------------------------------------------------------
 
   public String getSQLSchemaName() {
-    return StringUtils.isEmpty(schemaName) ? StringUtils.EMPTY : schemaName
-        + ".";
+    return StringUtils.isEmpty(schemaName) ? StringUtils.EMPTY : schemaName + ".";
   }
 
 }

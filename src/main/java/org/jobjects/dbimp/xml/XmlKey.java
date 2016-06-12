@@ -1,77 +1,70 @@
 package org.jobjects.dbimp.xml;
 
+import javax.validation.constraints.NotNull;
+
+import org.jobjects.dbimp.trigger.FiletypeEnum;
 import org.jobjects.dbimp.trigger.Key;
 
-
 /**
- * Tag key.
- * Utilisé dans la lecture du fichier de paramètrage.
+ * Tag key. Utilisé dans la lecture du fichier de paramètrage.
+ * 
  * @author Mickael Patron
  * @version 2.0
  */
-public class XmlKey implements Key {
-  private String value = null;
-  private int startposition = 0;
-  private int size = 0;
-  private Boolean isBlank=null;
+public class XmlKey extends XmlPosition implements Key {
 
-  /* (non-Javadoc)
+  @NotNull
+  private String keyValue = null;
+
+  private boolean isBlank = false;
+
+  public XmlKey(FiletypeEnum filetype, String separateur) {
+    super(filetype, separateur);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Key#getIsBlank()
    */
-  public Boolean getIsBlank() {
+  public boolean isBlank() {
     return isBlank;
   }
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Key#setIsBlank(java.lang.Boolean)
    */
-  public void setIsBlank(Boolean isBlank) {
+  public void setBlank(boolean isBlank) {
     this.isBlank = isBlank;
   }
-  /* (non-Javadoc)
-   * @see org.jobjects.dbimp.xml.Key#getSize()
-   */
-  public int getSize() {
-    return size;
-  }
-  /**
-   * @param size The size to set.
-   */
-  public void setSize(int size) {
-    this.size = size;
-  }
-  /* (non-Javadoc)
-   * @see org.jobjects.dbimp.xml.Key#getStartposition()
-   */
-  public int getStartposition() {
-    return startposition;
-  }
-  /**
-   * @param startposition The startposition to set.
-   */
-  public void setStartposition(int startposition) {
-    this.startposition = startposition;
-  }
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jobjects.dbimp.xml.Key#getValue()
    */
-  public String getValue() {
-    return value;
+  public String getKeyValue() {
+    return keyValue;
   }
+
   /**
-   * @param value The value to set.
+   * @param keyValue
+   *          The keyValue to set.
    */
-  public void setValue(String value) {
-    this.value = value;
+  public void setKeyValue(String value) {
+    this.keyValue = value;
   }
 
   public String toString() {
-    String returnValue= "";
-    if (value != null && !value.trim().equals("")) {
-      returnValue= "    <key value=\""+value+"\" startposition=\""+startposition+"\" size=\""+size+"\"/>";
+    String returnValue = "";
+    if (keyValue != null && !keyValue.trim().equals("")) {
+      returnValue = "    <key value=\"" + keyValue + "\" startposition=\"" + getStartposition() + "\" size=\"" + getSize() + "\"/>";
     }
-    if(isBlank!=null ) {
-      returnValue= "    <key isBlank=\""+isBlank.toString()+"\" startposition=\""+startposition+"\" size=\""+size+"\"/>";
+    if (isBlank) {
+      returnValue = "    <key isBlank=\"" + isBlank + "\" startposition=\"" + getStartposition() + "\" size=\"" + getSize() + "\"/>";
     }
     return returnValue;
-  }  
+  }
 }

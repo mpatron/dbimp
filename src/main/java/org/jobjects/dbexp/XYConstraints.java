@@ -23,8 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author Mickael Patron
  * @version 1.0
  */
-public class XYConstraints implements Cloneable, Serializable,
-    Comparable<XYConstraints> {
+public class XYConstraints implements Cloneable, Serializable, Comparable<XYConstraints> {
   private static final long serialVersionUID = -1;
 
   private int x;
@@ -83,8 +82,7 @@ public class XYConstraints implements Cloneable, Serializable,
   }
 
   public String toString() {
-    return String.valueOf(String.valueOf((new StringBuffer(
-        "PositionConstraints[")).append(x).append(",").append(y).append(",")
+    return String.valueOf(String.valueOf((new StringBuffer("PositionConstraints[")).append(x).append(",").append(y).append(",")
         .append(width).append(",").append(height).append("]")));
   }
 
@@ -99,25 +97,22 @@ public class XYConstraints implements Cloneable, Serializable,
       return false;
     }
     XYConstraints rhs = (XYConstraints) object;
-    return new EqualsBuilder().append(this.width, rhs.width)
-        .append(this.height, rhs.height).append(this.y, rhs.y)
-        .append(this.x, rhs.x).isEquals();
+    return new EqualsBuilder().append(this.width, rhs.width).append(this.height, rhs.height).append(this.y, rhs.y).append(this.x, rhs.x)
+        .isEquals();
   }
 
   /**
    * @see java.lang.Object#hashCode()
    */
   public int hashCode() {
-    return new HashCodeBuilder(1552374383, 1779360547).append(this.width)
-        .append(this.height).append(this.y).append(this.x).toHashCode();
+    return new HashCodeBuilder(1552374383, 1779360547).append(this.width).append(this.height).append(this.y).append(this.x).toHashCode();
   }
 
   /**
    * @see java.lang.Comparable#compareTo(Object)
    */
   public int compareTo(XYConstraints object) {
-    return new CompareToBuilder().append(this.width, object.width)
-        .append(this.height, object.height).append(this.y, object.y)
+    return new CompareToBuilder().append(this.width, object.width).append(this.height, object.height).append(this.y, object.y)
         .append(this.x, object.x).toComparison();
   }
 }

@@ -2,27 +2,27 @@ package org.jobjects.dbimp;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jobjects.dbimp.report.Report;
 import org.jobjects.dbimp.sql.SQLDatatbaseType;
@@ -30,7 +30,6 @@ import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Key;
 import org.jobjects.dbimp.trigger.Line;
 import org.jobjects.dbimp.xml.XmlDocument;
-import org.jobjects.dbimp.xml.XmlField;
 import org.jobjects.dbimp.xml.XmlParams;
 import org.jobjects.dbimp.xml.XmlQueryParam;
 
@@ -47,7 +46,8 @@ import org.jobjects.dbimp.xml.XmlQueryParam;
  * fichier.</li>
  * <li>[-d | --driver] Driver JDBC. Par defaut : oracle.jdbc.driver.OracleDriver
  * </li>
- * <li>[-r | --report] Répertoire du rapport d'importation. Par defaut : $TEMP</li>
+ * <li>[-r | --report] Répertoire du rapport d'importation. Par defaut : $TEMP
+ * </li>
  * <li>[-c | --cached] Cache les cursors, attention le nombre de curseur est
  * égal au nombre de type de ligne x3, diminu de faéon importante le temps
  * d'importation (>50% dans certain cas). Par defaut : false</li>
@@ -58,7 +58,7 @@ import org.jobjects.dbimp.xml.XmlQueryParam;
  */
 public class Importation {
 
-  private static Logger log = Logger.getLogger(Importation.class.getName());
+  private static Logger LOGGER = Logger.getLogger(Importation.class.getName());
 
   private static String dirnameReporte = System.getProperty("java.io.tmpdir");
 
@@ -77,7 +77,7 @@ public class Importation {
   public static void main(String[] args) throws Exception {
     System.exit(run(args));
   }
-  
+
   public static int run(String[] args) throws Exception {
     int returnValue = 0;
     long t_start = System.currentTimeMillis();
@@ -96,14 +96,11 @@ public class Importation {
      */
     HelpFormatter formatter = new HelpFormatter();
     String cmdLineSyntax = "$JAVA_HOME/bin/java " + Importation.class.getName();
-    String header = "Importation directe version 3.2";
-    String footer = "Copyright © 2006 JObjects Corp. All Rights Reserved";
+    String header = "Importation directe version 4.0";
+    String footer = "Copyright © 2006-2016 JObjects Corp. All Rights Reserved";
 
     Options options = new Options();
-    Option option = new Option(
-        "u",
-        "url",
-        true,
+    Option option = new Option("u", "url", true,
         "Url jdbc by exemple jdbc:oracle:thin:@<server>:1521:<instance> ou jdbc:microsoft:sqlserver://<server>:1433;DatabaseName=<base> ou jdbc:as400://<server>/<collection>.");
     option.setArgName("jdbc:url");
     option.setRequired(true);
@@ -134,50 +131,57 @@ public class Importation {
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("e", "encode", true,
-        "[ US-ASCII | ISO-8859-1 | UTF-8 | UTF-16 ] encodage par defaut ISO-8859-1.");
-    option.setArgName("encodage [ISO-8859-1]");
+    option = new Option("e", "encode", true, String.format("[ %s ] encodage par defaut %s.",
+        StringUtils.join(Charset.availableCharsets().keySet(), " | "), Charset.defaultCharset().name()));
+    option.setArgName(String.format("encodage [%s]", Charset.defaultCharset().name()));
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("r", "report", true,
-        "Répertoire du rapport d'importation. Par defaut : " + dirnameReporte
-            + ".");
+    option = new Option("r", "report", true, "Répertoire du rapport d'importation. Par defaut : " + dirnameReporte + ".");
     option.setArgName("report [" + dirnameReporte + "]");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("c","cached",false,"Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
+    option = new Option("c", "cached", false,
+        "Cache les cursors, attention le nombre de curseur est égal au nombre de type de ligne x3, diminu de façon importante le temps d'importation (>50% dans certain cas). Par defaut : false.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("s","schema",true,"Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
+    option = new Option("s", "schema", true,
+        "Nom du schema. Par défaut le nom de l'utilisateur pour oracle , le nom de la collection pour DB2AS400.");
     option.setRequired(false);
     option.setOptionalArg(false);
     options.addOption(option);
 
-    option = new Option("v", "verbose", false,"Encheri le rapport des informations de mise à jour.");
+    option = new Option("v", "verbose", false, "Encheri le rapport des informations de mise à jour.");
     option.setRequired(false);
     options.addOption(option);
 
-    CommandLineParser parser = new PosixParser();
+    CommandLineParser parser = new DefaultParser();
     try {
       CommandLine line = parser.parse(options, args);
       url = line.getOptionValue("u");
       user = line.getOptionValue("U");
       password = line.getOptionValue("P");
       ascfile = line.getOptionValue("f");
+      if (!Files.isReadable(Paths.get(ascfile))) {
+        System.err.println("ascfile n'existe pas ou n'est par readable : " + ascfile);
+        formatter.printHelp(cmdLineSyntax, header, options, footer);
+        return 1;
+      }
       xmlfile = line.getOptionValue("x");
+      if (!Files.isReadable(Paths.get(xmlfile))) {
+        System.err.println("xmlfile n'existe pas ou n'est par readable : " + xmlfile);
+        formatter.printHelp(cmdLineSyntax, header, options, footer);
+        return 1;
+      }
       if (StringUtils.isEmpty(line.getOptionValue("e"))) {
-        ascfile_encode = "ISO-8859-1";
+        ascfile_encode = Charset.defaultCharset().name();
       } else {
-        if (!("US-ASCII".equals(line.getOptionValue("e"))
-            || "ISO-8859-1".equals(line.getOptionValue("e"))
-            || "UTF-8".equals(line.getOptionValue("e")) || "UTF-16".equals(line
-            .getOptionValue("e")))) {
+        if (!Charset.isSupported(line.getOptionValue("e"))) {
           System.err.println("Error : encode=" + line.getOptionValue("e"));
           formatter.printHelp(cmdLineSyntax, header, options, footer);
           return 1;
@@ -193,8 +197,7 @@ public class Importation {
       if (line.hasOption("c")) {
         cached = true;
       }
-      if (!(line.hasOption("f") && line.hasOption("x") && line.hasOption("u")
-          && line.hasOption("U") && line.hasOption("P"))) {
+      if (!(line.hasOption("f") && line.hasOption("x") && line.hasOption("u") && line.hasOption("U") && line.hasOption("P"))) {
         formatter.printHelp(cmdLineSyntax, header, options, footer);
         return 1;
       }
@@ -208,9 +211,8 @@ public class Importation {
       }
 
     } catch (ParseException pe) {
-      formatter.printHelp(cmdLineSyntax, header, options, footer);
-      if ((pe instanceof MissingOptionException)
-          || (pe instanceof MissingArgumentException)) {
+      formatter.printHelp(160, cmdLineSyntax, header, options, footer);
+      if ((pe instanceof MissingOptionException) || (pe instanceof MissingArgumentException)) {
         System.err.println("Parametres manquant : " + pe.getMessage());
       }
       return 1;
@@ -222,35 +224,29 @@ public class Importation {
     String driverClassName = SQLDatatbaseType.getType(url).getDriver();
     try {
       Driver driver = (Driver) Class.forName(driverClassName).newInstance();
-      System.out.println("JDBC driver version : " + driver.getMajorVersion()
-          + "." + driver.getMinorVersion());
+      LOGGER.finest("JDBC driver version : " + driver.getMajorVersion() + "." + driver.getMinorVersion());
       DriverManager.registerDriver(driver);
       Connection connection = DriverManager.getConnection(url, user, password);
 
-      String fileNameReport = File.createTempFile(
-          filenameReporte + "-" + getNextNumber() + "-", extnameReporte,
-          new File(dirnameReporte)).getAbsolutePath();
-      importFile(ascfile, ascfile_encode, xmlfile, connection, schemaName,
-          cached, verbose, fileNameReport);
+      String fileNameReport = File.createTempFile(filenameReporte + "-" + getNextNumber() + "-", extnameReporte, new File(dirnameReporte))
+          .getAbsolutePath();
+      importFile(ascfile, ascfile_encode, xmlfile, connection, schemaName, cached, verbose, fileNameReport);
       connection.close();
       DriverManager.deregisterDriver(driver);
     } catch (Exception e) {
       String messageErr = new String();
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - driverClassName="
-          + driverClassName;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - url=" + url;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - user=" + user;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - password=" + password;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - filenameReporte="+ filenameReporte;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - extnameReporte="+ extnameReporte;
-      messageErr += SystemUtils.LINE_SEPARATOR + "  - dirnameReporte="+ dirnameReporte;
-      log.log(Level.SEVERE, messageErr, e);
+      messageErr += System.lineSeparator() + "  - driverClassName=" + driverClassName;
+      messageErr += System.lineSeparator() + "  - url=" + url;
+      messageErr += System.lineSeparator() + "  - user=" + user;
+      messageErr += System.lineSeparator() + "  - password=" + password;
+      messageErr += System.lineSeparator() + "  - filenameReporte=" + filenameReporte;
+      messageErr += System.lineSeparator() + "  - extnameReporte=" + extnameReporte;
+      messageErr += System.lineSeparator() + "  - dirnameReporte=" + dirnameReporte;
+      LOGGER.log(Level.SEVERE, messageErr, e);
       returnValue = 1;
     }
     long t_end = System.currentTimeMillis();
-    System.out.println("Duration : "
-        + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS")
-        + ".");
+    LOGGER.info("Duration : " + DurationFormatUtils.formatDuration(t_end - t_start, "HH:mm:ss.SSS") + ".");
     return returnValue;
   }
 
@@ -281,21 +277,19 @@ public class Importation {
    * @param fileNameReport
    *          Nom du fichier contenant le rapport.
    */
-  public static void importFile(String fileSource, String fileSourceEncoding,
-      String fileNameParameter, Connection conn, String schemaName,
+  public static void importFile(String fileSource, String fileSourceEncoding, String fileNameParameter, Connection conn, String schemaName,
       boolean cached, boolean verbose, String fileNameReport) {
 
-    String message="DBImp starting... "+SystemUtils.LINE_SEPARATOR;
-    message+="  - fileSource="+fileSource+SystemUtils.LINE_SEPARATOR;
-    message+="  - fileSourceEncoding="+fileSourceEncoding+SystemUtils.LINE_SEPARATOR;
-    message+="  - fileNameReport="+fileNameReport+SystemUtils.LINE_SEPARATOR;
-    message+="  - schemaName="+schemaName+SystemUtils.LINE_SEPARATOR;
-    message+="  - cached="+cached+SystemUtils.LINE_SEPARATOR;
-    message+="  - verbose="+verbose+SystemUtils.LINE_SEPARATOR;    
-    log.config(message);
+    String message = "DBImp starting... " + System.lineSeparator();
+    message += "  - fileSource=" + fileSource + System.lineSeparator();
+    message += "  - fileNameParameter=" + fileNameParameter + System.lineSeparator();
+    message += "  - fileSourceEncoding=" + fileSourceEncoding + System.lineSeparator();
+    message += "  - fileNameReport=" + fileNameReport + System.lineSeparator();
+    message += "  - schemaName=" + schemaName + System.lineSeparator();
+    message += "  - cached=" + cached + System.lineSeparator();
+    message += "  - verbose=" + verbose + System.lineSeparator();
+    LOGGER.config(message);
 
-
-    
     FileAsciiWriter faw = null;
     long l_start = System.currentTimeMillis();
     long l_end = 0;
@@ -308,34 +302,33 @@ public class Importation {
     try {
       Report reporting = null;
       try {
-        faw = new FileAsciiWriter(fileNameReport, "UTF-8");
+        faw = new FileAsciiWriter(fileNameReport, Charset.forName(fileSourceEncoding).name());
         reporting = new Report(faw);
         reporting.setInputFile(fileSource);
         reporting.setParamFile(fileNameParameter);
         reporting.setVerbose(verbose);
-        log.finest("Rapport : " + dirnameReporte);
+        LOGGER.finest("Rapport : " + dirnameReporte);
       } catch (Exception ex) {
-        log.log(Level.SEVERE, "", ex);
+        LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
       }
       /**
        * Chargement du parametrage des lignes et des recordset associé.
        */
-      LinkedList<LineAndRecordSet> LineAndRecordSets = new LinkedList<LineAndRecordSet>();
+      LinkedList<LineAndRecordSet> lineAndRecordSets = new LinkedList<LineAndRecordSet>();
       XmlParams param = new XmlParams();
       XmlDocument document = param.parseFile(new File(fileNameParameter));
 
-      if (log.isLoggable(Level.FINER)) {
+      if (LOGGER.isLoggable(Level.FINER)) {
         afficheDocument(document);
       }
 
       description = document.getDescription();
       reporting.setDescription(description);
-      for (Iterator<Line> it = document.getLines().iterator(); it.hasNext();) {
-        Line xmlline = (Line) it.next();
-        LineAndRecordSet lrs = new LineAndRecordSet(conn, schemaName, cached,
-            xmlline, reporting.getTypeLine(xmlline));
-        LineAndRecordSets.add(lrs);
+      for (Line line : document.getLines()) {
+        LineAndRecordSet lrs = new LineAndRecordSet(conn, schemaName, cached, line, reporting.getTypeLine(line));
+        lineAndRecordSets.add(lrs);
       }
+
       /**
        * Chargement du fichier dans la base
        */
@@ -344,10 +337,8 @@ public class Importation {
       flux = new FileAsciiReader(fileSource, fileSourceEncoding);
       int numberLine = 1;
       while ((ligne = flux.readLine()) != null) {
-        log.info("lecture de la ligne = " + numberLine);
-        for (Iterator<LineAndRecordSet> it = LineAndRecordSets.iterator(); it
-            .hasNext();) {
-          LineAndRecordSet lrs = (LineAndRecordSet) it.next();
+        LOGGER.info("lecture de la ligne = " + numberLine);
+        for (LineAndRecordSet lrs : lineAndRecordSets) {
           if (lrs.isActive(ligne)) {
             lrs.execute(numberLine, ligne);
             reporting.nextLine(numberLine);
@@ -360,9 +351,7 @@ public class Importation {
       /**
        * Netoyage des connextions
        */
-      for (Iterator<LineAndRecordSet> it = LineAndRecordSets.iterator(); it
-          .hasNext();) {
-        LineAndRecordSet lrs = (LineAndRecordSet) it.next();
+      for (LineAndRecordSet lrs : lineAndRecordSets) {
         lrs.doAfterAction();
         rejected += lrs.getCountRejected();
         selected += lrs.getCountSelect();
@@ -371,73 +360,76 @@ public class Importation {
         deleted += lrs.getCountDelete();
         lrs.release();
       }
-      log.finest(reporting.INFO_STATUS("total", selected, inserted, updated,
-          deleted, rejected));
+
+      LOGGER.finest(reporting.INFO_STATUS("total", selected, inserted, updated, deleted, rejected));
       reporting.setDuration(System.currentTimeMillis() - l_start);
       reporting.write();
       faw.flush();
       faw.close();
       faw = null;
     } catch (Throwable t) {
-      log.log(Level.SEVERE, "", t);
+      LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
     }
     l_end = System.currentTimeMillis();
-    log.info("Duration : "
-        + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS")
-        + ".");
+    LOGGER.info("Duration : " + DurationFormatUtils.formatDuration(l_end - l_start, "HH:mm:ss.SSS") + ".");
   }
 
   // ---------------------------------------------------------------------------
   private static void afficheDocument(XmlDocument document) {
     try {
-      Iterator<Line> e = document.getLines().iterator();
-      while (e.hasNext()) {
-        Line xmlline = (Line) e.next();
-        System.out.println("<line name='" + xmlline.getName() + "' tablename='"
-            + xmlline.getTableName() + "'>");
-        Iterator<Key> i_keys = xmlline.getKeys().iterator();
-        while (i_keys.hasNext()) {
-          Key key = (Key) i_keys.next();
-          System.out.println("  " + "<key value='" + key.getValue()
-              + "' startposition='" + key.getStartposition() + "' size='"
-              + key.getSize() + "'>");
+      StringBuffer sb = new StringBuffer();
+      for (Line line : document.getLines()) {
+        sb.append("<line name='" + line.getName() + "' tablename='" + line.getTableName() + "'>");
+        sb.append(System.lineSeparator());
+        for (Key key : line.getKeys()) {
+          sb.append("  ");
+          sb.append("<key value='" + key.getKeyValue() + "' startposition='" + key.getStartposition() + "' size='" + key.getSize() + "'>");
+          sb.append(System.lineSeparator());
         }
-        Iterator<Field> i_fields = xmlline.getFields().iterator();
-        while (i_fields.hasNext()) {
-          XmlField field = (XmlField) i_fields.next();
-          System.out.println("  " + "<field fieldname='" + field.getName()
-              + "' type='" + field.getType().getTypeString() + "' dateformat='"
+        for (Field field : line.getFields()) {
+          sb.append("  ");
+          sb.append("<field fieldname='" + field.getName() + "' type='" + field.getTypeFormat().getTypeString() + "' dateformat='"
               + field.getDateFormat() + "'>");
+          sb.append(System.lineSeparator());
           switch (field.getDiscriminator()) {
-          case XmlField.CONSTANTE:
-            System.out.println("  " + "  " + "<constante value='"
-                + field.getConstante().getValue() + "'/>");
+          case CONSTANTE:
+            sb.append("  ");
+            sb.append("  ");
+            sb.append("<constante value='" + field.getConstante().getValue() + "'/>");
+            sb.append(System.lineSeparator());
             break;
-          case XmlField.POSITION:
-            System.out.println("  " + "  " + "<position startposition='"
-                + field.getPosition().getStartposition() + "' size='"
-                + field.getPosition().getSize() + "'/>");
+          case POSITION:
+            sb.append("  ");
+            sb.append("  ");
+            sb.append(
+                "<position startposition='" + field.getPosition().getStartposition() + "' size='" + field.getPosition().getSize() + "'/>");
+            sb.append(System.lineSeparator());
             break;
-          case XmlField.QUERY:
-            System.out.println("  " + "  " + "<query sql='"
-                + field.getQuery().getSql() + "'/>");
-            Iterator<XmlQueryParam> e_query_params = field.getQuery()
-                .getQueryParams().iterator();
-            while (e_query_params.hasNext()) {
-              XmlQueryParam queryparam = (XmlQueryParam) e_query_params.next();
-              System.out.println("  " + "  " + "  " + "<query-param><"
-                  + queryparam.getType().getTypeString() + "/>"
-                  + "</query-param>");
+          case QUERY:
+            sb.append("  ");
+            sb.append("  ");
+            sb.append("<query sql='" + field.getQuery().getSql() + "'/>");
+            sb.append(System.lineSeparator());
+            for (XmlQueryParam queryparam : field.getQuery().getQueryParams()) {
+              sb.append("  ");
+              sb.append("  ");
+              sb.append("  ");
+              sb.append("<query-param><" + queryparam.getType().getTypeString() + "/>" + "</query-param>");
+              sb.append(System.lineSeparator());
             }
             break;
           default:
           }
-          System.out.println("  " + "</field>");
+          sb.append("  ");
+          sb.append("</field>");
+          sb.append(System.lineSeparator());
         }
-        System.out.println("</line>");
+        sb.append("</line>");
+        sb.append(System.lineSeparator());
       }
+      LOGGER.fine(sb.toString());
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
     }
   }
 
@@ -445,8 +437,7 @@ public class Importation {
 
   private static int getNextNumber() {
     int returnValue = 0;
-    String filePath = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR
-        + ".reportnumber.asc";
+    String filePath = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + ".reportnumber.asc";
     File file = new File(filePath);
     if (file.exists()) {
       try {
@@ -458,7 +449,7 @@ public class Importation {
           returnValue = Integer.parseInt(chaine);
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
       }
     }
     try {
@@ -467,9 +458,9 @@ public class Importation {
       fileAsciiWriter.close();
       fileAsciiWriter = null;
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
-
+    LOGGER.config("filePath=" + filePath + " => " + returnValue);
     return returnValue;
   }
 }

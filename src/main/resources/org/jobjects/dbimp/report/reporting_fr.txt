@@ -1,0 +1,54 @@
+PARAMETER_LINE             =ligne {0} : Info   : Detail de la ligne
+PARAMETER_LINE_POSITION    =|    champ {0}({1}, {2}) = {3}
+PARAMETER_LINE_CONSTANTE   =|    champ {0}(const) = {1}
+PARAMETER_LINE_QUERY       =|    champ {0}(query) sql = {1}
+PARAMETER_LINE_UNKNOW_ERROR=|    champ {0} unkhown error.
+
+INFO_FIELD_UPDATED_IN_DB=|        [Information] Le champ a pour valeur "{0}" dans le fichier et a pour valeur "{1}" dans la base.
+
+INFO_LINE_DESTROY=ligne {0} : Info   : Ligne detruite
+
+ERROR_MESSAGE=ligne {0} : Erreur : {1} : {2}
+
+ERROR_FIELD_NULL=|        Le champ est null alors qu'il est not nullable.
+ERROR_FIELD_TYPE=|        Le champ a pour valeur "{0}" ne correspond pas à son type {1}
+ERROR_FIELD_NUMERIC=|        Le champ a pour valeur "{0}" n''est pas un numérique du type {1}.
+ERROR_FIELD_VALUE_IN_LIST=|        Le champ a pour valeur "{0}" et elle n appartient pas à sa liste de valeur.
+ERROR_FIELD_MANDATORY=|      !! Le champ est obligatoire alors qu'il y a une valeur null ou vide. Ligne rejectée.
+ERROR_FIELD_NOT_IN_FILE=|        Le champ est inaxessible. La ligne a une longueur trop courte. La valeur est positionné à null.
+ERROR_FIELD_NOT_A_INTEGER=|        La valeur "{0}" du champ n est pas un entier.
+ERROR_FIELD_NOT_A_LONG=|        La valeur "{0}" du champ n''est pas un long.
+ERROR_FIELD_NOT_A_FLOAT=|        La valeur "{0}" du champ n''est pas un reel.
+ERROR_FIELD_NOT_A_DOUBLE=|        La valeur "{0}" du champ n''est pas un reel long.
+ERROR_FIELD_NOT_A_DATETIME=|        La valeur "{0}" du champ n''est pas une date heure de format {1}.
+
+ERROR_PARAMETRAGE=Erreur de paramétrage de {0} le mode UPDATE et INSERT_UPDATE sont impossibles. En effet la table {1} a tous ses champs qui appartiennent à la clef primaire.
+
+ERROR_TRIGGER=|        Message : {0}
+ERROR_TRIGGER_START_FILE=Erreur du triggers dans le traitement executer en debut de fichier
+ERROR_TRIGGER_ON_LINE=Erreur du triggers sur ligne
+
+INFO_NUMBER_OF_SELECT=Nombre de select
+INFO_NUMBER_OF_INSERT=Nombre d'insert
+INFO_NUMBER_OF_UPDATE=Nombre d'update
+INFO_NUMBER_OF_DELETE=Nombre de detete
+
+INFO_FIELD=|      Champ : {0}
+
+INFO_STATUS       =|  Status sur l''importation {0} :
+INFO_STATUS_SELECT=|    total de ligne selectionné : {0}
+INFO_STATUS_INSERT=|    total de ligne inseré : {0}
+INFO_STATUS_UPDATE=|    total de ligne mis à jour : {0}
+INFO_STATUS_DELETE=|    total de ligne supprimé : {0}
+INFO_STATUS_REJECT=|    total de ligne rejeté : {0}
+
+PROCESS_DESCRIPTION=Description
+PROCESS_DATE=Date
+PROCESS_FILE_INPUT=Fichier en entrée
+PROCESS_FILE_PARAMETER=Fichier de paramétrage
+PROCESS_DURATION=Durée du traitement
+
+PROCESS_TITLE_LINE=Ligne
+PROCESS_TITLE_FIELDS=Liste des champs
+
+PROCESS_TYPE_LINE=Type de ligne

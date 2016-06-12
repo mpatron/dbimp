@@ -1,48 +1,35 @@
 package org.jobjects.dbimp.trigger;
 
 /**
- * Utilisé dans la lecture du fichier de paramétrage.
- * @author Mickael Patron
- * @version 2.0
+ * Constante : Champ de type position : POSITION Constante : Champ de type
+ * constante : CONSTANTE Constante : Champ de type query : QUERY
+ * 
+ * @author Mickael
+ *
  */
-public enum FieldTypeEnum {  
-  INTEGER("integer",0),
-  LONG("long",1),
-  FLOAT("float",2),
-  DOUBLE("double",3 ),
-  DATETIME("datetime",4 ),
-  STRING("string",5 ),
-  BLOB("file",6 );
+public enum FieldTypeEnum {
+  POSITION(0), /**/
+  CONSTANTE(1), QUERY(3);
 
-  private FieldTypeEnum(String typeString, int typeInt) {
-    this.typeString=typeString;
-    this.typeInt=typeInt;
+  private FieldTypeEnum(int value) {
+    this.value = value;
   }
 
-  private int typeInt;
-  private String typeString;
+  private int value;
 
   /**
-   * @return the typeInt
+   * @return the value
    */
-  public int getTypeInt() {
-    return typeInt;
+  public int getValue() {
+    return value;
   }
+
   /**
-   * @return the typeString
+   * @param value
+   *          the value to set
    */
-  public String getTypeString() {
-    return typeString;
+  public void setValue(int value) {
+    this.value = value;
   }
-  
-  static public FieldTypeEnum valueOfByType(String type) {
-    FieldTypeEnum returnValue=null;    
-    if("file".equals(type)) {
-      returnValue=FieldTypeEnum.BLOB;
-    } if(null!=type) {
-      returnValue=FieldTypeEnum.valueOf(type.toUpperCase());
-    }
-    return returnValue;
-  }
-  
+
 }

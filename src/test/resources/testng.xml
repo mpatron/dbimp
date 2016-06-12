@@ -14,8 +14,8 @@
 			<class name="org.jobjects.dbimp.sql.SQLDatatbaseTypeTest" />
 			<class name="org.jobjects.dbimp.xml.XmlParamsTest" />
 			<class name="org.jobjects.dbimp.xml.XmlFieldTest" />
-			<class name="org.jobjects.dbimp.tools.CollectionMapTest" />
-			<class name="org.jobjects.dbimp.tools.ListMapTest" />			
+			<class name="org.jobjects.dbimp.xml.XmlFieldTypesTest" />
+			<class name="org.jobjects.dbimp.xml.XmlParamsTest" />
 			<class name="org.jobjects.dbimp.ImportationTest" />
 		<!-- 	
 			<class name="org.jobjects.derby.DerbyStop" />

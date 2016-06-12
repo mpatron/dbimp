@@ -3,64 +3,67 @@ package org.jobjects.dbimp.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.report.RessourceReporting;
 import org.jobjects.dbimp.trigger.Field;
-import org.jobjects.dbimp.trigger.FieldTypeEnum;
+import org.jobjects.dbimp.trigger.FieldFormatEnum;
 import org.jobjects.dbimp.trigger.Line;
-import org.jobjects.dbimp.xml.XmlField;
-
 
 /**
- * Class permettant de modifier une donnée qui est présente dans la base. 
- * Créer le 24 janv. 2003.
+ * Class permettant de modifier une donnée qui est présente dans la base. Créer
+ * le 24 janv. 2003.
+ * 
  * @author Mickaël Patron
  */
 public class SqlUpdate extends SqlStatement {
 
-  //mettre static car log doit être construit avant le constructeur pour qu'il soit non null pour createSQL();
-  //qui est appellé par le constructeur SqlStatement. 
-  private static Logger log = Logger.getLogger(SqlUpdate.class.getName());
+  // mettre static car LOGGER doit être construit avant le constructeur pour
+  // qu'il
+  // soit non null pour createSQL();
+  // qui est appellé par le constructeur SqlStatement.
+  private static Logger LOGGER = Logger.getLogger(SqlUpdate.class.getName());
 
-  private int countUpdate= 0;
-  //---------------------------------------------------------------------------
+  private int countUpdate = 0;
+  // ---------------------------------------------------------------------------
 
   /**
    * Method SqlUpdate.
-   * @param connection de la base de donnée.
-   * @param xmlline contient le liste des champs.
-   * @param reportTypeLine est pointeur sur le Rapport.
+   * 
+   * @param connection
+   *          de la base de donnée.
+   * @param xmlline
+   *          contient le liste des champs.
+   * @param reportTypeLine
+   *          est pointeur sur le Rapport.
    * @throws SQLException
    */
   public SqlUpdate(Connection connection, String schemaName, boolean cached, Line xmlline, ReportTypeLine reportTypeLine)
-    throws SQLException {
+      throws SQLException {
     super(connection, schemaName, cached, xmlline, reportTypeLine);
   }
-  //---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   /**
    * @see org.jobjects.dbimp.sql.SqlStatement#createSQL()
    * @throws SQLException
    */
   public String createSQL() {
-    String returnValue= "update " + getSQLSchemaName() + getXmlline().getTableName() + " set ";
-    String where= "";
+    String returnValue = "update " + getSQLSchemaName() + getXmlline().getTableName() + " set ";
+    String where = "";
 
-    boolean first= true;
+    boolean first = true;
 
-    for (Iterator<Field> it= getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field= (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
-      if (field.getType() == FieldTypeEnum.BLOB)
+      if (field.getTypeFormat() == FieldFormatEnum.BLOB)
         continue;
       if (!getPrimaries().contains(field.getName().toUpperCase())) {
         if (first) {
-          first= false;
+          first = false;
           returnValue += (field.getName() + "=?");
         } else {
           returnValue += (", " + field.getName() + "=?");
@@ -69,22 +72,22 @@ public class SqlUpdate extends SqlStatement {
     }
 
     if (first) {
-      String message= RessourceReporting.getString("ERROR_PARAMETRAGE", new Object[] { getXmlline().getName(), getXmlline().getTableName() });
-      log.severe(message);
+      String message = RessourceReporting.getString("ERROR_PARAMETRAGE",
+          new Object[] { getXmlline().getName(), getXmlline().getTableName() });
+      LOGGER.severe(message);
       return null;
     }
 
-    first= true;
+    first = true;
 
-    for (Iterator<Field> it= getXmlline().getFields().iterator(); it.hasNext();) {
-      XmlField field= (XmlField) it.next();
+    for (Field field : getXmlline().getFields()) {
       if (!field.isUse())
         continue;
-      if (field.getType() == FieldTypeEnum.BLOB)
+      if (field.getTypeFormat() == FieldFormatEnum.BLOB)
         continue;
       if (getPrimaries().contains(field.getName())) {
         if (first) {
-          first= false;
+          first = false;
           where += (field.getName() + "=?");
         } else {
           where += (" and " + field.getName() + "=?");
@@ -98,40 +101,34 @@ public class SqlUpdate extends SqlStatement {
 
     return returnValue;
   }
-  //---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   /**
    * @see org.jobjects.dbimp.sql.SqlAction#execute(int nbLigne)
    */
   public int execute(int nbLigne) {
-    int returnValue= 0;
-    int i= 1;
-    boolean flag= true;
+    int returnValue = 0;
+    int i = 1;
+    boolean flag = true;
 
     try {
       if (getXmlline().getTrigger() != null) {
-        flag=
-          getXmlline().getTrigger().beforeUpdate(
-            getConnection(),
-            nbLigne,
-            getReportTypeLine().getReportTrigger(),
-            getXmlline());
+        flag = getXmlline().getTrigger().beforeUpdate(getConnection(), nbLigne, getReportTypeLine().getReportTrigger(), getXmlline());
       }
 
-      PreparedStatement pstmt= null;
+      PreparedStatement pstmt = null;
       try {
         if (isCached()) {
-          pstmt= getPstmtCached();
+          pstmt = getPstmtCached();
         } else {
-          pstmt= getConnection().prepareStatement(getSql());
+          pstmt = getConnection().prepareStatement(getSql());
         }
 
         if (flag) {
-          for (Iterator<Field> it= getXmlline().getFields().iterator(); it.hasNext();) {
-            XmlField field= (XmlField) it.next();
+          for (Field field : getXmlline().getFields()) {
             if (!field.isUse())
               continue;
-            if (field.getType() == FieldTypeEnum.BLOB)
+            if (field.getTypeFormat() == FieldFormatEnum.BLOB)
               continue;
             flag &= checkIn(getXmlline(), field, getReportTypeLine().getReportLine());
             if (!getPrimaries().contains(field.getName().toUpperCase())) {
@@ -146,11 +143,10 @@ public class SqlUpdate extends SqlStatement {
         }
 
         if (flag) {
-          for (Iterator<Field> it= getXmlline().getFields().iterator(); it.hasNext();) {
-            XmlField field= (XmlField) it.next();
+          for (Field field : getXmlline().getFields()) {
             if (!field.isUse())
               continue;
-            if (field.getType() == FieldTypeEnum.BLOB)
+            if (field.getTypeFormat() == FieldFormatEnum.BLOB)
               continue;
             if (getPrimaries().contains(field.getName().toUpperCase())) {
               flag &= checkIn(getXmlline(), field, getReportTypeLine().getReportLine());
@@ -159,26 +155,21 @@ public class SqlUpdate extends SqlStatement {
               } else {
                 setAll(pstmt, i, field);
               }
-
               i++;
             }
           }
         }
         if (flag) {
-          returnValue= pstmt.executeUpdate();
-          log.fine("Mise à jour effectué : " + getSql());
+          returnValue = pstmt.executeUpdate();
+          LOGGER.fine("Mise à jour effectué : " + getSql());
           if (getXmlline().getTrigger() != null) {
-            getXmlline().getTrigger().afterUpdate(
-              getConnection(),
-              nbLigne,
-              getReportTypeLine().getReportTrigger(),
-              getXmlline());
+            getXmlline().getTrigger().afterUpdate(getConnection(), nbLigne, getReportTypeLine().getReportTrigger(), getXmlline());
           }
         }
       } finally {
         if (!isCached()) {
           pstmt.close();
-          pstmt= null;
+          pstmt = null;
         }
       }
     } catch (SQLException ex) {
@@ -188,7 +179,7 @@ public class SqlUpdate extends SqlStatement {
     getReportTypeLine().addToNbUpdate(returnValue);
     return returnValue;
   }
-  //---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   /**
    * @see org.jobjects.dbimp.sql.SqlAction#getCount()

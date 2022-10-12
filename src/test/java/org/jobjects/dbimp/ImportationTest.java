@@ -33,6 +33,7 @@ public class ImportationTest {
   public static void afterClass() throws Exception {
     CreateSchema.afficheSchema(conn, DerbyConstantes.SCHEMA_NAME);
     conn.close();
+    DerbySingleton.getInstance().stop();
   }
 
   @Test

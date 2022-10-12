@@ -73,7 +73,7 @@ public class ThreadExportData extends Thread {
      */
     try {
       String driverClassName = "oracle.jdbc.driver.OracleDriver";
-      Driver driver = (Driver) Class.forName(driverClassName).newInstance();
+      Driver driver = (Driver) Class.forName(driverClassName).getDeclaredConstructor().newInstance();
       DriverManager.registerDriver(driver);
       Connection connection = DriverManager.getConnection(url, username, password);
 

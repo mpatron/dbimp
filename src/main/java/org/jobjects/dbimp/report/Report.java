@@ -173,10 +173,10 @@ public class Report implements Reporting {
     internalBuffer.append("|");
     internalBuffer.append(System.lineSeparator());
     returnValue = RessourceReporting.getString("INFO_STATUS", new Object[] { status }) + System.lineSeparator();
-    returnValue += RessourceReporting.getString("INFO_STATUS_SELECT", new Object[] { new Integer(selected) }) + System.lineSeparator();
-    returnValue += RessourceReporting.getString("INFO_STATUS_INSERT", new Object[] { new Integer(inserted) }) + System.lineSeparator();
-    returnValue += RessourceReporting.getString("INFO_STATUS_UPDATE", new Object[] { new Integer(updated) }) + System.lineSeparator();
-    returnValue += RessourceReporting.getString("INFO_STATUS_DELETE", new Object[] { new Integer(deleted) }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_SELECT", new Object[] { selected }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_INSERT", new Object[] { inserted }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_UPDATE", new Object[] { updated }) + System.lineSeparator();
+    returnValue += RessourceReporting.getString("INFO_STATUS_DELETE", new Object[] { deleted }) + System.lineSeparator();
     // returnValue += RessourceReporting.getString("INFO_STATUS_REJECT", new
     // Object[] { new Integer(rejected)})
     // + System.lineSeparator();

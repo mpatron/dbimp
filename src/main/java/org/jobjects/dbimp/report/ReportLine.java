@@ -70,14 +70,14 @@ public class ReportLine implements Reporting {
    */
   public void showParameter() {
     internalBuffer.append(System.lineSeparator());
-    internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE", new Object[] { new Integer(numberLine) }));
+    internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE", new Object[] { numberLine }));
     for (Field field : reportTypeLine.getLine().getFields()) {
       internalBuffer.append(System.lineSeparator());
       try {
         switch (field.getDiscriminator()) {
         case POSITION:
           internalBuffer.append(RessourceReporting.getString("PARAMETER_LINE_POSITION", new Object[] { field.getName(),
-              new Integer(field.getPosition().getStartposition()), new Integer(field.getPosition().getSize()), field.getBuffer() }));
+              field.getPosition().getStartposition(), field.getPosition().getSize(), field.getBuffer() }));
           break;
 
         case CONSTANTE:
@@ -149,7 +149,7 @@ public class ReportLine implements Reporting {
    */
   public void INFO_LINE_DESTROY() {
     internalBuffer.append(System.lineSeparator());
-    internalBuffer.append(RessourceReporting.getString("INFO_LINE_DESTROY", new Object[] { new Integer(numberLine) }));
+    internalBuffer.append(RessourceReporting.getString("INFO_LINE_DESTROY", new Object[] { numberLine }));
     used = true;
   }
 
@@ -160,7 +160,7 @@ public class ReportLine implements Reporting {
    */
   public void ERROR_MESSAGE(String lineName, String message) {
     internalBuffer.append(System.lineSeparator());
-    internalBuffer.append(RessourceReporting.getString("ERROR_MESSAGE", new Object[] { new Integer(numberLine), lineName, message }));
+    internalBuffer.append(RessourceReporting.getString("ERROR_MESSAGE", new Object[] { numberLine, lineName, message }));
     used = true;
   }
 

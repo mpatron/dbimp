@@ -55,19 +55,12 @@ public class DerbySingleton {
         p.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
         p.setProperty("create", "true");
         Connection conn = DriverManager.getConnection(DerbyConstantes.URL, p);
-
-//        Properties p2 = new Properties();
-//        p2.setProperty(DerbyConstantes.USER, DerbyConstantes.USER_VALUE);
-//        p2.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
-//        Connection conn2 = DriverManager.getConnection(DerbyConstantes.URL, p2);
-//        conn2.close();
-
         CreateSchema.createSchema(conn, DerbyConstantes.SCHEMA_NAME);
         conn.close();
         setStarted(true);
         LOGGER.log(Level.INFO, "Derby is started.");
-      } catch (Exception e) {
-    	  e.printStackTrace();
+      } catch (SQLException e) {
+        setStarted(false);
         LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e);
       }
     } else {
@@ -79,14 +72,20 @@ public class DerbySingleton {
     if (isStarted()) {
       try {
         LOGGER.info("Extinction de Derby");
-        DriverManager.getConnection(DerbyConstantes.URL + ";shutdown=true");
-      } catch (Exception ignored) {
+        if(isStarted()) {
+          DriverManager.getConnection(DerbyConstantes.URL + ";shutdown=true");
+        }
+        setStarted(false);
+      } catch (SQLException ignored) {
         LOGGER.log(Level.INFO, "Extinction de " + DerbyConstantes.URL + " : " + ignored.getLocalizedMessage());
       }
       try {
         LOGGER.info("Extinction de Derby");
-        DriverManager.getConnection("jdbc:derby:;shutdown=true");
-      } catch (Exception ignored) {
+        if(isStarted()) {
+          DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        }
+        setStarted(false);
+      } catch (SQLException ignored) {
         LOGGER.log(Level.INFO, "Extinction de derby : " + ignored.getLocalizedMessage());
       }
     } else {

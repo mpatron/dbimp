@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.math3.util.Precision;
 import org.jobjects.dbimp.MathUtils;
 import org.jobjects.dbimp.report.ReportTypeLine;
 import org.jobjects.dbimp.trigger.Field;
@@ -150,7 +151,7 @@ public class SqlSelect extends SqlStatement {
                 if (rs.wasNull()) {
                   returnValue.put(field.getName(), null);
                 } else {
-                  returnValue.put(field.getName(), new Integer(i_value));
+                  returnValue.put(field.getName(), i_value);
                 }
                 break;
 
@@ -159,7 +160,7 @@ public class SqlSelect extends SqlStatement {
                 if (rs.wasNull()) {
                   returnValue.put(field.getName(), null);
                 } else {
-                  returnValue.put(field.getName(), new Long(l_value));
+                  returnValue.put(field.getName(), l_value);
                 }
                 break;
 
@@ -168,7 +169,7 @@ public class SqlSelect extends SqlStatement {
                 if (rs.wasNull()) {
                   returnValue.put(field.getName(), null);
                 } else {
-                  returnValue.put(field.getName(), new Float(f_value));
+                  returnValue.put(field.getName(), f_value);
                 }
                 break;
 
@@ -177,7 +178,7 @@ public class SqlSelect extends SqlStatement {
                 if (rs.wasNull()) {
                   returnValue.put(field.getName(), null);
                 } else {
-                  returnValue.put(field.getName(), new Double(d_value));
+                  returnValue.put(field.getName(), d_value);
                 }
                 break;
 

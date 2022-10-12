@@ -3,8 +3,8 @@ package org.jobjects.derby;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class DerbyStart {
 
@@ -13,7 +13,7 @@ public class DerbyStart {
   /**
    * @throws java.lang.Exception
    */
-  @BeforeClass
+  @BeforeAll
   public static void setUpBeforeClass() throws Exception {
     DerbySingleton.getInstance().start();
     if (!DerbySingleton.getInstance().isStarted()) {
@@ -21,7 +21,7 @@ public class DerbyStart {
     }
   }
 
-  @Test(groups = "MaSuite")
+  @Test
   public void testStart() {
     LOGGER.log(Level.INFO, "Derby Stating");
   }

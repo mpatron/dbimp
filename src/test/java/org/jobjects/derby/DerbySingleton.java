@@ -17,7 +17,7 @@ public class DerbySingleton {
   protected DerbySingleton() {
     try {
       JObjectsLogFormatter.initializeLogging();
-      Class.forName(DerbyConstantes.DRIVER_EMBEDDED_CLASSNAME).newInstance();
+      //Class.forName(DerbyConstantes.DRIVER_EMBEDDED_CLASSNAME);
       // Class.forName(DerbyConstantes.DRIVER_CLASSNAME).newInstance();
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -56,17 +56,18 @@ public class DerbySingleton {
         p.setProperty("create", "true");
         Connection conn = DriverManager.getConnection(DerbyConstantes.URL, p);
 
-        Properties p2 = new Properties();
-        p2.setProperty(DerbyConstantes.USER, DerbyConstantes.USER_VALUE);
-        p2.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
-        Connection conn2 = DriverManager.getConnection(DerbyConstantes.URL, p2);
-        conn2.close();
+//        Properties p2 = new Properties();
+//        p2.setProperty(DerbyConstantes.USER, DerbyConstantes.USER_VALUE);
+//        p2.setProperty(DerbyConstantes.PASSWORD, DerbyConstantes.PASSWORD_VALUE);
+//        Connection conn2 = DriverManager.getConnection(DerbyConstantes.URL, p2);
+//        conn2.close();
 
         CreateSchema.createSchema(conn, DerbyConstantes.SCHEMA_NAME);
         conn.close();
         setStarted(true);
         LOGGER.log(Level.INFO, "Derby is started.");
       } catch (Exception e) {
+    	  e.printStackTrace();
         LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e);
       }
     } else {

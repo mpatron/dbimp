@@ -1,23 +1,24 @@
 package org.jobjects.dbimp.xml;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.jobjects.dbimp.trigger.FieldFormatEnum;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 public class XmlFieldTypesTest {
 
-  @Test(groups = "MaSuite")
+  @Test
   public void XmlFieldTypes() {
-    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
+    assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
   }
 
-  @Test(groups = "MaSuite")
+  @Test
   public void getTypeInt() {
-    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
+    assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
   }
 
-  @Test(groups = "MaSuite")
+  @Test
   public void getTypeString() {
-    Assert.assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
+    assertEquals(FieldFormatEnum.valueOfByType("integer"), FieldFormatEnum.INTEGER);
   }
 }

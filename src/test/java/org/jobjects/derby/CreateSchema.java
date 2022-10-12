@@ -1,7 +1,9 @@
 package org.jobjects.derby;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,16 @@ public class CreateSchema {
   public static void createSchema(Connection conn, String schema) {
     try {
 
-      {
+      Statement stmp = conn.createStatement();
+      try {
+        stmp.execute("create schema " + DerbyConstantes.SCHEMA_NAME + " AUTHORIZATION " + DerbyConstantes.USER_VALUE);
+      } catch (Exception e) {
+        LOGGER.log(Level.WARNING, e.getMessage());
+      } finally {
+        stmp.close();
+      }
+
+      if (!isExistTable(conn, schema, "MYTABLE")) {
         Statement stmt = conn.createStatement();
         String sql = "CREATE TABLE " + schema + ".MYTABLE (";
         sql += " MONCHAMPSTEXTE VARCHAR(6) NOT NULL,";
@@ -30,8 +41,9 @@ public class CreateSchema {
         stmt.close();
       }
 
-      {
-        //gender  name.title  name.first  name.last location.street location.city location.state  location.postcode email login.username  login.password
+      if (!isExistTable(conn, schema, "SECU_USER")) {
+        // gender name.title name.first name.last location.street location.city
+        // location.state location.postcode email login.username login.password
         Statement stmt = conn.createStatement();
         String sql = "CREATE TABLE " + schema + ".SECU_USER (";
         sql += " USERNAME VARCHAR(20) NOT NULL,";
@@ -55,7 +67,7 @@ public class CreateSchema {
         stmt.close();
       }
 
-      {
+      if (!isExistTable(conn, schema, "SECU_USER_ROLE")) {
         Statement stmt = conn.createStatement();
         String sql = "CREATE TABLE " + schema + ".SECU_USER_ROLE (";
         sql += " USERNAME VARCHAR(255) NOT NULL,";
@@ -80,8 +92,18 @@ public class CreateSchema {
         tableNames.add(tables.getString("TABLE_NAME").toLowerCase());
       }
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e.getMessage());
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
+  }
+
+  public static boolean isExistTable(Connection conn, String schema, String table) throws SQLException {
+    boolean returnValue = false;
+    LOGGER.log(Level.FINEST,
+        String.format("Vérification de la présence de la table %s car derby n'a pas de [IF EXIST]", table));
+    DatabaseMetaData databaseMetadata = conn.getMetaData();
+    ResultSet resultSet = databaseMetadata.getTables(null, schema, table, null);
+    returnValue = resultSet.next();
+    return returnValue;
   }
 
   public static void afficheSchema(Connection conn, String schema) {
@@ -91,7 +113,7 @@ public class CreateSchema {
       SqlUtils.Affiche(stmt.executeQuery("SELECT * FROM " + schema + ".MYTABLE"));
 
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e.getMessage());
+      LOGGER.log(Level.SEVERE, "Erreur non prévu : ", e);
     }
   }
 }

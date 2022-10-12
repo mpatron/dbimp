@@ -7,16 +7,16 @@ import java.util.logging.Logger;
 
 import org.jobjects.dbimp.trigger.Field;
 import org.jobjects.dbimp.trigger.Line;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 public class XmlParamsTest {
   private Logger LOGGER = Logger.getLogger(getClass().getName());
 
-  @Test(groups = "MaSuite")
+  @Test
   public void parseFile() {
     try {
       XmlParams xmlParams = new XmlParams();
-      URL url = Class.class.getResource("/org/jobjects/dbimp/userfilename-asc.xml");
+      URL url = ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename-asc.xml");
       XmlDocument xmld = xmlParams.parseFile(new File(url.toURI()));
       StringBuffer sb = new StringBuffer();
       LinkedList<Line> lines = xmld.getLines();

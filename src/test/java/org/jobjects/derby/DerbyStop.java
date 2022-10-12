@@ -3,8 +3,8 @@ package org.jobjects.derby;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
 
 public class DerbyStop {
 
@@ -13,7 +13,7 @@ public class DerbyStop {
   /**
    * @throws java.lang.Exception
    */
-  @AfterClass
+  @AfterAll
   public static void tearDownAfterClass() throws Exception {
     DerbySingleton.getInstance().stop();
     if (DerbySingleton.getInstance().isStarted()) {
@@ -21,7 +21,7 @@ public class DerbyStop {
     }
   }
 
-  @Test(groups = "MaSuite")
+  @Test
   public void testStop() {
     LOGGER.log(Level.INFO, "Derby Stop");
   }

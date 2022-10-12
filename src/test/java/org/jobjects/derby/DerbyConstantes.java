@@ -19,7 +19,7 @@ public interface DerbyConstantes {
   // public final static String URL =
   // "jdbc:derby://localhost:1527/db;user=derby;password=derby";
   // public final static String URL = "jdbc:derby://localhost:1527/db";
-  public final static String URL = "jdbc:derby:db";
+  public final static String URL = "jdbc:derby:memory:db";
   public final static String DATABASE_NAME = "db";
 
   // jdbc:derby://localhost:1527/db;user=derby;password=derby

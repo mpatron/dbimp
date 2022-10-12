@@ -14,92 +14,6 @@
 		<java.version>17</java.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-		</repository>
-		<repository>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-			<id>jboss-public-repository-group-developer</id>
-			<name>JBoss Public Maven Repository Group Developer</name>
-			<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
-		</repository>
-		<repository>
-			<id>oss.sonatype.org</id>
-			<name>OSS Sonatype Staging</name>
-			<url>https://oss.sonatype.org/content/groups/staging</url>
-		</repository>
-		<repository>
-			<id>glassfish-repository</id>
-			<name>Java.net Repository for Glassfish</name>
-			<url>http://download.java.net/maven/glassfish</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>central</id>
-			<name>Central Repository</name>
-			<url>http://repo.maven.apache.org/maven2</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-		</pluginRepository>
-		<pluginRepository>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-			<id>jboss-public-repository-group-developer</id>
-			<name>JBoss Public Maven Repository Group Developer</name>
-			<url>https://repository.jboss.org/nexus/content/groups/developer/</url>
-		</pluginRepository>
-		<pluginRepository>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>central</id>
-			<name>Central Repository</name>
-			<url>http://repo.maven.apache.org/maven2</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -136,11 +50,13 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.0.13.Final</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.el</artifactId>
 			<version>3.0.0</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -169,20 +85,11 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>net.sf.launch4j</groupId>
-			<artifactId>launch4j</artifactId>
-			<version>3.8.0</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -223,7 +130,7 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<groupId>org.apache.maven.plugins</groupId>
-				<version>2.9</version>
+				<version>3.0.0-M7</version>
 				<configuration>
 					<argLine>-Xms128m -Xmx256m</argLine>
 					<!-- <argLine>-Xms128m -Xmx256m -XX:PermSize=128m -XX:MaxPermSize=256m</argLine> -->
@@ -243,6 +150,7 @@
 						</property>
 					</systemProperties>
 				</configuration>
+			
 			</plugin>
 			<plugin>
 				<artifactId>derby-maven-plugin</artifactId>
@@ -276,7 +184,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.1</version>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -298,7 +206,7 @@
 			<plugin>
 				<groupId>com.akathist.maven.plugins.launch4j</groupId>
 				<artifactId>launch4j-maven-plugin</artifactId>
-				<version>1.7.10</version>
+				<version>2.1.2</version>
 				<executions>
 					<execution>
 						<id>l4j-clui</id>

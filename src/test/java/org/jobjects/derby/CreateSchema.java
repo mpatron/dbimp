@@ -15,7 +15,7 @@ import org.jobjects.dbimp.sql.SqlUtils;
 public class CreateSchema {
   private static Logger LOGGER = Logger.getLogger(CreateSchema.class.getName());
 
-  public static void createSchema(Connection conn, String schema) {
+  public static void createSchema(Connection conn, String schema) throws SQLException {
     try {
 
       Statement stmp = conn.createStatement();
@@ -38,6 +38,7 @@ public class CreateSchema {
         sql += " )";
         stmt.execute(sql);
         stmt.execute("ALTER TABLE " + schema + ".MYTABLE ADD PRIMARY KEY (MONCHAMPSTEXTE, MONCHAMPSCHAR)");
+        LOGGER.log(Level.FINEST, String.format("Création de la table %s.%s", schema, "MYTABLE"));
         stmt.close();
       }
 
@@ -46,7 +47,7 @@ public class CreateSchema {
         // location.state location.postcode email login.username login.password
         Statement stmt = conn.createStatement();
         String sql = "CREATE TABLE " + schema + ".SECU_USER (";
-        sql += " USERNAME VARCHAR(20) NOT NULL,";
+        sql += " USERNAME VARCHAR(20) NOT NULL CONSTRAINT USERNAME_PK PRIMARY KEY,";
         sql += " PASSWORD VARCHAR(64),";
         sql += " MONCHAMPSDATETIME TIMESTAMP,";
         sql += " GENDER VARCHAR(10),";
@@ -57,24 +58,24 @@ public class CreateSchema {
         sql += " CITY VARCHAR(40),";
         sql += " STATE VARCHAR(40),";
         sql += " POSTCODE VARCHAR(20),";
-        sql += " EMAIL VARCHAR(320),";
-        sql += " PRIMARY KEY (USERNAME)";
+        sql += " EMAIL VARCHAR(320)";
+        //sql += " PRIMARY KEY (USERNAME)";
         sql += " )";
         stmt.execute(sql);
-        // stmt.execute("ALTER TABLE "+schema+".SECU_USER ADD PRIMARY KEY
-        // (username)");
+        //stmt.execute("ALTER TABLE "+schema+".SECU_USER ADD PRIMARY KEY (USERNAME)");
         stmt.execute("INSERT INTO " + schema + ".SECU_USER (USERNAME, PASSWORD) VALUES ('myName', 'myPassword')");
+        LOGGER.log(Level.FINEST, String.format("Création de la table %s.%s", schema, "SECU_USER"));
         stmt.close();
       }
 
       if (!isExistTable(conn, schema, "SECU_USER_ROLE")) {
         Statement stmt = conn.createStatement();
         String sql = "CREATE TABLE " + schema + ".SECU_USER_ROLE (";
-        sql += " USERNAME VARCHAR(255) NOT NULL,";
+        sql += " USERNAME VARCHAR(20) NOT NULL,";
         sql += " ROLENAME VARCHAR(255) NOT NULL,";
         sql += " MONCHAMPSDATETIME TIMESTAMP DEFAULT CURRENT_TIMESTAMP,";
-        sql += " PRIMARY KEY (USERNAME, ROLENAME),";
-        sql += " FOREIGN KEY(USERNAME) REFERENCES " + schema + ".SECU_USER (USERNAME)";
+        sql += " CONSTRAINT SECU_USER_ROLE_PK PRIMARY KEY (USERNAME, ROLENAME),";
+        sql += " CONSTRAINT SECU_USER_ROLE_SECU_USER_FK FOREIGN KEY (USERNAME) REFERENCES " + schema + ".SECU_USER (USERNAME)";
         sql += " )";
         stmt.execute(sql);
         // stmt.execute("ALTER TABLE "+schema+".secu_user_role ADD PRIMARY KEY
@@ -83,6 +84,7 @@ public class CreateSchema {
         stmt.execute("INSERT INTO " + schema + ".SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'admin')");
         stmt.execute("INSERT INTO " + schema + ".SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'root')");
         stmt.execute("INSERT INTO " + schema + ".SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'dieu')");
+        LOGGER.log(Level.FINEST, String.format("Création de la table %s.%s", schema, "SECU_USER_ROLE"));
         stmt.close();
       }
 
@@ -91,8 +93,9 @@ public class CreateSchema {
       while (tables.next()) {
         tableNames.add(tables.getString("TABLE_NAME").toLowerCase());
       }
-    } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+    } catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, sqle.getLocalizedMessage(), sqle);
+      throw sqle;
     }
   }
 

@@ -1,7 +1,6 @@
 package org.jobjects.dbimp.tools.log;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;

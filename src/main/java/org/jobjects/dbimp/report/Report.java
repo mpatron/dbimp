@@ -38,7 +38,7 @@ public class Report implements Reporting {
   private String description = null;
   private String inputFile = null;
   private String paramFile = null;
-  private String date = DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date());
+  private String date = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_FORMAT.format(new Date());
   private long duration;
   boolean verbose = false;
 

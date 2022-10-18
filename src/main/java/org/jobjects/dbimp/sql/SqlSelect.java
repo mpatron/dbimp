@@ -264,7 +264,7 @@ public class SqlSelect extends SqlStatement {
               if (MathUtils.isInteger(i_value)) {
                 Integer v =(Integer) value;
                 if(Precision.equals(v, i_value, epsilon))
-                if (((Integer) value).compareTo(new Integer((int) i_value)) != 0) {
+                if (((Integer) value).compareTo(Integer.valueOf((int) i_value)) != 0) {
                   returnValue = 3;
                 }
               } else {
@@ -275,7 +275,7 @@ public class SqlSelect extends SqlStatement {
             case LONG:
               double l_value = Double.parseDouble(field.getBuffer()) * field.getCoefficient();
               if (MathUtils.isInteger(l_value)) {
-                if (((Long) value).compareTo(new Long((long) l_value)) != 0) {
+                if (((Long) value).compareTo(Long.valueOf((long) l_value)) != 0) {
                   returnValue = 4;
                 }
               } else {
@@ -286,7 +286,7 @@ public class SqlSelect extends SqlStatement {
             case FLOAT:
 
               float f_value = Float.parseFloat(field.getBuffer()) * (float) field.getCoefficient();
-              if (((Float) value).compareTo(new Float(f_value)) != 0) {
+              if (((Float) value).compareTo(Float.valueOf(f_value)) != 0) {
                 returnValue = 5;
               }
               break;
@@ -294,7 +294,7 @@ public class SqlSelect extends SqlStatement {
             case DOUBLE:
 
               double d_value = Double.parseDouble(field.getBuffer()) * field.getCoefficient();
-              if (((Double) value).compareTo(new Double(d_value)) != 0) {
+              if (((Double) value).compareTo(Double.valueOf(d_value)) != 0) {
                 returnValue = 6;
               }
               break;

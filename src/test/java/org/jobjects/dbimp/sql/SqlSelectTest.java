@@ -33,9 +33,8 @@ class SqlSelectTest {
   void testDoubleAsInteger() {
     try {
       DriverManager.drivers().forEach((driver) -> LOGGER.log(Level.INFO,
-          "JDBC " + driver.toString() + " version : " + driver.getMajorVersion() + "." + driver.getMinorVersion()));
-      
-      Object value = new Double(1.55d);
+          "JDBC " + driver.toString() + " version : " + driver.getMajorVersion() + "." + driver.getMinorVersion()));      
+      Object value = Double.valueOf(1.55d);
       Double i_value = 1.54999999d;
 
       LOGGER.log(Level.INFO, String.format("value=%s i_value=%s", value, i_value));

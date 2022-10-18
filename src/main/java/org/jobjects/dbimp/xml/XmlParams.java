@@ -156,7 +156,7 @@ public class XmlParams extends DefaultHandler {
 
               if ("trigger_class_name".equalsIgnoreCase(attrs.getQName(i))) {
                 ClassLoader cl = ClassLoader.getSystemClassLoader();
-                trigger = (Trigger) cl.loadClass(attrs.getValue(i)).newInstance();
+                trigger = (Trigger) cl.loadClass(attrs.getValue(i)).getDeclaredConstructor().newInstance();
               }
             } catch (Exception e) {
               e.printStackTrace();

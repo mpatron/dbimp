@@ -18,3 +18,4 @@ target
 
 derby.log
 db
+dependency-reduced-pom.xml

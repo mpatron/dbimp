@@ -6,7 +6,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -223,16 +222,13 @@ public class Importation {
      */
     String driverClassName = SQLDatatbaseType.getType(url).getDriver();
     try {
-      Driver driver = (Driver) Class.forName(driverClassName).newInstance();
-      LOGGER.finest("JDBC driver version : " + driver.getMajorVersion() + "." + driver.getMinorVersion());
-      DriverManager.registerDriver(driver);
+      //java -Djdbc.drivers=oracle.jdbc.driver.OracleDriver,com.mysql.jdbc.Driver      
       Connection connection = DriverManager.getConnection(url, user, password);
-
       String fileNameReport = File.createTempFile(filenameReporte + "-" + getNextNumber() + "-", extnameReporte, new File(dirnameReporte))
           .getAbsolutePath();
       importFile(ascfile, ascfile_encode, xmlfile, connection, schemaName, cached, verbose, fileNameReport);
       connection.close();
-      DriverManager.deregisterDriver(driver);
+      //DriverManager.deregisterDriver(driver);
     } catch (Exception e) {
       String messageErr = new String();
       messageErr += System.lineSeparator() + "  - driverClassName=" + driverClassName;
@@ -437,7 +433,7 @@ public class Importation {
 
   private static int getNextNumber() {
     int returnValue = 0;
-    String filePath = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + ".reportnumber.asc";
+    String filePath = SystemUtils.USER_HOME + File.separator + ".reportnumber.asc";
     File file = new File(filePath);
     if (file.exists()) {
       try {

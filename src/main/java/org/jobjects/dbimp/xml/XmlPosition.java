@@ -1,6 +1,6 @@
 package org.jobjects.dbimp.xml;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jobjects.dbimp.trigger.FiletypeEnum;

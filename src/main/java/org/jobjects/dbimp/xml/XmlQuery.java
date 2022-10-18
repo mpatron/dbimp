@@ -2,7 +2,7 @@ package org.jobjects.dbimp.xml;
 
 import java.util.LinkedList;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Tag query. Utilisé dans la lecture du fichier de paramètrage.

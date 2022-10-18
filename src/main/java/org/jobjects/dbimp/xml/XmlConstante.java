@@ -1,6 +1,6 @@
 package org.jobjects.dbimp.xml;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Tag constante. Utilisé dans la lecture du fichier de paramètrage.

@@ -3,6 +3,7 @@ package org.jobjects.dbimp.xml;
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jobjects.dbimp.trigger.Field;
@@ -13,7 +14,7 @@ public class XmlParamsTest {
   private Logger LOGGER = Logger.getLogger(getClass().getName());
 
   @Test
-  public void parseFile() {
+  public void parseFile() throws Exception {
     try {
       XmlParams xmlParams = new XmlParams();
       URL url = ClassLoader.getSystemResource("org/jobjects/dbimp/userfilename-asc.xml");
@@ -29,7 +30,8 @@ public class XmlParamsTest {
       }
       LOGGER.info(sb.toString());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+      throw e;
     }
   }
 }

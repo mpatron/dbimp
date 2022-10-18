@@ -29,6 +29,14 @@ class SqlSelectTest {
     JObjectsLogFormatter.initializeLogging();
   }
 
+  private static int round(double d){
+    int i = (int)d;
+    double remainder = d - i;
+    if(remainder>=0.5){
+        i++;
+    }
+    return i;
+}
   @Test
   void testDoubleAsInteger() {
     try {
@@ -72,14 +80,13 @@ class SqlSelectTest {
       int integer = doubles.intValue();
       LOGGER.log(Level.INFO, String.format("doubles.intValue(%s)=%s", doubles, integer));
 
-      i_value = 1.24999999d;
-      assertTrue((Math.ceil(i_value) == Math.floor(i_value)) && !Double.isInfinite(i_value));
-
-      i_value = 1.54999999d;
-      assertTrue((Math.ceil(i_value) == Math.floor(i_value)) && !Double.isInfinite(i_value));
+      assertTrue(round(1.99999999d)==2);
+      assertTrue(round(1.24999999d)==1);
+      assertTrue(round(1.54999999d)==2);
 
     } catch (Throwable e) {
       LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+      throw e;
     }
   }
 

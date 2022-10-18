@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,7 +97,7 @@ public class Importation {
     HelpFormatter formatter = new HelpFormatter();
     String cmdLineSyntax = "$JAVA_HOME/bin/java " + Importation.class.getName();
     String header = "Importation directe version 4.0";
-    String footer = "Copyright © 2006-2016 JObjects Corp. All Rights Reserved";
+    String footer = "Copyright © 2006-" + LocalDate.now().getYear() + " JObjects Corp. All Rights Reserved";
 
     Options options = new Options();
     Option option = new Option("u", "url", true,

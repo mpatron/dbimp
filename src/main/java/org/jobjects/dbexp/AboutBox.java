@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -15,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * <p>
@@ -55,7 +58,7 @@ public class AboutBox extends JDialog implements ActionListener {
   GridLayout gridLayout1 = new GridLayout();
   String product = "Exportation dbExp";
   String version = "1.0";
-  String copyright = "Copyright (c) 2004";
+  String copyright = "Copyright (c) 2004-" + LocalDate.now().getYear();
   String comments = "Mickaël Patron";
 
   public AboutBox(Frame parent) {

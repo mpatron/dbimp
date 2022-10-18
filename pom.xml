@@ -3,7 +3,7 @@
 
 	<groupId>org.jobjects</groupId>
 	<artifactId>dbimp</artifactId>
-	<version>1.0.2</version>
+	<version>3.0.1</version>
 	<!-- <version>1.0-SNAPSHOT</version> -->
 	<packaging>jar</packaging>
 	<name>Librairie d'importation de donnée  dans une base</name>
@@ -252,14 +252,14 @@
 							</classPath>
 							<icon>src/main/resources/org/jobjects/dbimp/Icons8-Ios7-Logos-Java-Duke-Logo-Copyrighted.ico</icon>
 							<jre>
-								<minVersion>1.8.0</minVersion>
+								<minVersion>17</minVersion>
 								<jdkPreference>preferJre</jdkPreference>
 							</jre>
 							<versionInfo>
 								<fileVersion>1.0.0.0</fileVersion>
 								<txtFileVersion>${project.version}</txtFileVersion>
 								<fileDescription>${project.name}</fileDescription>
-								<copyright>2015 JObjects.org</copyright>
+								<copyright>2022 JObjects.org</copyright>
 								<productVersion>1.0.0.0</productVersion>
 								<txtProductVersion>1.0.0.0</txtProductVersion>
 								<productName>${project.name}</productName>

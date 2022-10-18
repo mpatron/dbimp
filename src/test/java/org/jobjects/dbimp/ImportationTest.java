@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

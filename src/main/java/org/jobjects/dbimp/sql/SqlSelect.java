@@ -29,7 +29,8 @@ public class SqlSelect extends SqlStatement {
   private static Logger LOGGER = Logger.getLogger(SqlSelect.class.getName());
 
   private int countSelect = 0;
-
+  private double epsilon = 0.000001d;
+  
   // ---------------------------------------------------------------------------
 
   /**
@@ -261,6 +262,8 @@ public class SqlSelect extends SqlStatement {
             case INTEGER:
               double i_value = Double.parseDouble(field.getBuffer()) * field.getCoefficient();
               if (MathUtils.isInteger(i_value)) {
+                Integer v =(Integer) value;
+                if(Precision.equals(v, i_value, epsilon))
                 if (((Integer) value).compareTo(new Integer((int) i_value)) != 0) {
                   returnValue = 3;
                 }

@@ -17,8 +17,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 /**
  * <p>
  * Title: IHM
